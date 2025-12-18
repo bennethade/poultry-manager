@@ -1,0 +1,22 @@
+/* Sidebar background */
+.main-sidebar {
+    /* background-color: #1e1e2f !important; */
+    background-color: #02023c !important;
+}
+
+/* Brand logo area */
+.main-sidebar .brand-link {
+    background-color: #d61bad !important;
+}
+
+/* Sidebar links */
+.main-sidebar .nav-link {
+    color: #ffffff !important;
+}
+
+/* Active menu item */
+.nav-sidebar .nav-item > .nav-link.active {
+    background-color: #c602bc !important;
+    /* background-color: #d016c7 !important; */
+    color: #1eede9 !important;
+}
