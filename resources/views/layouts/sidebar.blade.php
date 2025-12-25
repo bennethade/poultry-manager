@@ -2,10 +2,6 @@
 <aside class="main-sidebar sidebar-dark-warning elevation-4">
    <!-- Brand Logo -->
    <a href="{{ route('login') }}" class="brand-link" style="text-align: center;">
-   
-   {{-- <img src="{{ asset('dist/img/benjas_logo_white.png') }}" alt="Benjas Logo"
-      class="brand-image img-rounded elevation-3" style="opacity: .8">
-   <span class="brand-text" style="font-size: 20px; font-weight:bold;">Poultry</span> --}}
       <span>
          {{ env('APP_NAME') }}
       </span>
@@ -40,14 +36,14 @@
                      </a>
                   </li>
                   
-                  <li class="nav-item">
-                     <a href="{{ url('admin/admin/list') }}" class="nav-link @if(Request::segment(2) == 'admin') active @endif">
-                        <i class="nav-icon fas fa-user-shield"></i>
-                        <p>
-                           Admin
-                        </p>
-                     </a>
-                  </li>
+                  <!--<li class="nav-item">-->
+                  <!--   <a href="{{ url('admin/admin/list') }}" class="nav-link @if(Request::segment(2) == 'admin') active @endif">-->
+                  <!--      <i class="nav-icon fas fa-user-shield"></i>-->
+                  <!--      <p>-->
+                  <!--         Admin-->
+                  <!--      </p>-->
+                  <!--   </a>-->
+                  <!--</li>-->
 
                   <li class="nav-item">
                      <a href="{{ url('admin/designation/list') }}"
@@ -70,8 +66,171 @@
                      </a>
                   </li>
 
-
                   <li class="nav-item">
+                     <a href="{{ url('admin/view_records/list') }}"
+                        class="nav-link @if(Request::segment(2) == 'view_records') active @endif">
+                        <i class="nav-icon fas fa-folder"></i>
+                        <p>
+                           Weekly Records
+                        </p>
+                     </a>
+                  </li>
+
+
+                  <li class="nav-item @if(Request::segment(2) == 'animal_record') menu-is-opening menu-open @endif">
+                     <a href="#" class="nav-link @if(Request::segment(2) == 'animal_record') active @endif">
+                        <i class="nav-icon fas fa-dollar-sign"></i>
+                        <p>
+                           Animal Record
+                           <i class="fas fa-angle-left right"></i>
+                        </p>
+                     </a>
+                     <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                           <a href="{{ url('admin/animal_record/animal_identification/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'animal_identification') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Animal Identification</p>
+                           </a>
+                        </li>
+                        <li class="nav-item">
+                           <a href="{{ url('admin/animal_record/breeding_record/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'breeding_record') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Breeding Record</p>
+                           </a>
+                        </li>
+
+                        <li class="nav-item">
+                           <a href="{{ url('admin/animal_record/growth_performance/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'growth_performance') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Growth & Performance</p>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+
+
+                  <li class="nav-item @if(Request::segment(2) == 'feed_record') menu-is-opening menu-open @endif">
+                     <a href="#" class="nav-link @if(Request::segment(2) == 'feed_record') active @endif">
+                        <i class="nav-icon fas fa-clipboard-list"></i>
+                        <p>
+                           Feed Record
+                           <i class="fas fas fa-angle-left right"></i>
+                        </p>
+                     </a>
+                     <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                           <a href="{{ url('admin/feed_record/feed_stock/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'feed_stock') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Feed Stock</p>
+                           </a>
+                        </li>
+                        <li class="nav-item">
+                           <a href="{{ url('admin/feed_record/daily_feed_usage/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'daily_feed_usage') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Daily Feed Usage</p>
+                           </a>
+                        </li>
+
+                        <li class="nav-item">
+                           <a href="{{ url('admin/feed_record/feed_formulation/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'feed_formulation') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Feed Formulation</p>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+                  
+                  
+                  <li class="nav-item @if(Request::segment(2) == 'expense_record') menu-is-opening menu-open @endif">
+                     <a href="#" class="nav-link @if(Request::segment(2) == 'expense_record') active @endif">
+                        <i class="nav-icon fas fa-clipboard-list"></i>
+                        <p>
+                           Expense Record
+                           <i class="fas fas fa-angle-left right"></i>
+                        </p>
+                     </a>
+                     <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                           <a href="{{ url('admin/expense_record/daily_expense/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'daily_expense') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Daily Expense Record</p>
+                           </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                           <a href="{{ url('admin/expense_record/monthly_expense_summary/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'monthly_expense_summary') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Monthly Summary</p>
+                           </a>
+                        </li>
+
+                        <li class="nav-item">
+                           <a href="{{ url('admin/expense_record/weekly_expense_summary/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'weekly_expense_summary') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Expense Report</p>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+
+
+                  <li class="nav-item @if(Request::segment(2) == 'sales_record') menu-is-opening menu-open @endif">
+                     <a href="#" class="nav-link @if(Request::segment(2) == 'sales_record') active @endif">
+                        <i class="nav-icon fas fa-clipboard-list"></i>
+                        <p>
+                           Sales Record
+                           <i class="fas fas fa-angle-left right"></i>
+                        </p>
+                     </a>
+                     <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                           <a href="{{ url('admin/sales_record/daily_sales/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'daily_sales') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Daily Sales Record</p>
+                           </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                           <a href="{{ url('admin/sales_record/monthly_sales_summary/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'monthly_sales_summary') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Monthly Summary</p>
+                           </a>
+                        </li>
+
+                        <li class="nav-item">
+                           <a href="{{ url('admin/sales_record/weekly_sales_summary/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'weekly_sales_summary') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Sales Report</p>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+
+                  
+                  {{-- <li class="nav-item">
+                     <a href="{{ url('admin/expenses/list') }}"
+                        class="nav-link @if(Request::segment(2) == 'expenses') active @endif">
+                        <i class="nav-icon fas fa-coins"></i>
+                        <p>
+                           Expenses
+                        </p>
+                     </a>
+                  </li> --}}
+
+
+                  {{-- <li class="nav-item">
                      <a href="{{ url('admin/farm_record/list') }}"
                         class="nav-link @if(Request::segment(2) == 'farm_record') active @endif">
                         <i class="nav-icon fas fa-clipboard-list"></i>
@@ -79,7 +238,7 @@
                            Farm Records
                         </p>
                      </a>
-                  </li>
+                  </li> --}}
 
 
                   <li class="nav-item">
@@ -92,15 +251,7 @@
                      </a>
                   </li>
 
-                  <li class="nav-item">
-                     <a href="{{ url('admin/expenses/list') }}"
-                        class="nav-link @if(Request::segment(2) == 'expenses') active @endif">
-                        <i class="nav-icon fas fa-coins"></i>
-                        <p>
-                           Expenses
-                        </p>
-                     </a>
-                  </li>
+                  
 
 
                   <li class="nav-item">

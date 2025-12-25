@@ -87,7 +87,7 @@
                     <th>Quantity</th>
                     <th>Price</th>
                     <th>Sold on Discount</th>
-                    <th>Discounted Price</th>
+                    <th>Original Price</th>
                     <th>Buyer Name</th>
                     <th>Buyer Phone</th>
                     <th>Sales Date</th>

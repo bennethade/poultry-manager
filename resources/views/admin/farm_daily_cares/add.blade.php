@@ -41,7 +41,7 @@
                         </div>
 
                         <div class="form-group col-md-4">
-                          <label>House_or Unit</label>
+                          <label>House or Unit</label>
                             <input type="text" class="form-control" name="house_or_unit" placeholder="Detail of the location" value="{{ old('house_or_unit') }}">
                             <div style="color: red;">{{ $errors->first('house_or_unit') }}</div>
                         </div>

@@ -194,7 +194,7 @@
             <div class="chicken-container">
                 <div class="chicken-shadow"></div>
                 <!-- Chicken image with transparent background and safe fallback -->
-                <img src="https://5.imimg.com/data5/SELLER/Default/2022/10/XG/JW/OZ/5477230/live-broiler-chicken-birds.png"
+                <img src="https://static.vecteezy.com/system/resources/thumbnails/028/670/871/small/pink-pig-isolated-on-transparent-background-side-view-cute-pig-generative-ai-png.png"
                      alt="Chicken"
                      class="chicken-image"
                      onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'250\' height=\'250\' viewBox=\'0 0 250 250\'><rect width=\'100%\' height=\'100%\' fill=\'%230c1117\'/><text x=\'50%\' y=\'55%\' text-anchor=\'middle\' fill=\'%2398a6d0\' font-family=\'Poppins, sans-serif\' font-size=18>Chicken</text></svg>'"/>

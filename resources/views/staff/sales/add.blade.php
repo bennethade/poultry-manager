@@ -46,12 +46,6 @@
                             <div style="color: red;">{{ $errors->first('price') }}</div>
                         </div>
 
-                        {{-- <div class="form-group col-md-4">
-                          <label>Sold on Discount</label>
-                            <input type="text" class="form-control" name="sold_on_discount" placeholder="Cash, Transfer, etc." value="{{ old('sold_on_discount') }}">
-                            <div style="color: red;">{{ $errors->first('sold_on_discount') }}</div>
-                        </div> --}}
-
                         <div class="form-group col-md-3">
                             <label>Sold on Discount <span style="color: red"></span> </label>
                             <select name="sold_on_discount" id="" class="form-control">
@@ -63,7 +57,7 @@
                         </div>
 
                         <div class="form-group col-md-3">
-                          <label>Discount Price</label>
+                          <label>Original Price</label>
                             <input type="number" class="form-control" name="discounted_price" placeholder="Eg: 2000" value="{{ old('discounted_price') }}">
                             <div style="color: red;">{{ $errors->first('discounted_price') }}</div>
                         </div>
@@ -80,16 +74,6 @@
                             <input type="text" class="form-control" name="buyer_phone" placeholder="Eg: 08177733366" value="{{ old('buyer_phone') }}">
                             <div style="color: red;">{{ $errors->first('buyer_phone') }}</div>
                         </div>
-
-                        {{-- <div class="form-group col-md-6">
-                            <label>Gender <span style="color: red">*</span> </label>
-                            <select name="gender" id="" class="form-control" required>
-                                <option value="">Select Gender</option> 
-                                <option {{ (old('gender') == 'Male') ? 'selected' : '' }} value="Male">Male</option> 
-                                <option {{ (old('gender') == 'Female') ? 'selected' : '' }} value="Female">Female</option> 
-                            </select>
-                            <div style="color: red;">{{ $errors->first('gender') }}</div>
-                        </div> --}}
 
                         <div class="form-group col-md-5">
                             <label>Sales Date <span style="color: red">*</span> </label>

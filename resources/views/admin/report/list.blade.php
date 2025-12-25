@@ -78,7 +78,7 @@
                           @php
                             $todayBalance = $today_sales - $today_expense
                           @endphp
-                            @if ($todayBalance >= $today_expense)
+                            @if ($todayBalance >= 0)
                                 <span style="color: blue">{{ number_format($todayBalance, 2) }}</span>
                             @else
                                 <span style="color: red">{{ number_format($todayBalance, 2) }}</span>
@@ -142,7 +142,7 @@
                           @php
                             $thisMonthBalance = $month_sales - $month_expense
                           @endphp
-                            @if ($thisMonthBalance >= $month_expense)
+                            @if ($thisMonthBalance >= 0)
                                 <span style="color: blue">{{ number_format($thisMonthBalance, 2) }}</span>
                             @else
                                 <span style="color: red">{{ number_format($thisMonthBalance, 2) }}</span>                              
@@ -158,7 +158,7 @@
                           @php
                             $lastMmonthBalance = $last_month_sales - $last_month_expense
                           @endphp
-                            @if ($lastMmonthBalance >= $last_month_expense)
+                            @if ($lastMmonthBalance >= 0)
                                 <span style="color: blue">{{ number_format($lastMmonthBalance, 2) }}</span>
                             @else
                                 <span style="color: red">{{ number_format($lastMmonthBalance, 2) }}</span>                              

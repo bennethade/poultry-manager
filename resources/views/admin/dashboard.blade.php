@@ -4,199 +4,401 @@
 
 
 
-<div class="content-wrapper">
-  <!-- Content Header (Page header) -->
-  <div class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-12">
-          <h1 class="m-0">Dashboard</h1>
-        </div><!-- /.col -->
-      </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-  </div>
-  
-  <section class="content">
-    <div class="container-fluid">
-      <div class="row">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #ffffff;
+        }
 
-        <div class="col-lg-4 col-6">
-          <div class="small-box bg-primary">
-            <div class="inner">
-              <h3>{{ $getTotalStaff }}</h3>
-              <p>Total Number of Staff</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-bag"></i>
-            </div>
-            <a href="{{ route('staff.list') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
+        .container {
+            width: 100%;
+            margin: 10px auto;
+        }
 
-        <div class="col-lg-4 col-6">
-          <div class="small-box bg-success">
-            <div class="inner">
-              <h3>{{ $getTotalFarmRecord }}</h3>
-              <p>Total Farm Records</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-bag"></i>
-            </div>
-            <a href="{{ route('farm_record.list') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
+        .section {
+            margin-bottom: 20px;
+            border: 2px solid #8c0783;
+            border-radius: 6px;
+            overflow: hidden;
+        }
 
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            background: #fff;
+        }
 
-        <div class="col-lg-4 col-6">
-          <div class="small-box bg-info">
-            <div class="inner">
-              <h3>{{ $getTotalFarmDailyCare }}</h3>
-              <p>Total Daily Care Record</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-bag"></i>
-            </div>
-            <a href="{{ route('farm_daily_care.list') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
+        .chevron {
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
 
-        <div class="col-lg-4 col-6">
-          <div class="small-box bg-danger">
-            <div class="inner">
-              <h3>{{ $getTotalTodayExpenses }}</h3>
+        .section-body {
+            padding: 15px;
+            transition: max-height 0.4s ease;
+        }
 
-              <p>Today's Expenses</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
-            </div>
-            <a href="{{ route('expenses.list') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
+        .section.collapsed .section-body {
+            display: none;
+        }
 
+        .section.collapsed .chevron {
+            transform: rotate(-90deg);
+        }
 
-        <div class="col-lg-4 col-6">
-          <div class="small-box" style="background: purple; color:white">
-            <div class="inner">
-              <h3>{{ $getTotalMonthlyExpenses }}</h3>
+        /* Cards */
+        .card-grid {
+            display: grid;
+            gap: 20px;
+        }
 
-              <p>This Month's Expenses</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
-            </div>
-            <a href="{{ route('expenses.list') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        
-        
-        <div class="col-lg-4 col-6">
-          <div class="small-box" style="background: #e65054; color:white">
-            <div class="inner">
-              <h3>{{ $getTotalExpenses }}</h3>
+        .card {
+            text-align: center;
+            cursor: pointer;
+        }
 
-              <p>All Time Expenses</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
-            </div>
-            <a href="{{ route('expenses.list') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        
-        
-        <div class="col-lg-4 col-6">
-          <div class="small-box" style="background: #996800; color:white">
-            <div class="inner">
-              <h3>{{ $getTotalTodaySales }}</h3>
+        .card img {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
 
-              <p>Today's Sales</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
-            </div>
-            <a href="{{ route('sales.list') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        
-        <div class="col-lg-4 col-6">
-          <div class="small-box" style="background: #72aee6; color:white">
-            <div class="inner">
-              <h3>{{ $getTotalMonthlySales }}</h3>
+        .card p {
+            margin-top: 10px;
+            font-size: 14px;
+        }
 
-              <p>This Month's Sales</p>
-            </div>
-            <div class="icon">
-              <i class="nav-icon fas fa-table"></i>
-            </div>
-            <a href="{{ route('sales.list') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
+      .card-link {
+            text-decoration: none;
+            color: black;
+            display: block;
+        }
 
-        <div class="col-lg-4 col-6">
-          <div class="small-box bg-warning">
-            <div class="inner">
-              <h3>{{ $getTotalSales }}</h3>
-
-              <p>All Time Sales</p>
-            </div>
-            <div class="icon">
-              <i class="nav-icon fas fa-table"></i>
-            </div>
-            <a href="{{ route('sales.list') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
+        .card-link:hover {
+            text-decoration: none;
+            color: inherit;
+        }
 
 
-        {{-- <div class="col-lg-3 col-6">
-          <div class="small-box bg-secondary">
-            <div class="inner">
-              <h3></h3>
+      /* Desktop (default) */
+        @media (min-width: 1200px) {
+            .card-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
 
-              <p>Total Subject</p>
-            </div>
-            <div class="icon">
-              <i class="nav-icon fas fa-table"></i>
-            </div>
-            <a href="" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
+        /* Tablet */
+        @media (min-width: 768px) and (max-width: 1199px) {
+            .card-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 767px) {
+            .card {
+                height: 130px;
+            }
+
+            .card img {
+                max-width: 100px;
+                max-height: 80px;
+            }
+            
+            .card-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .card p {
+                margin-top: 10px;
+                font-size: 12px;
+            }
+
+            .card-grid {
+                display: grid;
+                gap: 8px;
+            }
+
+            .section-body {
+                padding: 5px;
+                transition: max-height 0.4s ease;
+            }
+
+            .section-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px 20px;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+                background: #fff;
+            }
+        }
+
+    </style>
 
 
-        <div class="col-lg-3 col-6">
-          <div class="small-box" style="background: #2f6050; color:white">
-            <div class="inner">
-              <h3></h3>
 
-              <p>Total Notification</p>
-            </div>
-            <div class="icon">
-              <i class="nav-icon fas fa-table"></i>
-            </div>
-            <a href="" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-
-
-        <div class="col-lg-3 col-6">
-          <div class="small-box" style="background: #d37681; color:white">
-            <div class="inner">
-              <h3></h3>
-
-              <p>Total Submitted Homework</p>
-            </div>
-            <div class="icon">
-              <i class="nav-icon fas fa-table"></i>
-            </div>
-            <a href="" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-          </div>
-        </div> --}}
-        
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <div class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-12">
+              <h1 class="m-0">Dashboard</h1>
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
       </div>
       
+
+        <div class="container">
+
+            <!-- Animal Record Section -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span>Animal Record</span>
+                    <span class="chevron">&#9662;</span>
+                </div>
+
+                <div class="section-body">
+                    <div class="card-grid">
+
+                        <a href="{{ url('admin/animal_record/animal_identification/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/identity.png') }}" alt="">
+                                <p>Animal Identification</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ url('admin/animal_record/breeding_record/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/poultry.png') }}" alt="">
+                                <p>Breeding Record</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ url('admin/animal_record/growth_performance/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/plant.png') }}" alt="">
+                                <p>Growth & Performance</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feed Record Section -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span>Feed Record</span>
+                    <span class="chevron">&#9662;</span>
+                </div>
+
+                <div class="section-body">
+                    <div class="card-grid">
+                        <a href="{{ url('admin/feed_record/feed_stock/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/inventory-list.png') }}" alt="">
+                                <p>Feed Stock Record</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ url('admin/feed_record/daily_feed_usage/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/animal-feed.png') }}" alt="">
+                                <p>Daily Feed Usage</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ url('admin/feed_record/feed_formulation/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/diet.png') }}" alt="">
+                                <p>Feed Formulation</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Expense RECORD Section -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span>Expense Record</span>
+                    <span class="chevron">&#9662;</span>
+                </div>
+
+                <div class="section-body">
+                    <div class="card-grid">
+                        <a href="{{ url('admin/expense_record/daily_expense/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/spending.png') }}" alt="">
+                                <p>Daily Expense Record</p>
+                            </div>
+                        </a>
+
+                        
+                        <a href="{{ url('admin/expense_record/monthly_expense_summary/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/budget-2.png') }}" alt="">
+                                <p>Monthly Expense Summary</p>
+                            </div>
+                        </a>
+                        
+                        <a href="{{ url('admin/expense_record/weekly_expense_summary/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/budget.png') }}" alt="">
+                                <p>General Expense Report</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <!-- Sales RECORD Section -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span>Sales Record</span>
+                    <span class="chevron">&#9662;</span>
+                </div>
+
+                <div class="section-body">
+                    <div class="card-grid">
+                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/earnings.png') }}" alt="">
+                                <p>Sales & Disposal Record</p>
+                            </div>
+                        </a>
+
+                        
+                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/acquisition.png') }}" alt="">
+                                <p>Monthly Sales Summary</p>
+                            </div>
+                        </a>
+                        
+                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/sales.png') }}" alt="">
+                                <p>General Sales Report</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--  GENERAL FARM ACTIVITIES RECORD Section -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span>General Farm Activities</span>
+                    <span class="chevron">&#9662;</span>
+                </div>
+
+                <div class="section-body"> 
+                    <div class="card-grid">
+                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/farmer.png') }}" alt="">
+                                <p>Daily Farm Activity</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/tea.png') }}" alt="">
+                                <p>Maintenance & Sanitation</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--    DISEASE & TREATMENT RECORD Section -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span>Disease & Treatment Record</span>
+                    <span class="chevron">&#9662;</span>
+                </div>
+
+                <div class="section-body">
+                    <div class="card-grid">
+                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/virus.png') }}" alt="">
+                                <p>Disease Incidence Record</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/syringe.png') }}" alt="">
+                                <p>Medication & Treatment</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+           
+           
+           
+            <!--    VACCINE RECORD Section -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span>Vaccine Record</span>
+                    <span class="chevron">&#9662;</span>
+                </div>
+
+                <div class="section-body">
+                    <div class="card-grid">
+                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/syringe-2.png') }}" alt="">
+                                <p>Vaccine Schedule</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/vaccine-log.png') }}" alt="">
+                                <p>Farm-Wide Vaccine Log</p>
+                            </div>
+                        </a>
+
+                        {{-- <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/animal-feed.png') }}" alt="">
+                                <p>Sales & Disposal Record</p>
+                            </div>
+                        </a> --}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <script>
+
+        function toggleSection(header) {
+            const section = header.parentElement;
+            section.classList.toggle('collapsed');
+        }
+
+
+        </script>
     </div>
-  </section>
-</div>
 
 
 

@@ -15,8 +15,31 @@
 }
 
 /* Active menu item */
-.nav-sidebar .nav-item > .nav-link.active {
+/* .nav-sidebar .nav-item > .nav-link.active {
     background-color: #c602bc !important;
-    /* background-color: #d016c7 !important; */
+    color: #1eede9 !important;
+} */
+
+
+
+/*  */
+/* Active parent dropdown */
+.nav-sidebar .menu-open > .nav-link {
+    background-color: #bdae08 !important; /* Parent color */
+    color: #ffffff !important;
+}
+
+
+/* Active child menu item */
+.nav-sidebar .nav-treeview .nav-link.active {
+    background-color: #5a02a6 !important; /* Child color */
     color: #1eede9 !important;
 }
+
+
+/* Hover effect for child items */
+.nav-sidebar .nav-treeview .nav-link:hover {
+    background-color: #8a04c0 !important;
+    color: #ffffff !important;
+}
+

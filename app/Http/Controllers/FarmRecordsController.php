@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FarmRecords;
+use App\Models\FeedStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -26,7 +27,6 @@ class FarmRecordsController extends Controller
         }
     }
 
-    
 
 
     public function ajaxSearch(Request $request)
@@ -188,6 +188,8 @@ class FarmRecordsController extends Controller
 
         return redirect()->route('farm_record.list')->with('warning', 'Record Deleted Successfully!');
     }
+
+
 
 
 

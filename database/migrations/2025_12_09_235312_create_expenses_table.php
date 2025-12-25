@@ -18,9 +18,14 @@ return new class extends Migration
             $table->string('payment_method');
             $table->date('date');
             $table->longText('description')->nullable();
+            $table->longText('purpose')->nullable();
             $table->string('picture')->nullable();
-            $table->smallInteger('staff_id');
-            $table->smallInteger('updated_by')->nullable();
+
+            $table->unsignedBigInteger('staff_id');
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->foreign('staff_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

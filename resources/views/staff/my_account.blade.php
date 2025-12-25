@@ -124,7 +124,7 @@
 
                   <div class="form-group">
                     <label>Email address <span style="color: red">*</span></label>
-                    <input type="email" class="form-control" name="email" required placeholder="Enter email" value="{{ old('email', $getRecord->email) }}">
+                    <input type="email" class="form-control" name="email" required readonly placeholder="Enter email" value="{{ old('email', $getRecord->email) }}">
                     <div style="color: red;">{{ $errors->first('email') }}</div>
                   </div>
                 </div>

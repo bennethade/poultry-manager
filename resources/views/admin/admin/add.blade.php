@@ -42,7 +42,7 @@
                     <select name="user_type" class="form-control">
                       <option value="">Select</option>
                       <option value="Super Admin">Super Admin</option>
-                      <option value="School Admin">School Admin</option>
+                      <option value="Admin">Admin</option>
                     </select>
                   </div>
 

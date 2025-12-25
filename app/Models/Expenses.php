@@ -35,6 +35,7 @@ class Expenses extends Model
                                             ->orWhere('expenses.amount', 'like', '%' . $word . '%')
                                             ->orWhere('expenses.payment_method', 'like', '%' . $word . '%')
                                             ->orWhere('expenses.description', 'like', '%' . $word . '%')
+                                            ->orWhere('expenses.purpose', 'like', '%' . $word . '%')
                                             ->orWhere('users.name', 'like', '%' . $word . '%')
                                             ->orWhere('users.last_name', 'like', '%' . $word . '%')
                                             ->orWhere('users.other_name', 'like', '%' . $word . '%')

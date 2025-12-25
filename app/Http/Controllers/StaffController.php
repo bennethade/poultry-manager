@@ -108,7 +108,7 @@ class StaffController extends Controller
         {
             $otherNameInitial = !empty($request->other_name) ? $request->other_name[0] : ''; // Check if other_name is entered
 
-            $staffEmail = $request->name . $request->last_name . $otherNameInitial . '@farmer.com';
+            $staffEmail = $request->name . $request->last_name . $otherNameInitial . '@dab.com';
         }
 
         $staff->email = isset($staffEmail) ? $staffEmail : null;

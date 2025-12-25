@@ -56,7 +56,7 @@
                         </div>
 
                         <div class="form-group col-md-3">
-                          <label>Discount Price</label>
+                          <label>Original Price</label>
                             <input type="number" class="form-control" name="discounted_price" placeholder="Eg: 2000" value="{{ old('discounted_price', $getRecord->discounted_price) }}">
                             <div style="color: red;">{{ $errors->first('discounted_price') }}</div>
                         </div>

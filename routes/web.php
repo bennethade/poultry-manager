@@ -1,13 +1,17 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AnimalRecordController;
 use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\FarmDailyCareController;
 use App\Http\Controllers\FarmRecordsController;
+use App\Http\Controllers\FeedRecordController;
 use App\Http\Controllers\MiscellaneousController;
+use App\Http\Controllers\PigController;
+use App\Http\Controllers\RecordController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\StaffController;
@@ -101,7 +105,6 @@ Route::group(['middleware' => 'admin'], function(){
 
 
 
-
     //STAFF ROUTES
     Route::get('/admin/staff/list', [StaffController::class,'list'])->name('staff.list');
     Route::get('/admin/staff/add', [StaffController::class,'add'])->name('staff.add');
@@ -111,8 +114,6 @@ Route::group(['middleware' => 'admin'], function(){
     Route::delete('/admin/staff/delete/{id}', [StaffController::class,'delete'])->name('staff.delete');
 
     Route::get('/admin/staff/ajax-search', [StaffController::class, 'ajaxSearch'])->name('staff.ajax.search');
-
-
 
 
 
@@ -151,18 +152,16 @@ Route::group(['middleware' => 'admin'], function(){
 
 
     // EXPENSES ROUTES
-    Route::get('/admin/expenses/list', [ExpensesController::class,'list'])->name('expenses.list');
-    Route::get('/admin/expenses/add', [ExpensesController::class,'add'])->name('expenses.add');
-    Route::post('/admin/expenses/add', [ExpensesController::class,'store'])->name('expenses.store');
-    Route::get('/admin/expenses/view/{id}', [ExpensesController::class,'view'])->name('expenses.view');
-    Route::get('/admin/expenses/edit/{id}', [ExpensesController::class,'edit'])->name('expenses.edit');
-    Route::post('/admin/expenses/edit/{id}', [ExpensesController::class,'update'])->name('expenses.update');
-    Route::delete('/admin/expenses/delete/{id}', [ExpensesController::class,'delete'])->name('expenses.delete');
+    // Route::get('/admin/expenses/list', [ExpensesController::class,'list'])->name('expenses.list');
+    // Route::get('/admin/expenses/add', [ExpensesController::class,'add'])->name('expenses.add');
+    // Route::post('/admin/expenses/add', [ExpensesController::class,'store'])->name('expenses.store');
+    // Route::get('/admin/expenses/view/{id}', [ExpensesController::class,'view'])->name('expenses.view');
+    // Route::get('/admin/expenses/edit/{id}', [ExpensesController::class,'edit'])->name('expenses.edit');
+    // Route::post('/admin/expenses/edit/{id}', [ExpensesController::class,'update'])->name('expenses.update');
+    // Route::delete('/admin/expenses/delete/{id}', [ExpensesController::class,'delete'])->name('expenses.delete');
 
     //AJAX for Expense Record Search
-    Route::get('/admin/expenses/ajax-search', [ExpensesController::class, 'ajaxSearch'])->name('expenses.ajax.search');
-
-
+    // Route::get('/admin/expenses/ajax-search', [ExpensesController::class, 'ajaxSearch'])->name('expenses.ajax.search');
 
 
 
@@ -196,12 +195,141 @@ Route::group(['middleware' => 'admin'], function(){
 
 
 
-
-
     // REPORTS ROUTES
     Route::get('/admin/report/list', [ReportController::class,'list'])->name('report.list');
-    // Route::get('/admin/miscellaneous/view/{id}', [MiscellaneousController::class,'view'])->name('miscellaneous.view');
+
+
+    //VIEW RECORDS
+    Route::get('/admin/view_records/list', [RecordController::class, 'index'])->name('records.view');
+
+
+
+
     
+    
+    // ######========NEW UPDATES STARTED HERE =========########
+
+
+
+    // ANINAL RECORD ROUTES
+
+    //Animal Identification
+    Route::get('/admin/animal_record/animal_identification/list', [AnimalRecordController::class,'list'])->name('animal_identification.list');
+    Route::get('/admin/animal_record/animal_identification/add', [AnimalRecordController::class,'add'])->name('animal_identification.add');
+    Route::post('/admin/animal_record/animal_identification/add', [AnimalRecordController::class,'store'])->name('animal_identification.store');
+    Route::get('/admin/animal_record/animal_identification/view/{id}', [AnimalRecordController::class,'view'])->name('animal_identification.view');
+    Route::get('/admin/animal_record/animal_identification/edit/{id}', [AnimalRecordController::class,'edit'])->name('animal_identification.edit');
+    Route::post('/admin/animal_record/animal_identification/edit/{id}', [AnimalRecordController::class,'update'])->name('animal_identification.update');
+    Route::delete('/admin/animal_record/animal_identification/delete/{id}', [AnimalRecordController::class,'delete'])->name('animal_identification.delete');
+
+    //AJAX for Record Search
+    Route::get('/admin/animal_record/animal_identification/ajax-search', [AnimalRecordController::class, 'ajaxSearch'])->name('animal_identification.ajax.search');
+
+
+
+    //Breeding Routes
+    Route::get('/admin/animal_record/breeding_record/list', [AnimalRecordController::class,'breedList'])->name('breeding_record.list');
+    Route::post('/admin/animal_record/breeding_record/add', [AnimalRecordController::class,'breedStore'])->name('breeding_record.store');
+    Route::get('/admin/animal_record/breeding_record/edit/{id}', [AnimalRecordController::class,'breedEdit'])->name('breeding_record.edit');
+    Route::post('/admin/animal_record/breeding_record/edit/{id}', [AnimalRecordController::class,'breedUpdate'])->name('breeding_record.update');
+    Route::delete('/admin/animal_record/breeding_record/delete/{id}', [AnimalRecordController::class,'breedDelete'])->name('breeding_record.delete');
+
+    //AJAX for Record Search
+    Route::get('admin/animal_record/breeding_record/search',[AnimalRecordController::class, 'breedingAjaxSearch'])->name('breeding_record.ajax.search');
+    
+    
+    
+    
+    //Growth Performance Routes
+    Route::get('/admin/animal_record/growth_performance/list', [AnimalRecordController::class, 'growthList'])->name('growth_performance.index');
+    Route::post('/admin/animal_record/growth_performance/add', [AnimalRecordController::class, 'growthStore'])->name('growth_performance.store');
+    Route::get('/admin/animal_record/growth_performance/edit/{id}', [AnimalRecordController::class,'growthEdit'])->name('growth_performance.edit');
+    Route::post('/admin/animal_record/growth_performance/edit/{id}', [AnimalRecordController::class,'growthUpdate'])->name('growth_performance.update');
+    Route::delete('/admin/animal_record/growth_performance/delete/{id}', [AnimalRecordController::class,'growthDelete'])->name('growth_performance.delete');
+
+    //AJAX
+    Route::get('admin/animal_record/growth_performance/{pig_id}', [AnimalRecordController::class, 'loadPigGrowth'])->name('growth_performance.load');
+
+
+
+
+
+
+    // FARM RECORD ROUTES
+
+    //Feed Stock Routes 
+    Route::get('/admin/feed_record/feed_stock/list', [FeedRecordController::class,'stockList'])->name('feed_stock.list');
+    Route::get('/admin/feed_record/feed_stock/add', [FeedRecordController::class,'stockAdd'])->name('feed_stock.add');
+    Route::post('/admin/feed_record/feed_stock/add', [FeedRecordController::class,'stockStore'])->name('feed_stock.store');
+    // Route::get('/admin/feed_record/feed_stock/view/{id}', [FeedRecordController::class,'stockView'])->name('feed_stock.view');
+    Route::get('/admin/feed_record/feed_stock/edit/{id}', [FeedRecordController::class,'stockEdit'])->name('feed_stock.edit');
+    Route::post('/admin/feed_record/feed_stock/edit/{id}', [FeedRecordController::class,'stockUpdate'])->name('feed_stock.update');
+    Route::delete('/admin/feed_record/feed_stock/delete/{id}', [FeedRecordController::class,'stockDelete'])->name('feed_stock.delete');
+
+    //AJAX for Record Search
+    Route::get('/admin/feed_record/feed_stock/ajax-search', [FeedRecordController::class, 'stockAjaxSearch'])->name('feed_stock.ajax.search');
+
+    
+    
+    
+    //Daily Feed Usage Routes 
+    Route::get('/admin/feed_record/daily_feed_usage/list', [FeedRecordController::class,'feedUsageList'])->name('daily_feed_usage.list');
+    Route::post('/admin/feed_record/daily_feed_usage/add', [FeedRecordController::class,'feedUsageStore'])->name('daily_feed_usage.store');
+    Route::get('/admin/feed_record/daily_feed_usage/edit/{id}', [FeedRecordController::class,'feedUsageEdit'])->name('daily_feed_usage.edit');
+    Route::post('/admin/feed_record/daily_feed_usage/edit/{id}', [FeedRecordController::class,'feedUsageUpdate'])->name('daily_feed_usage.update');
+    Route::delete('/admin/feed_record/daily_feed_usage/delete/{id}', [FeedRecordController::class,'feedUsageDelete'])->name('daily_feed_usage.delete');
+
+    //AJAX for Record Search
+    Route::get('/admin/feed_record/daily_feed_usage/ajax-search', [FeedRecordController::class, 'feedUsageAjaxSearch'])->name('daily_feed_usage.ajax.search');
+
+
+
+
+    //Feed Formulation Routes 
+    Route::get('/admin/feed_record/feed_formulation/list', [FeedRecordController::class,'formulationList'])->name('feed_formulation.list');
+    Route::get('/admin/feed_record/feed_formulation/add', [FeedRecordController::class,'formulationAdd'])->name('feed_formulation.add');
+    Route::post('/admin/feed_record/feed_formulation/add', [FeedRecordController::class,'formulationStore'])->name('feed_formulation.store');
+    Route::get('/admin/feed_record/feed_formulation/edit/{id}', [FeedRecordController::class,'formulationEdit'])->name('feed_formulation.edit');
+    Route::post('/admin/feed_record/feed_formulation/edit/{id}', [FeedRecordController::class,'formulationUpdate'])->name('feed_formulation.update');
+    Route::delete('/admin/feed_record/feed_formulation/delete/{id}', [FeedRecordController::class,'formulationDelete'])->name('feed_formulation.delete');
+
+    //AJAX for Record Search
+    Route::get('/admin/feed_record/feed_formulation/ajax-search', [FeedRecordController::class, 'formulationAjaxSearch'])->name('feed_formulation.ajax.search');
+
+
+
+
+
+    
+    
+    // EXPENSES ROUTES
+
+    // Daily Expense Record
+    Route::get('/admin/expense_record/daily_expense/list', [ExpensesController::class,'list'])->name('expenses.list');
+    Route::get('/admin/expense_record/daily_expense/add', [ExpensesController::class,'add'])->name('expenses.add');
+    Route::post('/admin/expense_record/daily_expense/add', [ExpensesController::class,'store'])->name('expenses.store');
+    Route::get('/admin/expense_record/daily_expense/view/{id}', [ExpensesController::class,'view'])->name('expenses.view');
+    Route::get('/admin/expense_record/daily_expense/edit/{id}', [ExpensesController::class,'edit'])->name('expenses.edit');
+    Route::post('/admin/expense_record/daily_expense/edit/{id}', [ExpensesController::class,'update'])->name('expenses.update');
+    Route::delete('/admin/expense_record/daily_expense/delete/{id}', [ExpensesController::class,'delete'])->name('expenses.delete');
+
+    //AJAX for Expense Record Search
+    Route::get('/admin/expense_record/daily_expense/ajax-search', [ExpensesController::class, 'ajaxSearch'])->name('expenses.ajax.search');
+    
+    
+    
+    // Monthly Expense Record
+    Route::get('/admin/expense_record/monthly_expense_summary/list', [ExpensesController::class,'monthlyList'])->name('monthly_expenses.list');
+    Route::get('/admin/expense_record/monthly_expense_summary/add', [ExpensesController::class,'monthlyAdd'])->name('monthly_expenses.add');
+    Route::post('/admin/expense_record/monthly_expense_summary/add', [ExpensesController::class,'monthlyStore'])->name('monthly_expenses.store');
+    // Route::get('/admin/expense_record/monthly_expense_summary/view/{id}', [ExpensesController::class,'monthlyView'])->name('monthly_expenses.view');
+    Route::get('/admin/expense_record/monthly_expense_summary/edit/{id}', [ExpensesController::class,'monthlyEdit'])->name('monthly_expenses.edit');
+    Route::post('/admin/expense_record/monthly_expense_summary/edit/{id}', [ExpensesController::class,'monthlyUpdate'])->name('monthly_expenses.update');
+    Route::delete('/admin/expense_record/monthly_expense_summary/delete/{id}', [ExpensesController::class,'monthlyDelete'])->name('monthly_expenses.delete');
+
+    //AJAX for Expense Record Search
+    Route::get('/admin/expense_record/monthly_expense_summary/ajax-search', [ExpensesController::class, 'monthlyAjaxSearch'])->name('monthly_expenses.ajax.search');
+
 
 
 

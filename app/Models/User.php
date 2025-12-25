@@ -54,14 +54,7 @@ class User extends Authenticatable
     }
 
 
-    static public function getSingleClass($id)
-    {
-        return self::select('users.*', 'classes.amount', 'classes.name as class_name')
-                    ->join('classes', 'classes.id', 'users.class_id')
-                    ->where('users.id', '=', $id)
-                    ->first();
-    }
-
+    
 
 
     static public function getTotalAdmin()
@@ -84,24 +77,6 @@ class User extends Authenticatable
                         ->count();
 
     }
-
-
-
-    //This is used on the SEND EMAIL page to search for users
-    static public function searchUser($search)
-    {
-        $return = self::select('users.*')
-                ->where(function($query) use ($search){
-                $query->where('users.name', 'like', '%'.$search.'%')
-                ->orWhere('users.last_name', 'like', '%'.$search.'%')
-                ->orWhere('users.other_name', 'like', '%'.$search.'%');
-            })
-            ->limit(10)
-            ->get();
-
-        return $return;
-    }
-    //End SEND EMAIL page to search for users
 
 
 
@@ -138,36 +113,6 @@ class User extends Authenticatable
     }
 
 
-    static public function getParent($request = null)
-    {
-        $return = self::select('users.*')
-            ->where('users.user_type', '=', 4);
-
-        if ($request !== null) {
-            $searchQuery = trim($request->get('name'));
-
-            if (!empty($searchQuery)) {
-                $words = preg_split('/\s+/', $searchQuery); // Split by space
-
-                $return = $return->where(function ($query) use ($words) {
-                    foreach ($words as $word) {
-                        $query->where(function ($q) use ($word) {
-                            $q->where('users.name', 'like', '%' . $word . '%')
-                            ->orWhere('users.last_name', 'like', '%' . $word . '%')
-                            ->orWhere('users.other_name', 'like', '%' . $word . '%')
-                            ->orWhere('users.email', 'like', '%' . $word . '%');
-                        });
-                    }
-                });
-            }
-
-        }
-
-        return $return->orderBy('users.name', 'asc');
-    }
-
-
-
     static public function getStaff($request = null)
     {
         $return = self::select('users.*')
@@ -198,88 +143,6 @@ class User extends Authenticatable
 
     
     
-    
-
-    static public function getCollectFeesStudent()
-    {
-        $return = self::select('users.*', 'classes.name as class_name', 'classes.amount as amount')
-                        ->join('classes', 'classes.id', '=', 'users.class_id')
-                        ->where('users.user_type', '=', 3)
-                        ->where('users.is_delete', '=', 0);
-
-                        //SEARCH FEATURE STARTS
-                        if(!empty(Request::get('class_id')))
-                        {
-                            $return = $return->where('classes.id', 'like', '%' . Request::get('class_id'). '%');
-                        }
-
-                        if(!empty(Request::get('student_id')))
-                        {
-                            $return = $return->where('users.id', 'like', '%' . Request::get('student_id'). '%');
-                        }
-
-                        if(!empty(Request::get('name'))) {
-                            $return = $return->where(function($query) {
-                                $query->where('users.name', 'like', '%' . Request::get('name') . '%')
-                                      ->orWhere('users.last_name', 'like', '%' . Request::get('name') . '%')
-                                      ->orWhere('users.other_name', 'like', '%' . Request::get('name') . '%');
-                            });
-                        }
-
-
-                        if(!empty(Request::get('last_name')))
-                        {
-                            $return = $return->where('users.last_name', 'like', '%' . Request::get('last_name'). '%');
-                        }
-                        
-                        
-                        //SEARCH FEATURE ENDS
-                        
-
-        $return = $return->orderBy('users.name', 'asc')
-                        ->paginate(100);
-
-        return $return;
-    }
-
-
-
-
-
-    static public function getStudent($request = null)
-    {
-        $return = self::select('users.*', 'classes.name as class_name', 'parent.name as parent_name', 'parent.last_name as parent_last_name')
-            ->leftJoin('users as parent', 'parent.id', '=', 'users.parent_id')
-            ->leftJoin('classes', 'classes.id', '=', 'users.class_id')
-            ->where('users.user_type', '=', 3);
-
-        if ($request !== null) {
-            $searchQuery = trim($request->get('name'));
-
-            if (!empty($searchQuery)) {
-                $words = preg_split('/\s+/', $searchQuery); // Split by space
-
-                $return = $return->where(function ($query) use ($words) {
-                    foreach ($words as $word) {
-                        $query->where(function ($q) use ($word) {
-                            $q->where('users.name', 'like', '%' . $word . '%')
-                            ->orWhere('users.last_name', 'like', '%' . $word . '%')
-                            ->orWhere('users.other_name', 'like', '%' . $word . '%')
-                            ->orWhere('users.email', 'like', '%' . $word . '%');
-                        });
-                    }
-                });
-            }
-
-        }
-
-        return $return->orderBy('users.last_name', 'asc');
-    }
-
-
-
-
-
 
     static public function getUser($user_type)
     {
@@ -289,218 +152,8 @@ class User extends Authenticatable
                     ->get();
     }
 
-
-    static public function getStudentClass($class_id, $exam_id)
-    {
-        ///===MY FUNCTION===///
-        return self::select('users.*', 'classes.name as class_name')
-                    ->join('assign_students', 'assign_students.student_id', '=', 'users.id')
-                    ->join('classes', 'classes.id', '=', 'assign_students.class_id')//This line was Added newly while coding ID Card Module
-                    ->where('assign_students.class_id', '=', $class_id)
-                    ->where('assign_students.exam_id', '=', $exam_id)
-                    ->where('users.user_type', '=', 3)
-                    ->where('users.is_delete', '=', 0)
-                    ->orderBy('users.name', 'asc')
-                    ->get();                  
-    }
-
-
-    static public function getStudentClassIDCard($class_id, $exam_id)
-    {
-        ///===MY FUNCTION===///
-        return self::select('users.*', 'classes.name as class_name')
-                    ->join('assign_students', 'assign_students.student_id', '=', 'users.id')
-                    ->join('classes', 'classes.id', '=', 'assign_students.class_id')//This line was Added newly while coding ID Card Module
-                    ->where('assign_students.class_id', '=', $class_id)
-                    ->where('assign_students.exam_id', '=', $exam_id)
-                    ->where('users.user_type', '=', 3)
-                    ->where('users.is_delete', '=', 0)
-                    ->orderBy('users.name', 'asc')
-                    ->get();                  
-    }
-
-
-
     
 
-    static public function getSearchStudent()
-    {
-        // dd(Request::all());
-
-        if(!empty(Request::get('id')) || !empty(Request::get('name')) || !empty(Request::get('last_name')) || !empty(Request::get('other_name')) || !empty(Request::get('email')) || !empty(Request::get('admission_number')) || !empty(Request::get('roll_number')) || !empty(Request::get('gender')) || !empty(Request::get('religion')))
-        {
-            $return = self::select('users.*', 'classes.name as class_name', 'parent.name as parent_name')
-                        ->join('users as parent', 'parent.id', '=', 'users.parent_id', 'left')
-                        ->join('classes', 'classes.id', '=', 'users.class_id', 'left')
-                        ->where('users.user_type', '=', 3)
-                        ->where('users.is_delete', '=', 0);
-
-                        //SEARCH FEATURE STARTS
-                        if(!empty(Request::get('id')))
-                        {
-                            $return = $return->where('users.id', '=', Request::get('id'));
-                        }
-
-                        if(!empty(Request::get('name'))) {
-                            $return = $return->where(function($query) {
-                                $query->where('users.name', 'like', '%' . Request::get('name') . '%')
-                                      ->orWhere('users.last_name', 'like', '%' . Request::get('name') . '%')
-                                      ->orWhere('users.other_name', 'like', '%' . Request::get('name') . '%');
-                            });
-                        }
-
-                        if(!empty(Request::get('last_name')))
-                        {
-                            $return = $return->where('users.last_name', 'like', '%' . Request::get('last_name'). '%');
-                        }
-                        
-                        if(!empty(Request::get('other_name')))
-                        {
-                            $return = $return->where('users.other_name', 'like', '%' . Request::get('other_name'). '%');
-                        }
-                        
-                        if(!empty(Request::get('email')))
-                        {
-                            $return = $return->where('users.email', 'like', '%' . Request::get('email'). '%');
-                        }
-
-                        if(!empty(Request::get('admission_number')))
-                        {
-                            $return = $return->where('users.admission_number', 'like', '%' . Request::get('admission_number'). '%');
-                        }
-
-                        if(!empty(Request::get('roll_number')))
-                        {
-                            $return = $return->where('users.roll_number', 'like', '%' . Request::get('roll_number'). '%');
-                        }
-
-                        if(!empty(Request::get('gender')))
-                        {
-                            $return = $return->where('users.gender', 'like', '%' . Request::get('gender'). '%');
-                        }
-
-                        if(!empty(Request::get('religion')))
-                        {
-                            $return = $return->where('users.religion', 'like', '%' . Request::get('religion'). '%');
-                        }
-
-                        
-                        //SEARCH FEATURE ENDS
-                        
-
-        $return = $return->orderBy('users.name', 'asc')
-                        ->limit(50)
-                        ->get();
-
-        return $return;   
-        }
-
-    }
-
-    
-
-
-    static public function getMyStudent($parent_id)
-    {
-        $return = self::select('users.*', 'classes.name as class_name', 'parent.name as parent_name')
-                        ->join('users as parent', 'parent.id', '=', 'users.parent_id')
-                        ->join('classes', 'classes.id', '=', 'users.class_id', 'left')
-                        ->where('users.user_type', '=', 3)
-                        ->where('users.parent_id', '=', $parent_id)
-                        ->where('users.is_delete', '=', 0)
-                        ->orderBy('users.name', 'asc')
-                        ->get();
-
-        return $return;
-    }
-    
-
-
-
-    static public function getParentStudents($class_id, $exam_id, $parent_id)
-    {//////USED FOR STUDENT RESULTS IN PARENT DASHBOARD
-        $return = self::select('users.*', 'classes.id as class_id', 'classes.name as class_name', 'parent.name as parent_name')
-                        ->join('users as parent', 'parent.id', '=', 'users.parent_id')
-                        ->join('assign_students','assign_students.student_id', '=', 'users.id')
-                        ->join('classes', 'classes.id', '=', 'assign_students.class_id')
-                        ->join('exams', 'exams.id', '=', 'assign_students.exam_id')
-                        ->where('users.user_type', '=', 3)
-                        ->where('assign_students.class_id', '=', $class_id)
-                        ->where('assign_students.exam_id', '=', $exam_id)
-                        ->where('parent.id', '=', $parent_id)
-                        ->where('users.is_delete', '=', 0)
-                        ->orderBy('users.name', 'asc')
-                        ->get();
-
-        return $return;
-    }
-
-
-
-
-
-    static public function getMyStudentIds($parent_id)
-    {
-        $return = self::select('users.id')
-                ->join('users as parent', 'parent.id', '=', 'users.parent_id')
-                ->join('classes', 'classes.id', '=', 'users.class_id', 'left')
-                ->where('users.user_type', '=', 3)
-                ->where('users.parent_id', '=', $parent_id)
-                ->where('users.is_delete', '=', 0)
-                ->orderBy('users.name', 'asc')
-                ->get();
-
-        $student_ids = array();
-        foreach($return as $value)
-        {
-            $student_ids[] = $value->id;
-        }
-        return $student_ids;
-    }
-
-
-    static public function getMyStudentClassIds($parent_id)
-    {
-        $return = self::select('users.class_id')
-                ->join('users as parent', 'parent.id', '=', 'users.parent_id')
-                ->join('classes', 'classes.id', '=', 'users.class_id')
-                ->where('users.user_type', '=', 3)
-                ->where('users.parent_id', '=', $parent_id)
-                ->where('users.is_delete', '=', 0)
-                ->orderBy('users.name', 'asc')
-                ->get();
-
-        $class_ids = array();
-        foreach($return as $value)
-        {
-            $class_ids[] = $value->class_id;
-        }
-        return $class_ids;
-    }
-
-
-    static public function getMyStudentCount($parent_id)
-    {
-        $return = self::select('users.*')
-                        ->join('users as parent', 'parent.id', '=', 'users.parent_id')
-                        ->join('classes', 'classes.id', '=', 'users.class_id', 'left')
-                        ->where('users.user_type', '=', 3)
-                        ->where('users.parent_id', '=', $parent_id)
-                        ->where('users.is_delete', '=', 0)
-                        ->count();
-
-        return $return;
-    }
-
-
-
-   
-
-
-    static public function getEmailSingle($email)
-    {
-        return User::where('email', '=', $email)->first();
-    }
 
     static public function getTokenSingle($remember_token)
     {
@@ -534,36 +187,6 @@ class User extends Authenticatable
         }
 
     }
-
-
-
-   
-
-    static public function studentLoginDetails()
-    {
-        return self::select('users.*')
-                    ->where('users.user_type', '=' ,3)
-                    ->orderBy('name', 'asc')
-                    ->get();
-    }
-
-    static public function teacherLoginDetails()
-    {
-        return self::select('users.*')
-                    ->where('users.user_type', '=' ,2)
-                    ->orderBy('name', 'asc')
-                    ->get();
-    }
-
-
-    static public function parentLoginDetails()
-    {
-        return self::select('users.*')
-                    ->where('users.user_type', '=' ,4)
-                    ->orderBy('name', 'asc')
-                    ->get();
-    }
-
 
 
 
@@ -615,28 +238,18 @@ class User extends Authenticatable
     
 
 
-
-    static public function sendReportCardToEmail($parent_id)
+    public function breedingRecords()
     {
-        //NOT WORKING AND NOT IN USE YET
-        $return = self::select('users.email')
-                ->join('users as parent', 'parent.id', '=', 'users.parent_id')
-                ->where('users.user_type', '=', 4)
-                ->where('users.parent_id', '=', $parent_id)
-                ->get();
-
-        $parent_emails = array();
-        foreach($return as $value)
-        {
-            $parent_emails[] = $value->email;
-        }
-        return $parent_emails;
+        return $this->hasMany(BreedingRecord::class, 'staff_id');
     }
-    
+
+    public function updatedBreedingRecords()
+    {
+        return $this->hasMany(BreedingRecord::class, 'updated_by');
+    }
 
 
    
-
 
 
 

@@ -41,20 +41,10 @@
                         </div>
 
                         <div class="form-group col-md-4">
-                          <label>House_or Unit</label>
+                          <label>House or Unit</label>
                             <input type="text" class="form-control" name="house_or_unit" placeholder="Detail of the location" value="{{ old('house_or_unit') }}">
                             <div style="color: red;">{{ $errors->first('house_or_unit') }}</div>
                         </div>
-
-                        {{-- <div class="form-group col-md-6">
-                            <label>Gender <span style="color: red">*</span> </label>
-                            <select name="gender" id="" class="form-control" required>
-                                <option value="">Select Gender</option> 
-                                <option {{ (old('gender') == 'Male') ? 'selected' : '' }} value="Male">Male</option> 
-                                <option {{ (old('gender') == 'Female') ? 'selected' : '' }} value="Female">Female</option> 
-                            </select>
-                            <div style="color: red;">{{ $errors->first('gender') }}</div>
-                        </div> --}}
 
                         <div class="form-group col-md-4">
                             <label>Date <span style="color: red">*</span> </label>

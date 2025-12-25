@@ -46,7 +46,7 @@
                     <select name="user_type" class="form-control">
                       <option value="">Select</option>
                       <option {{ ($getRecord->user_type == 'Super Admin') ? 'selected' : '' }} value="Super Admin">Super Admin</option>
-                      <option {{ ($getRecord->user_type == 'School Admin') ? 'selected' : '' }} value="School Admin">School Admin</option>
+                      <option {{ ($getRecord->user_type == 'Admin') ? 'selected' : '' }} value="Admin">Admin</option>
                     </select>
                   </div>
 
