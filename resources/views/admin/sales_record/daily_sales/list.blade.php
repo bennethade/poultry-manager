@@ -10,7 +10,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Sales Record</h1>
+          <h1>Sales/Disposal</h1>
         </div>
         <div class="col-sm-6" style="text-align: right;">
           <a href="{{ route('sales.add') }}" class="btn btn-primary">Add New Sales</a>
@@ -82,7 +82,8 @@
                 <thead>
                   <tr>
                     <th>S/N</th>
-                    <th>Item Type</th>
+                    <th>Pig ID</th>
+                    <th>Reason</th>
                     <th>Quantity</th>
                     <th>Price</th>
                     <th>Sold on Discount</th>

@@ -1,13 +1,24 @@
 <div class="row">
    <div class="col-md-4 mb-3">
       <label>Pig</label>
-      <select name="pig_id" class="form-control" required>
+      {{-- <select name="pig_id" class="form-control" required>
         @foreach($pigs as $pig)
             <option value="{{ $pig->id }}" @if(isset($record) && $record->pig_id == $pig->id) selected @endif>
                 {{ $pig->tag_id }}
             </option>
         @endforeach
+      </select> --}}
+
+      <select name="pig_id" id="pigSelect" class="form-control" required>
+         <option value="">Select Pig</option>
+         @foreach($pigs as $pig)
+         <option value="{{ $pig->id }}"  @if(isset($record) && $record->pig_id == $pig->id) selected @endif>
+            {{ $pig->tag_id }}
+         </option>
+         @endforeach
       </select>
+
+      
    </div>
    <div class="col-md-4 mb-3">
       <label>Date</label>
@@ -41,3 +52,16 @@
    <label>Remarks</label>
    <textarea name="remarks" class="form-control">{{ $record->remarks ?? '' }}</textarea>
 </div>
+
+@section('script')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+   $(document).ready(function () {
+       $('#pigSelect').select2({
+           placeholder: 'Search here...',
+           allowClear: true,
+           width: '100%'
+       });
+   });
+</script>
+@endsection

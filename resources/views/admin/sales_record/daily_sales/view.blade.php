@@ -8,7 +8,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-8">
-                <h3> Sales Made: <span style="color: brown">{{ $getRecord->item_type }}</span></h3>
+                <h4>Details For Animal: <span class="badge badge-info">{{ $getRecord->pig->tag_id }}</span></h4>
             </div>
 
             <div class="col-sm-4">
@@ -85,7 +85,12 @@
 
                         
 
-                        <div class="form-group col-md-12" style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 20px;">
+                        <div class="form-group col-md-4" style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 20px;">
+                            <label><Datag></Datag>Reason:</label> <br>
+                            {{ $getRecord->reason }}
+                        </div>
+
+                        <div class="form-group col-md-8" style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 20px;">
                             <label><Datag></Datag>Notes:</label> <br>
                             {{ $getRecord->notes }}
                         </div>

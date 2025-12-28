@@ -5,9 +5,9 @@
 
 <section class="content-header">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-        <h1 class="fw-bold">Disease Incidence</h1>
-        <a href="{{ route('disease_incidence.add') }}" class="btn btn-primary btn-sm">
-            <i class="fas fa-plus"></i> New Record
+        <h1 class="fw-bold">Vaccine Schedule</h1>
+        <a href="{{ route('vaccine_schedule.add') }}" class="btn btn-primary btn-sm">
+            <i class="fas fa-plus"></i> New Schedule
         </a>
     </div>
 </section>
@@ -16,10 +16,12 @@
 <div class="container-fluid">
 
 <div class="card shadow-sm">
+    
     @include('_message')
+
     <div class="card-header d-flex justify-content-between align-items-center">
         {{-- <h3 class="card-title mb-0">Incidence List</h3> --}}
-        <input type="text" id="incidenceSearch" class="form-control form-control-sm w-30" placeholder="🔍 Search disease, symptoms...">
+        <input type="text" id="vaccineSearch" class="form-control form-control-sm w-30" placeholder="🔍 Search here...">
     </div>
 
     <div class="card-body p-0 table-responsive">
@@ -27,13 +29,13 @@
             <thead class="table-dark">
                 <tr>
                     <th>S/N</th>
-                    <th>Date</th>
                     <th>Pig ID</th>
-                    <th>Suspected Disease</th>
-                    <th>Symptoms</th>
-                    <th>Action Taken</th>
-                    <th>Outcome</th>
-                    <th>Vet Doctor</th>
+                    <th>Vaccine Name</th>
+                    <th>Age Given</th>
+                    <th>Date Given</th>
+                    <th>Next Due Date</th>
+                    <th>Administered By</th>
+                    <th>Remarks</th>
                     <th>Recorded By</th>
                     <th>Recorded Date</th>
                     <th>Edited By</th>
@@ -42,7 +44,7 @@
             </thead>
 
             <tbody id="incidenceTableBody">
-                @include('admin.disease_treatment.disease_incidence.partials.table_rows', ['records' => $getRecord])
+                @include('admin.vaccine_record.vaccine_schedule.partials.table_rows', ['records' => $getRecord])
             </tbody>
         </table>
     </div>
@@ -79,12 +81,12 @@ $(document).ready(function () {
     }
 
     // SEARCH
-    $('#incidenceSearch').on('keyup', debounce(function () {
+    $('#vaccineSearch').on('keyup', debounce(function () {
 
         let query = $(this).val(); // ✅ this now works
 
         $.ajax({
-            url: "{{ route('disease_incidence.ajax.search') }}",
+            url: "{{ route('vaccine_schedule.ajax.search') }}",
             type: "GET",
             data: { query: query },
             success: function (data) {

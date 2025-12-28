@@ -5,29 +5,17 @@
 --}}
 <div class="content-wrapper">
    <section class="content-header">
-      <h1>Add Disease Incidence</h1>
+      <h1>Add Vaccine Schedule</h1>
    </section>
    <section class="content">
       <div class="container-fluid">
          <div class="card shadow-sm">
             <div class="card-body">
-               <form method="POST" action="{{ route('disease_incidence.store') }}">
+               <form method="POST" action="{{ route('vaccine_schedule.store') }}">
                   @csrf
                   <div class="row">
                      <div class="col-md-4 mb-3">
-                        <label>Date</label>
-                        <input type="date" name="date" class="form-control" required>
-                     </div>
-                     <div class="col-md-4 mb-3">
                         <label>Pig ID</label>
-                        {{-- 
-                        <select name="pig_id" class="form-control" required>
-                           <option value="">Select Pig</option>
-                           @foreach($pigs as $pig)
-                           <option value="{{ $pig->id }}">{{ $pig->tag_id }}</option>
-                           @endforeach
-                        </select>
-                        --}}
                         <select name="pig_id" id="pigSelect" class="form-control" required>
                            <option value="">Select Pig</option>
                            @foreach($pigs as $pig)
@@ -37,29 +25,42 @@
                            @endforeach
                         </select>
                      </div>
+
                      <div class="col-md-4 mb-3">
-                        <label>Suspected Disease</label>
-                        <input type="text" name="suspected_disease" class="form-control" required>
+                        <label>Vaccine Name</label>
+                        <input type="text" name="vaccine_name" placeholder="Name of vaccine" class="form-control" required>
                      </div>
+
+                     <div class="col-md-4 mb-3">
+                        <label>Age Given</label>
+                        <input type="text" name="age_given" class="form-control" placeholder="Age of animal" required>
+                     </div>
+
                   </div>
-                  <div class="mb-3">
-                     <label>Symptoms Observed</label>
-                     <textarea name="symptoms_observed" rows="4" class="form-control" required></textarea>
-                  </div>
+
+
                   <div class="row">
                      <div class="col-md-4 mb-3">
-                        <label>Action Taken</label>
-                        <input type="text" name="action_taken" class="form-control" required>
+                        <label>Administered By</label>
+                        <input type="text" name="administered_by" placeholder="Vet Name" class="form-control" required>
                      </div>
+
                      <div class="col-md-4 mb-3">
-                        <label>Vet Name</label>
-                        <input type="text" name="vet_name" class="form-control">
+                        <label>Date Given</label>
+                        <input type="date" name="date_given" class="form-control" required>
                      </div>
+                     
                      <div class="col-md-4 mb-3">
-                        <label>Outcome</label>
-                        <input type="text" name="outcome" class="form-control">
+                        <label>Next Due Date</label>
+                        <input type="date" name="next_due_date" class="form-control" required>
                      </div>
                   </div>
+
+                  <div class="mb-3">
+                     <label>Remark</label>
+                     <textarea name="remarks" rows="2" placeholder="Any additional note" class="form-control" required></textarea>
+                  </div>
+
                   <div class="text-end">
                      <button class="btn btn-success">
                      <i class="fas fa-save"></i> Save Record

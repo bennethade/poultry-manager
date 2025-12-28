@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->string('item_type');
+            $table->integer('tag_id');
+            $table->string('item_type')->nullable();
+            $table->string('reason');
             $table->string('quantity')->nullable();
             $table->float('price');
             $table->boolean('sold_on_discount')->default(false);

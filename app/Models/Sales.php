@@ -10,6 +10,11 @@ class Sales extends Model
 {
     use HasFactory;
 
+    public function pig()
+    {
+        return $this->belongsTo(Pig::class, 'pig_id');
+    }
+
 
     static public function getRecord($request = null)
     {
@@ -30,7 +35,8 @@ class Sales extends Model
                                 $return = $return->where(function ($query) use ($words) {
                                     foreach ($words as $word) {
                                         $query->where(function ($q) use ($word) {
-                                            $q->where('sales.item_type', 'like', '%' . $word . '%')
+                                            // $q->where('sales.item_type', 'like', '%' . $word . '%')
+                                            $q->where('sales.reason', 'like', '%' . $word . '%')
                                             ->orWhere('sales.quantity', 'like', '%' . $word . '%')
                                             ->orWhere('sales.price', 'like', '%' . $word . '%')
                                             ->orWhere('sales.discounted_price', 'like', '%' . $word . '%')

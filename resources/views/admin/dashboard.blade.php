@@ -276,7 +276,7 @@
                         <a href="{{ url('admin/sales_record/daily_sales/list') }}" style="color: black; display: block">
                             <div class="card">
                                 <img src="{{ asset('upload/icons/earnings.png') }}" alt="">
-                                <p>Daily Sales Record </p>
+                                <p>Daily Sales/Disposal </p>
                             </div>
                         </a>
 
@@ -288,10 +288,17 @@
                             </div>
                         </a>
                         
-                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                        <a href="" style="color: black; display: block">
                             <div class="card">
                                 <img src="{{ asset('upload/icons/sales.png') }}" alt="">
                                 <p>General Sales Report</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ url('admin/sales_record/disposal/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/garbage.png') }}" alt="">
+                                <p>Disposal Record</p>
                             </div>
                         </a>
                     </div>
@@ -370,26 +377,19 @@
 
                 <div class="section-body">
                     <div class="card-grid">
-                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                        <a href="{{ url('admin/vaccine_record/vaccine_schedule/list') }}" style="color: black; display: block">
                             <div class="card">
                                 <img src="{{ asset('upload/icons/syringe-2.png') }}" alt="">
                                 <p>Vaccine Schedule</p>
                             </div>
                         </a>
 
-                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                        <a href="{{ url('admin/vaccine_record/vaccine_log/list') }}" style="color: black; display: block">
                             <div class="card">
                                 <img src="{{ asset('upload/icons/vaccine-log.png') }}" alt="">
                                 <p>Farm-Wide Vaccine Log</p>
                             </div>
                         </a>
-
-                        {{-- <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
-                            <div class="card">
-                                <img src="{{ asset('upload/icons/animal-feed.png') }}" alt="">
-                                <p>Sales & Disposal Record</p>
-                            </div>
-                        </a> --}}
                     </div>
                 </div>
             </div>
@@ -402,7 +402,6 @@
             const section = header.parentElement;
             section.classList.toggle('collapsed');
         }
-
 
         </script>
     </div>

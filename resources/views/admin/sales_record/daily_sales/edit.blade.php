@@ -28,21 +28,43 @@
                 @csrf
                 <div class="card-body">
                     <div class="row">
-                        <div class="form-group col-md-12">
+                        {{-- <div class="form-group col-md-12">
                             <label>Item Sold<span style="color: red">*</span> </label>
                             <input type="text" class="form-control" name="item_type" required placeholder="Eg: 20 crates of eggs, 10 broilers" value="{{ old('item_type', $getRecord->item_type) }}">
                             <div style="color: red;">{{ $errors->first('item_type') }}</div>
+                        </div> --}}
+
+                        <div class="col-md-4 mb-2">
+                            <label>Pig ID <span style="color: red">*</span></label>
+                            <select name="pig_id" id="pigSelect" class="form-control" required>
+                                @foreach($pigs as $pig)
+                                    <option value="{{ $pig->id }}" {{ $getRecord->pig_id == $pig->id ? 'selected' : '' }}>
+                                        {{ old('tag_id', $pig->tag_id) }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="form-group col-md-3">
-                          <label>Quantity <span style="color: red"></span> </label>
+                            <label>Reason <span style="color: red"></span> </label>
+                            <select name="reason" id="" class="form-control">
+                                {{-- <option value="">Choose</option>  --}}
+                                <option {{ (old('reason') == 'Sale') ? 'selected' : '' }} value="Sale">Sale</option> 
+                                <option {{ (old('reason') == 'Cull') ? 'selected' : '' }} value="Cull">Cull</option> 
+                                <option {{ (old('reason') == 'Death') ? 'selected' : '' }} value="Death">Death</option> 
+                            </select>
+                            <div style="color: red;">{{ $errors->first('reason') }}</div>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label>Quantity <span style="color: red">*</span> </label>
                             <input type="text" class="form-control" name="quantity" required placeholder="Enter quantity here" value="{{ old('quantity', $getRecord->quantity) }}">
                             <div style="color: red;">{{ $errors->first('quantity') }}</div>
                         </div>
 
                         <div class="form-group col-md-3">
-                          <label>Price <span style="color: red">*</span> </label> 
-                            <input type="number" class="form-control" name="price" required placeholder="Eg: 2500" value="{{ old('price', $getRecord->price) }}">
+                          <label>Price <span style="color: red"></span> </label> 
+                            <input type="number" class="form-control" name="price" placeholder="Eg: 2500" value="{{ old('price', $getRecord->price) }}">
                             <div style="color: red;">{{ $errors->first('price') }}</div>
                         </div>
 
@@ -68,14 +90,14 @@
                             <div style="color: red;">{{ $errors->first('buyer_name') }}</div>
                         </div>
 
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-3">
                           <label>Buyer Phone</label>
                             <input type="text" class="form-control" name="buyer_phone" placeholder="Eg: 08177733366" value="{{ old('buyer_phone', $getRecord->buyer_phone) }}">
                             <div style="color: red;">{{ $errors->first('buyer_phone') }}</div>
                         </div>
 
-                        <div class="form-group col-md-5">
-                            <label>Sales Date <span style="color: red">*</span> </label>
+                        <div class="form-group col-md-2">
+                            <label>Date <span style="color: red">*</span> </label>
                             <input type="date" class="form-control" name="date" required value="{{ old('date', $getRecord->date) }}">
                             <div style="color: red;">{{ $errors->first('date') }}</div>
                         </div>
@@ -124,4 +146,18 @@
     <!-- /.content -->
   </div>
 
+@endsection
+
+
+@section('script')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+   $(document).ready(function () {
+       $('#pigSelect').select2({
+           placeholder: 'Search here...',
+           allowClear: true,
+           width: '100%'
+       });
+   });
+</script>
 @endsection

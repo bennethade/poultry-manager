@@ -17,6 +17,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VaccineController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -429,6 +430,39 @@ Route::group(['middleware' => 'admin'], function(){
 
     //AJAX for Daily Avtivity Record Search
     Route::get('/admin/disease_treatment/medication_treatment/ajax-search', [DiseaseTreatmentController::class, 'medicationAjaxSearch'])->name('medication_treatment.ajax.search');
+    
+    
+    
+    
+    
+    
+    //VACCINE RECORD ROUTES
+
+    // Vaccine Schedule
+    Route::get('/admin/vaccine_record/vaccine_schedule/list', [VaccineController::class,'scheduleList'])->name('vaccine_schedule.list');
+    Route::get('/admin/vaccine_record/vaccine_schedule/add', [VaccineController::class,'scheduleAdd'])->name('vaccine_schedule.add');
+    Route::post('/admin/vaccine_record/vaccine_schedule/add', [VaccineController::class,'scheduleStore'])->name('vaccine_schedule.store');
+    Route::get('/admin/vaccine_record/vaccine_schedule/view/{id}', [VaccineController::class,'scheduleView'])->name('vaccine_schedule.view');
+    Route::get('/admin/vaccine_record/vaccine_schedule/edit/{id}', [VaccineController::class,'scheduleEdit'])->name('vaccine_schedule.edit');
+    Route::post('/admin/vaccine_record/vaccine_schedule/edit/{id}', [VaccineController::class,'scheduleUpdate'])->name('vaccine_schedule.update');
+    Route::delete('/admin/vaccine_record/vaccine_schedule/delete/{id}', [VaccineController::class,'scheduleDelete'])->name('vaccine_schedule.delete');
+
+    //AJAX for Daily Avtivity Record Search
+    Route::get('/admin/vaccine_record/vaccine_schedule/ajax-search', [VaccineController::class, 'scheduleAjaxSearch'])->name('vaccine_schedule.ajax.search');
+    
+    
+    
+    // Vaccine log
+    Route::get('/admin/vaccine_record/vaccine_log/list', [VaccineController::class,'logList'])->name('vaccine_log.list');
+    Route::get('/admin/vaccine_record/vaccine_log/add', [VaccineController::class,'logAdd'])->name('vaccine_log.add');
+    Route::post('/admin/vaccine_record/vaccine_log/add', [VaccineController::class,'logStore'])->name('vaccine_log.store');
+    Route::get('/admin/vaccine_record/vaccine_log/view/{id}', [VaccineController::class,'logView'])->name('vaccine_log.view');
+    Route::get('/admin/vaccine_record/vaccine_log/edit/{id}', [VaccineController::class,'logEdit'])->name('vaccine_log.edit');
+    Route::post('/admin/vaccine_record/vaccine_log/edit/{id}', [VaccineController::class,'logUpdate'])->name('vaccine_log.update');
+    Route::delete('/admin/vaccine_record/vaccine_log/delete/{id}', [VaccineController::class,'logDelete'])->name('vaccine_log.delete');
+
+    //AJAX for Daily Avtivity Record Search
+    Route::get('/admin/vaccine_record/vaccine_log/ajax-search', [VaccineController::class, 'logAjaxSearch'])->name('vaccine_log.ajax.search');
 
 
 

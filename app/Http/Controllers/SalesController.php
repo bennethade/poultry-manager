@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MonthlySales;
+use App\Models\Pig;
 use App\Models\Sales;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -53,6 +54,8 @@ class SalesController extends Controller
     {
         $data['header_title'] = "Add New Sales";
 
+        $data['pigs'] = Pig::orderBy('tag_id')->get();
+
         if(Auth::user()->user_type == 2)
         {
             // return view('staff.sales_record.daily_sales.add', $data);
@@ -65,23 +68,28 @@ class SalesController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         // VALIDATION
         $request->validate([
-            'item_type'         => 'required|string|max:255',
+            'pig_id'            => 'required|integer',
+            // 'item_type'         => 'required|string|max:255',
+            'reason'            => 'nullable|string|max:255',
             'quantity'          => 'nullable|string|max:255',
-            'price'             => 'required|string|max:255',
+            'price'             => 'nullable|string|max:255',
             'sold_on_discount'  => 'nullable|string|max:255',
             'discounted_price'  => 'nullable|string|max:255',
             'buyer_name'        => 'nullable|string|max:255',
             'buyer_phone'       => 'nullable|string|max:255',
             'date'              => 'required|date',
-            'notes'             => 'required|string',
+            'notes'             => 'nullable|string',
             'picture'           => 'nullable|image|mimes:jpg,jpeg,png,webp',
         ]);
 
         $record = new Sales();
 
-        $record->item_type              = $request->item_type;
+        $record->pig_id                 = $request->pig_id;
+        // // $record->item_type              = $request->item_type;
+        $record->reason                 = $request->reason;
         $record->quantity               = $request->quantity;
         $record->price                  = $request->price;
         $record->sold_on_discount       = $request->sold_on_discount;
@@ -126,6 +134,7 @@ class SalesController extends Controller
         $data['header_title'] = "View Sales";
 
         $data['getRecord'] = Sales::findOrFail($id);
+
         $data['getStaff'] = User::where('id', $data['getRecord']->staff_id)->first();
 
         if(Auth::user()->user_type == 2)
@@ -142,6 +151,8 @@ class SalesController extends Controller
     {
         $data['header_title'] = "Edit Sales";
 
+        $data['pigs'] = Pig::orderBy('tag_id')->get();
+
         $data['getRecord'] = Sales::findOrFail($id);
         return view('admin.sales_record.daily_sales.edit', $data);
     }
@@ -150,22 +161,26 @@ class SalesController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'item_type'         => 'required|string|max:255',
+            'pig_id'            => 'required|string|max:255',
+            // 'item_type'         => 'required|string|max:255',
+            'reason'            => 'nullable|string|max:255',
             'quantity'          => 'nullable|string|max:255',
-            'price'             => 'required|string|max:255',
+            'price'             => 'nullable|string|max:255',
             'sold_on_discount'  => 'nullable|string|max:255',
             'discounted_price'  => 'nullable|string|max:255',
             'buyer_name'        => 'nullable|string|max:255',
             'buyer_phone'       => 'nullable|string|max:255',
             'date'              => 'required|date',
-            'notes'             => 'required|string',
+            'notes'             => 'nullable|string',
             'picture'           => 'nullable|image|mimes:jpg,jpeg,png,webp',
             
         ]); 
 
         $record = Sales::findOrFail($id);
 
-        $record->item_type              = $request->item_type;
+        $record->pig_id                 = $request->pig_id;
+        // // $record->item_type              = $request->item_type;
+        $record->reason                 = $request->reason;
         $record->quantity               = $request->quantity;
         $record->price                  = $request->price;
         $record->sold_on_discount       = $request->sold_on_discount;

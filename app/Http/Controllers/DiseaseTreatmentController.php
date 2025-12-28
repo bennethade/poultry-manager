@@ -142,7 +142,7 @@ class DiseaseTreatmentController extends Controller
     {
         DiseaseIncidence::findOrFail($id)->delete();
 
-        return redirect()->back()->with('success', 'Record deleted successfully.');
+        return redirect()->back()->with('warning', 'Record deleted successfully.');
     }
 
 
@@ -274,7 +274,7 @@ class DiseaseTreatmentController extends Controller
     {
         MedicationTreatment::findOrFail($id)->delete();
 
-        return back()->with('success', 'Record deleted successfully');
+        return back()->with('warning', 'Record deleted successfully');
     }
 
     

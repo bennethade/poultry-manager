@@ -281,6 +281,34 @@
                         </li>
                      </ul>
                   </li>
+                  
+                  
+                  <li class="nav-item @if(Request::segment(2) == 'vaccine_record') menu-is-opening menu-open @endif">
+                     <a href="#" class="nav-link @if(Request::segment(2) == 'vaccine_record') active @endif">
+                        <i class="nav-icon fas fa-clipboard-list"></i>
+                        <p>
+                           Vaccine Record
+                           <i class="fas fas fa-angle-left right"></i>
+                        </p>
+                     </a>
+                     <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                           <a href="{{ url('/admin/vaccine_record/vaccine_schedule/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'vaccine_schedule') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Vaccine Schedule</p>
+                           </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                           <a href="{{ url('admin/vaccine_record/vaccine_log/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'vaccine_log') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Farm Vaccine Log</p>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
 
                   
                   {{-- <li class="nav-item">

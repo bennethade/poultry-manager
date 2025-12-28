@@ -11,7 +11,9 @@
         <tr>
             <td>{{ $id++ }}</td>
             
-            <td style="min-width: 200px;">{{ $value->item_type }}</td>
+            <td style="min-width: 100px;"><span class="badge badge-info">{{ $value->pig?->tag_id }}</span></td>
+            {{-- <td style="min-width: 200px;">{{ $value->item_type }}</td> --}}
+            <td style="min-width: 100px;">{{ $value->reason }}</td>
             <td style="min-width: 100px;">{{ $value->quantity }}</td>
             <td style="min-width: 150px;">{{ $value->price }}</td>
             <td style="min-width: 150px;">
