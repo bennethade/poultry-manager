@@ -8,17 +8,12 @@
 @foreach ($records as $value)
 <tr>
     <td>{{ $id++ }}</td>
-    <td>{{ $value->id }}</td>
+    <td style="min-width: 120px;">{{ date('d-m-Y', strtotime($value->date)) }}</td>
+    <td style="min-width: 120px;">{{ $value->activity }}</td>
+    <td style="min-width: 150px;">{{ $value->chemicals_tools_used }}</td>
+    <td style="min-width: 150px;">{{ $value->area }}</td>
 
-    <td style="min-width: 80px;">{{ $value->sow->tag_id ?? '-' }}</td>
-    <td style="min-width: 80px;">{{ $value->boar->tag_id ?? '-' }}</td>
-    <td style="min-width: 120px;">{{ $value->type }}</td>
-    <td style="min-width: 120px;">{{ date('d-m-Y', strtotime($value->expected_farrow_date)) }}</td>
-    <td style="min-width: 120px;">{{ date('d-m-Y', strtotime($value->actual_farrow_date)) }}</td>
-    <td style="min-width: 150px;">{{ $value->number_of_born_alive }}</td>
-    <td style="min-width: 150px;">{{ $value->number_of_stillborn }}</td>
-
-    <td style="min-width: 350px;">
+    <td style="min-width: 300px;">
         @php
             $fullText = $value->remarks;
             $shortText = Str::limit($fullText, 100);
@@ -54,9 +49,9 @@
     </td>
 
     <td style="min-width: 150px;">
-        <a href="{{ route('breeding_record.edit', $value->id) }}" class="btn btn-primary btn-sm">Edit</a>
+        <a href="{{ route('maintenance_sanitation.edit', $value->id) }}" class="btn btn-primary btn-sm">Edit</a>
 
-        <form action="{{ url('admin/animal_record/breeding_record/delete/'.$value->id) }}"
+        <form action="{{ url('admin/general_farm_activity/maintenance_sanitation/delete/'.$value->id) }}"
               method="POST"
               class="d-inline-block delete-form">
             @csrf
@@ -109,5 +104,4 @@
                });
            });
        });
-       
 </script>

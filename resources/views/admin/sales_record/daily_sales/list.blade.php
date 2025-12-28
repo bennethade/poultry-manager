@@ -10,11 +10,10 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          {{-- <h1>Daily Care Record : ({{ $getRecord->total() }}) Total Recorded</h1> --}}
-          <h1>Monthly Expense Record</h1>
+          <h1>Sales Record</h1>
         </div>
         <div class="col-sm-6" style="text-align: right;">
-          <a href="{{ route('monthly_expenses.add') }}" class="btn btn-primary">Add New Record</a>
+          <a href="{{ route('sales.add') }}" class="btn btn-primary">Add New Sales</a>
           
         </div>
         
@@ -35,14 +34,19 @@
         <form method="get" action=" ">
           <div class="card-body">
             <div class="row">
-              <div class="form-group col-md-8">
+              <div class="form-group col-md-6">
                 <label>Search By Keyword</label>
-                <input type="text" class="form-control" name="name" placeholder="Search Expense summary" value="{{ Request::get('name') }}">
+                <input type="text" class="form-control" name="name" placeholder="Search Sales" value="{{ Request::get('name') }}">
               </div>
 
               <div class="form-group col-md-3">
-                {{-- <button type="submit" class="btn btn-primary" style="margin-top: 32px;">Search</button> --}}
-                <a href="{{ route('monthly_expenses.list') }}" class="btn btn-success" style="margin-top: 32px;">Refresh</a>
+                <label>Search By Date</label>
+                <input type="date" class="form-control" name="date" value="{{ Request::get('date') }}">
+              </div>
+
+              <div class="form-group col-md-3">
+                <button type="submit" class="btn btn-primary" style="margin-top: 32px;">Search</button>
+                <a href="{{ route('sales.list') }}" class="btn btn-success" style="margin-top: 32px;">Refresh</a>
               </div>
               
             </div>
@@ -70,7 +74,7 @@
 
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Monthly Expense List</h3>
+              <h3 class="card-title">Sales List</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body p-0" style="overflow: auto;">
@@ -78,12 +82,16 @@
                 <thead>
                   <tr>
                     <th>S/N</th>
-                    <th>Year</th>
-                    <th>Month</th>
-                    <th>Opening Balance</th>
-                    <th>Total Spent</th>
-                    <th>Closing Balance</th>
-                    <th>Remarks</th>
+                    <th>Item Type</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Sold on Discount</th>
+                    <th>Original Price</th>
+                    <th>Buyer Name</th>
+                    <th>Buyer Phone</th>
+                    <th>Sales Date</th>
+                    <th>Notes</th>
+                    <th>Picture</th>
                     <th>Recorded By</th>
                     <th>Recorded Date</th>
                     <th>Edited By</th>
@@ -92,10 +100,28 @@
                 </thead>
                 <tbody>
                   
-                  @include('admin.expense_record.monthly_expense.partials.record_rows')
+                  @include('admin.sales_record.daily_sales.partials.record_rows')
+
 
                 </tbody>
               </table>
+
+              <div style="padding: 10px; float: right;">
+                {{-- {{ $getRecord->appends(Illuminate\Support\Facades\Request::except('page'))->links() }} --}}
+
+                {{-- {{ $getRecord->links() }} --}}
+
+
+                {{--
+                  GO TO APPSERVICEPROVIDER AND ADD THE CODE BELOW FOR THIS PAGINATION TO WORK PROPERLY
+
+
+                    public function boot(): void
+                    {
+                        paginator::useBootstrap();
+                    }
+                --}}
+              </div>
 
             </div>
             <!-- /.card-body -->
@@ -160,7 +186,7 @@
               let query = $(this).val();
 
               $.ajax({
-                  url: "{{ route('monthly_expenses.ajax.search') }}",
+                  url: "{{ route('sales.ajax.search') }}",
                   type: "GET",
                   data: { name: query },
                   success: function (response) {

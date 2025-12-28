@@ -267,21 +267,21 @@
             <!-- Sales RECORD Section -->
             <div class="section">
                 <div class="section-header" onclick="toggleSection(this)">
-                    <span>Sales Record</span>
+                    <span>Sales & Disposal Record</span>
                     <span class="chevron">&#9662;</span>
                 </div>
 
                 <div class="section-body">
                     <div class="card-grid">
-                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                        <a href="{{ url('admin/sales_record/daily_sales/list') }}" style="color: black; display: block">
                             <div class="card">
                                 <img src="{{ asset('upload/icons/earnings.png') }}" alt="">
-                                <p>Sales & Disposal Record</p>
+                                <p>Daily Sales Record </p>
                             </div>
                         </a>
 
                         
-                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                        <a href="{{ url('admin/sales_record/monthly_sales_summary/list') }}" style="color: black; display: block">
                             <div class="card">
                                 <img src="{{ asset('upload/icons/acquisition.png') }}" alt="">
                                 <p>Monthly Sales Summary</p>
@@ -308,17 +308,24 @@
 
                 <div class="section-body"> 
                     <div class="card-grid">
-                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                        <a href="{{ url('/admin/general_farm_activity/farm_daily_care/list') }}" style="color: black; display: block">
                             <div class="card">
                                 <img src="{{ asset('upload/icons/farmer.png') }}" alt="">
                                 <p>Daily Farm Activity</p>
                             </div>
                         </a>
 
-                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                        <a href="{{ url('admin/general_farm_activity/maintenance_sanitation/list') }}" style="color: black; display: block">
                             <div class="card">
                                 <img src="{{ asset('upload/icons/tea.png') }}" alt="">
                                 <p>Maintenance & Sanitation</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ url('admin/general_farm_activity/maintenance_sanitation/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/calendar.png') }}" alt="">
+                                <p>Event Schedule</p>
                             </div>
                         </a>
                     </div>
@@ -335,14 +342,14 @@
 
                 <div class="section-body">
                     <div class="card-grid">
-                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                        <a href="{{ url('admin/disease_treatment/disease_incidence/list') }}" style="color: black; display: block">
                             <div class="card">
                                 <img src="{{ asset('upload/icons/virus.png') }}" alt="">
                                 <p>Disease Incidence Record</p>
                             </div>
                         </a>
 
-                        <a href="{{ route('farm_record.list') }}" style="color: black; display: block">
+                        <a href="{{ url('admin/disease_treatment/medication_treatment/list') }}" style="color: black; display: block">
                             <div class="card">
                                 <img src="{{ asset('upload/icons/syringe.png') }}" alt="">
                                 <p>Medication & Treatment</p>

@@ -25,3 +25,30 @@
         </td>
     </tr>
 @endforeach
+
+
+@section('script')
+
+    <script>
+        $(function() {
+            $('.delete').on('click', function(e) {
+                e.preventDefault();
+                var form = $(this).closest('form');
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You want to delete this record?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc3545',
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+
+@endsection

@@ -217,6 +217,70 @@
                         </li>
                      </ul>
                   </li>
+                  
+                  
+                  <li class="nav-item @if(Request::segment(2) == 'general_farm_activity') menu-is-opening menu-open @endif">
+                     <a href="#" class="nav-link @if(Request::segment(2) == 'general_farm_activity') active @endif">
+                        <i class="nav-icon fas fa-clipboard-list"></i>
+                        <p>
+                           General Farm Activity
+                           <i class="fas fas fa-angle-left right"></i>
+                        </p>
+                     </a>
+                     <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                           <a href="{{ url('/admin/general_farm_activity/farm_daily_care/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'farm_daily_care') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Daily Farm Activity</p>
+                           </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                           <a href="{{ url('admin/general_farm_activity/maintenance_sanitation/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'maintenance_sanitation') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Maintenance/Sanitation</p>
+                           </a>
+                        </li>
+
+                        <li class="nav-item">
+                           <a href="{{ url('admin/sales_record/weekly_sales_summary/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'weekly_sales_summary') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Event Schedule</p>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
+
+
+                  <li class="nav-item @if(Request::segment(2) == 'disease_treatment') menu-is-opening menu-open @endif">
+                     <a href="#" class="nav-link @if(Request::segment(2) == 'disease_treatment') active @endif">
+                        <i class="nav-icon fas fa-clipboard-list"></i>
+                        <p>
+                           Disease & Treatment
+                           <i class="fas fas fa-angle-left right"></i>
+                        </p>
+                     </a>
+                     <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                           <a href="{{ url('/admin/disease_treatment/disease_incidence/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'disease_incidence') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Disease Incidence Record</p>
+                           </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                           <a href="{{ url('admin/disease_treatment/medication_treatment/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'medication_treatment') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Medication & Treatment</p>
+                           </a>
+                        </li>
+                     </ul>
+                  </li>
 
                   
                   {{-- <li class="nav-item">
@@ -241,7 +305,7 @@
                   </li> --}}
 
 
-                  <li class="nav-item">
+                  {{-- <li class="nav-item">
                      <a href="{{ url('admin/farm_daily_care/list') }}"
                         class="nav-link @if(Request::segment(2) == 'farm_daily_care') active @endif">
                         <i class="nav-icon fas fa-hand-holding-water"></i>
@@ -249,12 +313,12 @@
                            Farm Daily Care
                         </p>
                      </a>
-                  </li>
+                  </li> --}}
 
                   
 
 
-                  <li class="nav-item">
+                  {{-- <li class="nav-item">
                      <a href="{{ url('admin/sales/list') }}"
                         class="nav-link @if(Request::segment(2) == 'sales') active @endif">
                         <i class="nav-icon fas fa-chart-line"></i>
@@ -262,7 +326,7 @@
                            Sales
                         </p>
                      </a>
-                  </li>
+                  </li> --}}
 
 
                   <li class="nav-item">

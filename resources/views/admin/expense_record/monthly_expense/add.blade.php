@@ -7,7 +7,7 @@
     <!-- Content Header -->
     <section class="content-header">
         <div class="container-fluid">
-            <h1>Add Monthly Expense</h1>
+            <h1>Add Expense Summary</h1>
         </div>
     </section>
 
@@ -31,7 +31,7 @@
                                     class="form-control"
                                     placeholder="e.g. 2025"
                                     value="{{ old('year', date('Y')) }}"
-                                    required
+                                    required readonly
                                 >
                                 <span class="text-danger">{{ $errors->first('year') }}</span>
                             </div>

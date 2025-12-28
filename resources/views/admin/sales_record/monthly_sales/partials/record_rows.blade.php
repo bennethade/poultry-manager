@@ -1,7 +1,8 @@
     @php
         use Illuminate\Support\Str;
 
-        $id = 1
+        $id = 1;
+
     @endphp
 
  
@@ -11,15 +12,15 @@
         <tr>
             <td>{{ $id++ }}</td>
             
-            <td style="min-width: 200px;">{{ $value->care_type }}</td>
-            <td style="min-width: 100px;">{{ $value->quantity }}</td>
-            <td style="min-width: 150px;">{{ $value->house_or_unit }}</td>
-            <td style="min-width: 100px;">{{ date('d-m-Y', strtotime($value->date)) }}</td>
-            {{-- <td style="min-width: 350px">{{ Str::limit($value->notes, 100) }}</td> --}}
+            <td style="min-width: 50px;">{{ $value->year }}</td>
+            <td style="min-width: 100px;">{{ $value->month_name }}</td>
+            <td style="min-width: 150px;">{{ $value->total_sales }}</td>
+            <td style="min-width: 150px;">{{ $value->total_expense }}</td>
+            <td style="min-width: 150px;">{{ $value->gross_profit }}</td>
 
-            <td style="min-width: 350px;">
+            <td style="min-width: 300px;">
                 @php
-                    $fullText = $value->notes;
+                    $fullText = $value->remarks;
                     $shortText = Str::limit($fullText, 100);
                 @endphp
 
@@ -36,40 +37,21 @@
                 </span>
             </td>
 
-
-
-            <td>
-                @if (!empty($value->picture))
-                    <a href="{{ asset('upload/farm_daily_cares/' . $value->picture) }}" target="_blank">
-                        <img 
-                            src="{{ asset('upload/farm_daily_cares/' . $value->picture) }}" 
-                            alt="Picture" 
-                            style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;"
-                        >
-                    </a>
-                @endif
-            </td>
-
-
-
             <td style="min-width: 150px;">{{ $value->staff_name }} {{ $value->last_name }} {{ $value->other_name }}</td>
 
             <td style="min-width: 150px;">{{ date('d-m-Y H:i:A', strtotime($value->created_at)) }}</td>
 
             <td style="min-width: 150px;">{{ $value->updated_by_name }} {{ $value->updated_by_last_name }} {{ $value->updated_by_other_name }}</td>
 
-            <td style="min-width: 200px;">
-                <a href="{{ route('farm_daily_care.view', [$value->id]) }}" class="btn btn-warning btn-sm">View</a>
-                
-                <a href="{{ route('farm_daily_care.edit', [$value->id]) }}" class="btn btn-primary btn-sm">Edit</a>
+            <td style="min-width: 150px;">
+                <a href="{{ route('monthly_sales.edit', [$value->id]) }}" class="btn btn-primary btn-sm">Edit</a>
 
-                <form action="{{ url('admin/farm_daily_care/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
+                <form action="{{ url('admin/sales_record/monthly_sales_summary/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-danger delete">Delete</button>
                 </form>
 
-                
             </td>
         </tr>
 
@@ -91,4 +73,26 @@
                 td.querySelector('.short-text').classList.remove('d-none');
             }
         });
+
+
+        $(function() {
+           $('.delete').on('click', function(e) {
+               e.preventDefault();
+               var form = $(this).closest('form');
+               Swal.fire({
+                   title: "Are you sure?",
+                   text: "You want to delete this record?",
+                   icon: "warning",
+                   showCancelButton: true,
+                   confirmButtonColor: '#dc3545',
+                   confirmButtonText: "Yes",
+                   cancelButtonText: "No"
+               }).then((result) => {
+                   if (result.isConfirmed) {
+                       form.submit();
+                   }
+               });
+           });
+       });
+       
     </script>

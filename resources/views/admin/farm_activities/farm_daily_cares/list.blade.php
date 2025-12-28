@@ -11,7 +11,7 @@
       <div class="row mb-2">
         <div class="col-sm-6">
           {{-- <h1>Daily Care Record : ({{ $getRecord->total() }}) Total Recorded</h1> --}}
-          <h1>Farm Daily Care Record</h1>
+          <h1>Daily Farm Activities</h1>
         </div>
         <div class="col-sm-6" style="text-align: right;">
           <a href="{{ route('farm_daily_care.add') }}" class="btn btn-primary">Add New Care</a>
@@ -92,7 +92,7 @@
                 </thead>
                 <tbody>
                   
-                  @include('admin.farm_daily_cares.partials.record_rows')
+                  @include('admin.farm_activities.farm_daily_cares.partials.record_rows')
 
 
                 </tbody>

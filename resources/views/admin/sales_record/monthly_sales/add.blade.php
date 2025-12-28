@@ -7,7 +7,7 @@
     <!-- Content Header -->
     <section class="content-header">
         <div class="container-fluid">
-            <h1>Edit Monthly Expense</h1>
+            <h1>Add Sales Summary</h1>
         </div>
     </section>
 
@@ -16,9 +16,8 @@
         <div class="container-fluid">
 
             <div class="card card-primary">
-                <form method="POST" action="{{ route('monthly_expenses.update', $getRecord->id) }}">
+                <form method="POST" action="{{ route('monthly_sales.store') }}">
                     @csrf
-                    {{-- @method('PUT') --}}
 
                     <div class="card-body">
                         <div class="row">
@@ -30,7 +29,8 @@
                                     type="number"
                                     name="year"
                                     class="form-control"
-                                    value="{{ old('year', $getRecord->year) }}"
+                                    placeholder="e.g. 2025"
+                                    value="{{ old('year', date('Y')) }}"
                                     required readonly
                                 >
                                 <span class="text-danger">{{ $errors->first('year') }}</span>
@@ -46,8 +46,7 @@
                                         5=>'May', 6=>'June', 7=>'July', 8=>'August',
                                         9=>'September', 10=>'October', 11=>'November', 12=>'December'
                                     ] as $key => $month)
-                                        <option value="{{ $key }}"
-                                            {{ old('month', $getRecord->month) == $key ? 'selected' : '' }}>
+                                        <option value="{{ $key }}" {{ old('month') == $key ? 'selected' : '' }}>
                                             {{ $month }}
                                         </option>
                                     @endforeach
@@ -57,42 +56,45 @@
 
                             <!-- Opening Balance -->
                             <div class="form-group col-md-3">
-                                <label>Opening Balance</label>
+                                <label>Total Sales</label>
                                 <input
                                     type="number"
                                     step="0.01"
-                                    name="opening_balance"
+                                    name="total_sales"
                                     class="form-control"
-                                    value="{{ old('opening_balance', $getRecord->opening_balance) }}"
+                                    placeholder="0.00"
+                                    value="{{ old('total_sales') }}"
                                 >
-                                <span class="text-danger">{{ $errors->first('opening_balance') }}</span>
+                                <span class="text-danger">{{ $errors->first('total_sales') }}</span>
                             </div>
 
                             <!-- Total Spent -->
                             <div class="form-group col-md-2">
-                                <label>Total Spent <span class="text-danger">*</span></label>
+                                <label>Total Expense <span class="text-danger"></span></label>
                                 <input
                                     type="number"
                                     step="0.01"
-                                    name="total_spent"
+                                    name="total_expense"
                                     class="form-control"
-                                    value="{{ old('total_spent', $getRecord->total_spent) }}"
-                                    required
+                                    placeholder="0.00"
+                                    value="{{ old('total_expense') }}"
+                                    
                                 >
-                                <span class="text-danger">{{ $errors->first('total_spent') }}</span>
+                                <span class="text-danger">{{ $errors->first('total_expense') }}</span>
                             </div>
 
                             <!-- Closing Balance -->
                             <div class="form-group col-md-2">
-                                <label>Closing Balance</label>
+                                <label>Gross Profit</label>
                                 <input
                                     type="number"
                                     step="0.01"
-                                    name="closing_balance"
+                                    name="gross_profit"
                                     class="form-control"
-                                    value="{{ old('closing_balance', $getRecord->closing_balance) }}"
+                                    placeholder="0.00"
+                                    value="{{ old('gross_profit') }}"
                                 >
-                                <span class="text-danger">{{ $errors->first('closing_balance') }}</span>
+                                <span class="text-danger">{{ $errors->first('gross_profit') }}</span>
                             </div>
 
                             <!-- Remarks -->
@@ -103,7 +105,7 @@
                                     class="form-control"
                                     rows="3"
                                     placeholder="Optional notes for this month"
-                                >{{ old('remarks', $getRecord->remarks) }}</textarea>
+                                >{{ old('remarks') }}</textarea>
                                 <span class="text-danger">{{ $errors->first('remarks') }}</span>
                             </div>
 
@@ -112,11 +114,8 @@
 
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">
-                            Update Monthly Expense
+                            Save Monthly Sales
                         </button>
-                        <a href="{{ route('monthly_expenses.list') }}" class="btn btn-secondary">
-                            Cancel
-                        </a>
                     </div>
 
                 </form>

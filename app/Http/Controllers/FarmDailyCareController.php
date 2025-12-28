@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FarmDailyCare;
+use App\Models\MaintenanceSanitation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,10 +20,10 @@ class FarmDailyCareController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            return view('staff.farm_daily_cares.list', $data);
+            // return view('staff.farm_activities.farm_daily_cares.list', $data);
         }
         else{
-            return view('admin.farm_daily_cares.list', $data);
+            return view('admin.farm_activities.farm_daily_cares.list', $data);
         }
         
     }
@@ -37,12 +38,12 @@ class FarmDailyCareController extends Controller
         if(Auth::user()->user_type == 2)
         {
             return response()->json([
-                'html' => view('staff.farm_daily_cares.partials.record_rows', ['getRecord' => $record])->render()
+                // 'html' => view('staff.farm_activities.farm_daily_cares.partials.record_rows', ['getRecord' => $record])->render()
             ]);
         }
         else{
             return response()->json([
-                'html' => view('admin.farm_daily_cares.partials.record_rows', ['getRecord' => $record])->render()
+                'html' => view('admin.farm_activities.farm_daily_cares.partials.record_rows', ['getRecord' => $record])->render()
             ]);
         }
     }
@@ -54,10 +55,10 @@ class FarmDailyCareController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            return view('staff.farm_daily_cares.add', $data);
+            // return view('staff.farm_activities.farm_daily_cares.add', $data);
         }
         else{
-            return view('admin.farm_daily_cares.add', $data);
+            return view('admin.farm_activities.farm_daily_cares.add', $data);
         }            
     }   
 
@@ -111,10 +112,10 @@ class FarmDailyCareController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            return redirect()->route('staff.farm_daily_care.list')->with('success', 'Farm record added successfully.');
+            return redirect()->route('staff.farm_daily_care.list')->with('success', 'Record added successfully.');
         }
         else{
-            return redirect()->route('farm_daily_care.list')->with('success', 'Farm record added successfully.');
+            return redirect()->route('farm_daily_care.list')->with('success', 'Record added successfully.');
         }
     }
 
@@ -130,10 +131,10 @@ class FarmDailyCareController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            return view('staff.farm_daily_cares.view', $data);
+            // return view('staff.farm_activities.farm_daily_cares.view', $data);
         }
         else{
-            return view('admin.farm_daily_cares.view', $data);
+            return view('admin.farm_activities.farm_daily_cares.view', $data);
         }
     }
 
@@ -143,7 +144,7 @@ class FarmDailyCareController extends Controller
         $data['header_title'] = "Edit Record";
 
         $data['getRecord'] = FarmDailyCare::findOrFail($id);
-        return view('admin.farm_daily_cares.edit', $data);
+        return view('admin.farm_activities.farm_daily_cares.edit', $data);
     }
 
 
@@ -211,5 +212,164 @@ class FarmDailyCareController extends Controller
 
         return redirect()->route('farm_daily_care.list')->with('warning', 'Record Deleted Successfully!');
     }
+
+
+
+
+
+
+    // FOR MAINTENANCE & SANITATION USAGE RECORDS
+    public function maintenanceList(Request $request)
+    {
+        $data['getRecord'] = MaintenanceSanitation::with(['staff', 'editor'])->orderBy('created_at', 'desc')->paginate(100);
+
+        $data['header_title'] = "Maintenance & Sanitation";
+
+        if(Auth::user()->user_type == 2)
+        {
+            // return view('staff.farm_activities.maintenance_sanitation.list', $data);
+        }
+        else{
+            return view('admin.farm_activities.maintenance_sanitation.list', $data);
+        }
+
+
+    }
+
+
+
+
+    public function maintenanceStore(Request $request)
+    {
+        // dd($request->all());
+        $request->validate([
+            'date'                  => 'required|date',
+            'activity'              => 'required|string',
+            'chemicals_tools_used'  => 'nullable|string',
+            'area'                  => 'nullable|string',
+            'remarks'               => 'nullable|string',
+        ]);
+
+        MaintenanceSanitation::create([
+            'date'                  => $request->date,
+            'activity'              => $request->activity,
+            'chemicals_tools_used'  => $request->chemicals_tools_used,
+            'area'                  => $request->area,
+            'remarks'               => $request->remarks,
+            'staff_id'              => Auth::user()->id,
+        ]);
+
+        return redirect()->route('maintenance_sanitation.list')->with('success', 'Record added successfully.');
+    }
+
+
+    public function maintenanceEdit($id)
+    {
+        $data['header_title'] = "Edit Feed usage";
+
+        $data['getRecord'] = MaintenanceSanitation::findOrFail($id);
+        
+        if(Auth::user()->user_type == 2)
+        {
+            // return view('staff.farm_activities.maintenance_sanitation.edit', $data);
+        }
+        else{
+            return view('admin.farm_activities.maintenance_sanitation.edit', $data);
+        }
+        
+    }
+
+
+
+    public function maintenanceUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'date'                  => 'required|date',
+            'activity'              => 'required|string',
+            'chemicals_tools_used'  => 'nullable|string',
+            'area'                  => 'nullable|string',
+            'remarks'               => 'nullable|string',
+        ]);
+
+        $record = MaintenanceSanitation::findOrFail($id);
+
+        $record->date                   = $request->date;
+        $record->activity               = $request->activity;
+        $record->chemicals_tools_used   = $request->chemicals_tools_used;
+        $record->area                   = $request->area;
+        $record->remarks                = $request->remarks;
+        $record->updated_by             = Auth::user()->id;
+
+        $record->save();
+
+        return redirect()->route('maintenance_sanitation.list')->with('success', 'Record Updated Successfully!');
+
+    }   
+
+
+
+    public function maintenanceAjaxSearch(Request $request)
+    {
+        $query = $request->get('query');
+
+        $records = MaintenanceSanitation::with(['staff', 'editor'])
+
+            ->where('id', 'like', "%{$query}%")
+
+            ->orWhere('date', 'like', "%{$query}%")
+
+            ->orWhere('activity', 'like', "%{$query}%")
+
+            ->orWhere('chemicals_tools_used', 'like', "%{$query}%")
+            
+            ->orWhere('area', 'like', "%{$query}%")
+
+            ->orWhere('remarks', 'like', "%{$query}%")
+
+            ->orWhereHas('staff', function ($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                ->orWhere('last_name', 'like', "%{$query}%")
+                ->orWhere('other_name', 'like', "%{$query}%");
+            })
+            ->orWhereHas('editor', function ($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                ->orWhere('last_name', 'like', "%{$query}%")
+                ->orWhere('other_name', 'like', "%{$query}%");
+            })
+
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        if(Auth::user()->user_type == 2)
+        {
+            // return view('staff.feed_records.feed_usage.partials.table_rows',compact('records'))->render();
+        }
+        else{
+            return view('admin.farm_activities.maintenance_sanitation.partials.table_rows',compact('records'))->render();
+        }
+    }
+
+
+
+
+    public function maintenanceDelete($id)
+    {
+        $record = MaintenanceSanitation::findOrFail($id);
+
+        $record->delete();
+
+        if(Auth::user()->user_type == 2)
+        {
+            // return redirect()->route('staff.maintenance_sanitation.list')->with('warning', 'Record Deleted Successfully!');
+        }
+        else{
+            return redirect()->route('maintenance_sanitation.list')->with('warning', 'Record Deleted Successfully!');
+        }
+    }
+
+
+
+
+
 
 }

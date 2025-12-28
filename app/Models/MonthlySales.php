@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Request;
 
-class MonthlyExpense extends Model
+class MonthlySales extends Model
 {
     use HasFactory;
 
 
+    
     public function getMonthNameAttribute()
     {
         return [
@@ -33,9 +34,9 @@ class MonthlyExpense extends Model
 
     static public function getRecord($request = null)
     {
-        $return = self::select('monthly_expenses.*', 'updated_by.name as updated_by_name', 'updated_by.last_name as updated_by_last_name', 'updated_by.other_name as updated_by_other_name')
-                        ->leftJoin('users', 'monthly_expenses.staff_id', '=', 'users.id')
-                        ->leftJoin('users as updated_by', 'monthly_expenses.updated_by', '=', 'updated_by.id')
+        $return = self::select('monthly_sales.*', 'updated_by.name as updated_by_name', 'updated_by.last_name as updated_by_last_name', 'updated_by.other_name as updated_by_other_name')
+                        ->leftJoin('users', 'monthly_sales.staff_id', '=', 'users.id')
+                        ->leftJoin('users as updated_by', 'monthly_sales.updated_by', '=', 'updated_by.id')
                         ->addSelect('users.name as staff_name')
                         ->addSelect('users.last_name as last_name')
                         ->addSelect('users.other_name as other_name');
@@ -72,11 +73,11 @@ class MonthlyExpense extends Model
                                         $query->where(function ($q) use ($word, $monthMap) {
 
                                             // Normal column search
-                                            $q->where('monthly_expenses.year', 'like', "%$word%")
-                                            ->orWhere('monthly_expenses.opening_balance', 'like', "%$word%")
-                                            ->orWhere('monthly_expenses.total_spent', 'like', "%$word%")
-                                            ->orWhere('monthly_expenses.closing_balance', 'like', "%$word%")
-                                            ->orWhere('monthly_expenses.remarks', 'like', "%$word%")
+                                            $q->where('monthly_sales.year', 'like', "%$word%")
+                                            ->orWhere('monthly_sales.total_sales', 'like', "%$word%")
+                                            ->orWhere('monthly_sales.total_expense', 'like', "%$word%")
+                                            ->orWhere('monthly_sales.gross_profit', 'like', "%$word%")
+                                            ->orWhere('monthly_sales.remarks', 'like', "%$word%")
                                             ->orWhere('users.name', 'like', "%$word%")
                                             ->orWhere('users.last_name', 'like', "%$word%")
                                             ->orWhere('users.other_name', 'like', "%$word%")
@@ -86,14 +87,14 @@ class MonthlyExpense extends Model
 
                                             // Month FULLNAME search
                                             // if (isset($monthMap[$word])) {
-                                            //     $q->orWhere('monthly_expenses.month', $monthMap[$word]);
+                                            //     $q->orWhere('monthly_sales.month', $monthMap[$word]);
                                             // }
 
 
                                             // FOR MONTHLY ANY WORD MARCHING SEARCH
                                             foreach ($monthMap as $monthName => $monthNumber) {
                                                 if (str_starts_with($monthName, $word)) {
-                                                    $q->orWhere('monthly_expenses.month', $monthNumber);
+                                                    $q->orWhere('monthly_sales.month', $monthNumber);
                                                 }
                                             }
                                         });
@@ -108,18 +109,19 @@ class MonthlyExpense extends Model
 
                         // if (!empty(Request::get('date'))) {
                         //     $return = $return->where(function ($query) {
-                        //         $query->whereDate('monthly_expenses.created_at', Request::get('date'))
-                        //             ->orWhereDate('monthly_expenses.date', Request::get('date'));
+                        //         $query->whereDate('monthly_sales.created_at', Request::get('date'))
+                        //             ->orWhereDate('monthly_sales.date', Request::get('date'));
                         //     });
                         // }
 
                         //SEARCH FEATURE ENDS
                         
 
-        $return = $return->orderBy('monthly_expenses.created_at', 'desc');
+        $return = $return->orderBy('monthly_sales.created_at', 'desc');
 
         return $return;
     }
+
 
 
 

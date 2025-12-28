@@ -5,6 +5,7 @@ use App\Http\Controllers\AnimalRecordController;
 use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DiseaseTreatmentController;
 use App\Http\Controllers\ExpensesController;
 use App\Http\Controllers\FarmDailyCareController;
 use App\Http\Controllers\FarmRecordsController;
@@ -134,18 +135,18 @@ Route::group(['middleware' => 'admin'], function(){
 
 
 
-    // FARM DAILY CARE ROUTES
-    Route::get('/admin/farm_daily_care/list', [FarmDailyCareController::class,'list'])->name('farm_daily_care.list');
-    Route::get('/admin/farm_daily_care/add', [FarmDailyCareController::class,'add'])->name('farm_daily_care.add');
-    Route::post('/admin/farm_daily_care/add', [FarmDailyCareController::class,'store'])->name('farm_daily_care.store');
-    Route::get('/admin/farm_daily_care/view/{id}', [FarmDailyCareController::class,'view'])->name('farm_daily_care.view');
-    Route::get('/admin/farm_daily_care/edit/{id}', [FarmDailyCareController::class,'edit'])->name('farm_daily_care.edit');
-    Route::post('/admin/farm_daily_care/edit/{id}', [FarmDailyCareController::class,'update'])->name('farm_daily_care.update');
-    Route::delete('/admin/farm_daily_care/delete/{id}', [FarmDailyCareController::class,'delete'])->name('farm_daily_care.delete');
+    // // FARM DAILY CARE ROUTES
+    // Route::get('/admin/farm_daily_care/list', [FarmDailyCareController::class,'list'])->name('farm_daily_care.list');
+    // Route::get('/admin/farm_daily_care/add', [FarmDailyCareController::class,'add'])->name('farm_daily_care.add');
+    // Route::post('/admin/farm_daily_care/add', [FarmDailyCareController::class,'store'])->name('farm_daily_care.store');
+    // Route::get('/admin/farm_daily_care/view/{id}', [FarmDailyCareController::class,'view'])->name('farm_daily_care.view');
+    // Route::get('/admin/farm_daily_care/edit/{id}', [FarmDailyCareController::class,'edit'])->name('farm_daily_care.edit');
+    // Route::post('/admin/farm_daily_care/edit/{id}', [FarmDailyCareController::class,'update'])->name('farm_daily_care.update');
+    // Route::delete('/admin/farm_daily_care/delete/{id}', [FarmDailyCareController::class,'delete'])->name('farm_daily_care.delete');
 
     
-    //AJAX for Farm Record Search
-    Route::get('/admin/farm_daily_care/ajax-search', [FarmDailyCareController::class, 'ajaxSearch'])->name('farm_daily_care.ajax.search');
+    // //AJAX for Farm Record Search
+    // Route::get('/admin/farm_daily_care/ajax-search', [FarmDailyCareController::class, 'ajaxSearch'])->name('farm_daily_care.ajax.search');
 
 
 
@@ -166,16 +167,16 @@ Route::group(['middleware' => 'admin'], function(){
 
 
     // SALES ROUTES
-    Route::get('/admin/sales/list', [SalesController::class,'list'])->name('sales.list');
-    Route::get('/admin/sales/add', [SalesController::class,'add'])->name('sales.add');
-    Route::post('/admin/sales/add', [SalesController::class,'store'])->name('sales.store');
-    Route::get('/admin/sales/view/{id}', [SalesController::class,'view'])->name('sales.view');
-    Route::get('/admin/sales/edit/{id}', [SalesController::class,'edit'])->name('sales.edit');
-    Route::post('/admin/sales/edit/{id}', [SalesController::class,'update'])->name('sales.update');
-    Route::delete('/admin/sales/delete/{id}', [SalesController::class,'delete'])->name('sales.delete');
+    // Route::get('/admin/sales/list', [SalesController::class,'list'])->name('sales.list');
+    // Route::get('/admin/sales/add', [SalesController::class,'add'])->name('sales.add');
+    // Route::post('/admin/sales/add', [SalesController::class,'store'])->name('sales.store');
+    // Route::get('/admin/sales/view/{id}', [SalesController::class,'view'])->name('sales.view');
+    // Route::get('/admin/sales/edit/{id}', [SalesController::class,'edit'])->name('sales.edit');
+    // Route::post('/admin/sales/edit/{id}', [SalesController::class,'update'])->name('sales.update');
+    // Route::delete('/admin/sales/delete/{id}', [SalesController::class,'delete'])->name('sales.delete');
 
-    //AJAX for Expense Record Search
-    Route::get('/admin/sales/ajax-search', [SalesController::class, 'ajaxSearch'])->name('sales.ajax.search');
+    // //AJAX for Expense Record Search
+    // Route::get('/admin/sales/ajax-search', [SalesController::class, 'ajaxSearch'])->name('sales.ajax.search');
     
     
     
@@ -329,6 +330,108 @@ Route::group(['middleware' => 'admin'], function(){
 
     //AJAX for Expense Record Search
     Route::get('/admin/expense_record/monthly_expense_summary/ajax-search', [ExpensesController::class, 'monthlyAjaxSearch'])->name('monthly_expenses.ajax.search');
+    
+    
+    
+    
+    
+    
+    // SALES ROUTES
+
+    // Daily Sales Record
+    Route::get('/admin/sales_record/daily_sales/list', [SalesController::class,'list'])->name('sales.list');
+    Route::get('/admin/sales_record/daily_sales/add', [SalesController::class,'add'])->name('sales.add');
+    Route::post('/admin/sales_record/daily_sales/add', [SalesController::class,'store'])->name('sales.store');
+    Route::get('/admin/sales_record/daily_sales/view/{id}', [SalesController::class,'view'])->name('sales.view');
+    Route::get('/admin/sales_record/daily_sales/edit/{id}', [SalesController::class,'edit'])->name('sales.edit');
+    Route::post('/admin/sales_record/daily_sales/edit/{id}', [SalesController::class,'update'])->name('sales.update');
+    Route::delete('/admin/sales_record/daily_sales/delete/{id}', [SalesController::class,'delete'])->name('sales.delete');
+
+    //AJAX for Expense Record Search
+    Route::get('/admin/sales_record/daily_sales/ajax-search', [SalesController::class, 'ajaxSearch'])->name('sales.ajax.search');
+    
+
+    
+    // Monthly Sales Record
+    Route::get('/admin/sales_record/monthly_sales_summary/list', [SalesController::class,'monthlyList'])->name('monthly_sales.list');
+    Route::get('/admin/sales_record/monthly_sales_summary/add', [SalesController::class,'monthlyAdd'])->name('monthly_sales.add');
+    Route::post('/admin/sales_record/monthly_sales_summary/add', [SalesController::class,'monthlyStore'])->name('monthly_sales.store');
+    Route::get('/admin/sales_record/monthly_sales_summary/edit/{id}', [SalesController::class,'monthlyEdit'])->name('monthly_sales.edit');
+    Route::post('/admin/sales_record/monthly_sales_summary/edit/{id}', [SalesController::class,'monthlyUpdate'])->name('monthly_sales.update');
+    Route::delete('/admin/sales_record/monthly_sales_summary/delete/{id}', [SalesController::class,'monthlyDelete'])->name('monthly_sales.delete');
+
+    //AJAX for sales Record Search
+    Route::get('/admin/sales_record/monthly_sales_summary/ajax-search', [SalesController::class, 'monthlyAjaxSearch'])->name('monthly_sales.ajax.search');
+
+
+
+
+
+    //====== GENERAL FARM ACTIVITY ROUTES=====
+
+    //Daily Farm Activities 
+    Route::get('/admin/general_farm_activity/farm_daily_care/list', [FarmDailyCareController::class,'list'])->name('farm_daily_care.list');
+    Route::get('/admin/general_farm_activity/farm_daily_care/add', [FarmDailyCareController::class,'add'])->name('farm_daily_care.add');
+    Route::post('/admin/general_farm_activity/farm_daily_care/add', [FarmDailyCareController::class,'store'])->name('farm_daily_care.store');
+    Route::get('/admin/general_farm_activity/farm_daily_care/view/{id}', [FarmDailyCareController::class,'view'])->name('farm_daily_care.view');
+    Route::get('/admin/general_farm_activity/farm_daily_care/edit/{id}', [FarmDailyCareController::class,'edit'])->name('farm_daily_care.edit');
+    Route::post('/admin/general_farm_activity/farm_daily_care/edit/{id}', [FarmDailyCareController::class,'update'])->name('farm_daily_care.update');
+    Route::delete('/admin/general_farm_activity/farm_daily_care/delete/{id}', [FarmDailyCareController::class,'delete'])->name('farm_daily_care.delete');
+
+    //AJAX for Daily Avtivity Record Search
+    Route::get('/admin/general_farm_activity/farm_daily_care/ajax-search', [FarmDailyCareController::class, 'ajaxSearch'])->name('farm_daily_care.ajax.search');
+    
+    
+
+
+    //Maintenance & Sanitation 
+    Route::get('/admin/general_farm_activity/maintenance_sanitation/list', [FarmDailyCareController::class,'maintenanceList'])->name('maintenance_sanitation.list');
+    // Route::get('/admin/general_farm_activity/maintenance_sanitation/add', [FarmDailyCareController::class,'maintenanceAdd'])->name('maintenance_sanitation.add');
+    Route::post('/admin/general_farm_activity/maintenance_sanitation/add', [FarmDailyCareController::class,'maintenanceStore'])->name('maintenance_sanitation.store');
+    Route::get('/admin/general_farm_activity/maintenance_sanitation/view/{id}', [FarmDailyCareController::class,'maintenanceView'])->name('maintenance_sanitation.view');
+    Route::get('/admin/general_farm_activity/maintenance_sanitation/edit/{id}', [FarmDailyCareController::class,'maintenanceEdit'])->name('maintenance_sanitation.edit');
+    Route::post('/admin/general_farm_activity/maintenance_sanitation/edit/{id}', [FarmDailyCareController::class,'maintenanceUpdate'])->name('maintenance_sanitation.update');
+    Route::delete('/admin/general_farm_activity/maintenance_sanitation/delete/{id}', [FarmDailyCareController::class,'maintenanceDelete'])->name('maintenance_sanitation.delete');
+
+    //AJAX for Daily Avtivity Record Search
+    Route::get('/admin/general_farm_activity/maintenance_sanitation/ajax-search', [FarmDailyCareController::class, 'maintenanceAjaxSearch'])->name('maintenance_sanitation.ajax.search');
+
+
+
+
+    
+    
+    //DISEASE & TREATMENT ROUTES
+    
+    //Disease Incidence Routes
+    Route::get('/admin/disease_treatment/disease_incidence/list', [DiseaseTreatmentController::class,'incidenceList'])->name('disease_incidence.list');
+    Route::get('/admin/disease_treatment/disease_incidence/add', [DiseaseTreatmentController::class,'incidenceAdd'])->name('disease_incidence.add');
+    Route::post('/admin/disease_treatment/disease_incidence/add', [DiseaseTreatmentController::class,'incidenceStore'])->name('disease_incidence.store');
+    Route::get('/admin/disease_treatment/disease_incidence/view/{id}', [DiseaseTreatmentController::class,'incidenceView'])->name('disease_incidence.view');
+    Route::get('/admin/disease_treatment/disease_incidence/edit/{id}', [DiseaseTreatmentController::class,'incidenceEdit'])->name('disease_incidence.edit');
+    Route::post('/admin/disease_treatment/disease_incidence/edit/{id}', [DiseaseTreatmentController::class,'incidenceUpdate'])->name('disease_incidence.update');
+    Route::delete('/admin/disease_treatment/disease_incidence/delete/{id}', [DiseaseTreatmentController::class,'incidenceDelete'])->name('disease_incidence.delete');
+
+    //AJAX for Daily Avtivity Record Search
+    Route::get('/admin/disease_treatment/disease_incidence/ajax-search', [DiseaseTreatmentController::class, 'incidenceAjaxSearch'])->name('disease_incidence.ajax.search');
+
+
+
+
+    //Medication & Treatment Routes
+    Route::get('/admin/disease_treatment/medication_treatment/list', [DiseaseTreatmentController::class,'medicationList'])->name('medication_treatment.list');
+    Route::get('/admin/disease_treatment/medication_treatment/add', [DiseaseTreatmentController::class,'medicationAdd'])->name('medication_treatment.add');
+    Route::post('/admin/disease_treatment/medication_treatment/add', [DiseaseTreatmentController::class,'medicationStore'])->name('medication_treatment.store');
+    Route::get('/admin/disease_treatment/medication_treatment/view/{id}', [DiseaseTreatmentController::class,'medicationView'])->name('medication_treatment.view');
+    Route::get('/admin/disease_treatment/medication_treatment/edit/{id}', [DiseaseTreatmentController::class,'medicationEdit'])->name('medication_treatment.edit');
+    Route::post('/admin/disease_treatment/medication_treatment/edit/{id}', [DiseaseTreatmentController::class,'medicationUpdate'])->name('medication_treatment.update');
+    Route::delete('/admin/disease_treatment/medication_treatment/delete/{id}', [DiseaseTreatmentController::class,'medicationDelete'])->name('medication_treatment.delete');
+
+    //AJAX for Daily Avtivity Record Search
+    Route::get('/admin/disease_treatment/medication_treatment/ajax-search', [DiseaseTreatmentController::class, 'medicationAjaxSearch'])->name('medication_treatment.ajax.search');
+
+
+
 
 
 
@@ -366,7 +469,7 @@ Route::group(['middleware' => 'admin'], function(){
 
 
 
-//===staff DASHBOARD ROUTE GROUP===///
+//===STAFF DASHBOARD ROUTE GROUP===///
 Route::group(['middleware' => 'staff'], function(){
 
     Route::get('/staff/dashboard', [DashboardController::class,'dashboard'])->name('staff.dashboard');

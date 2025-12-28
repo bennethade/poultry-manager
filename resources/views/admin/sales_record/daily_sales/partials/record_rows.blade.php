@@ -1,8 +1,7 @@
     @php
         use Illuminate\Support\Str;
 
-        $id =1;
-        // $id = ($getRecord->currentPage() - 1) * $getRecord->perPage() + 1;
+        $id = 1
     @endphp
 
  
@@ -12,19 +11,24 @@
         <tr>
             <td>{{ $id++ }}</td>
             
-            <td style="min-width: 100px;"> <span class="badge bg-info">{{ $value->tag_id }}</span></td>
-            <td style="min-width: 100px;">{{ $value->breed_id }}</td>
-            <td style="min-width: 100px;">{{ date('d-m-Y', strtotime($value->dob)) }}</td>
-            <td style="min-width: 50px;">{{ $value->sex }}</td>
-            <td style="min-width: 100px;">{{ $value->source }}</td>
-            <td style="min-width: 100px;">{{ date('d-m-Y', strtotime($value->date_entry)) }}</td>
-            <td style="min-width: 100px;">{{ $value->initial_weight }}</td>
-            <td style="min-width: 100px;">{{ $value->current_weight }}</td>
-            <td style="min-width: 100px;">{{ $value->status }}</td>
+            <td style="min-width: 200px;">{{ $value->item_type }}</td>
+            <td style="min-width: 100px;">{{ $value->quantity }}</td>
+            <td style="min-width: 150px;">{{ $value->price }}</td>
+            <td style="min-width: 150px;">
+                @if ($value->sold_on_discount == 1)
+                    Yes
+                @else
+                    No
+                @endif
+            </td>
+            <td style="min-width: 150px;">{{ $value->discounted_price }}</td>
+            <td style="min-width: 150px;">{{ $value->buyer_name }}</td>
+            <td style="min-width: 150px;">{{ $value->buyer_phone }}</td>
+            <td style="min-width: 100px;">{{ date('d-m-Y', strtotime($value->date)) }}</td>
 
             <td style="min-width: 350px;">
                 @php
-                    $fullText = $value->remarks;
+                    $fullText = $value->notes;
                     $shortText = Str::limit($fullText, 100);
                 @endphp
 
@@ -43,17 +47,17 @@
 
 
 
-            {{-- <td>
+            <td>
                 @if (!empty($value->picture))
-                    <a href="{{ asset('upload/animal_identifications/' . $value->picture) }}" target="_blank">
+                    <a href="{{ asset('upload/sales/' . $value->picture) }}" target="_blank">
                         <img 
-                            src="{{ asset('upload/animal_identifications/' . $value->picture) }}" 
+                            src="{{ asset('upload/sales/' . $value->picture) }}" 
                             alt="Picture" 
                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;"
                         >
                     </a>
                 @endif
-            </td> --}}
+            </td>
 
 
 
@@ -64,11 +68,11 @@
             <td style="min-width: 150px;">{{ $value->updated_by_name }} {{ $value->updated_by_last_name }} {{ $value->updated_by_other_name }}</td>
 
             <td style="min-width: 200px;">
-                <a href="{{ route('animal_identification.view', [$value->id]) }}" class="btn btn-warning btn-sm">View</a>
+                <a href="{{ route('sales.view', [$value->id]) }}" class="btn btn-warning btn-sm">View</a>
                 
-                <a href="{{ route('animal_identification.edit', [$value->id]) }}" class="btn btn-primary btn-sm">Edit</a>
+                <a href="{{ route('sales.edit', [$value->id]) }}" class="btn btn-primary btn-sm">Edit</a>
 
-                <form action="{{ url('admin/animal_record/animal_identification/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
+                <form action="{{ url('admin/sales_record/daily_sales/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-danger delete">Delete</button>

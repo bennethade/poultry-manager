@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MonthlySales;
 use App\Models\Sales;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,10 +21,10 @@ class SalesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            return view('staff.sales.list', $data);
+            // return view('staff.sales_record.daily_sales.list', $data);
         }
         else{
-            return view('admin.sales.list', $data);
+            return view('admin.sales_record.daily_sales.list', $data);
         }
     }
 
@@ -37,12 +38,12 @@ class SalesController extends Controller
         if(Auth::user()->user_type == 2)
         {
             return response()->json([
-                'html' => view('staff.sales.partials.record_rows', ['getRecord' => $record])->render()
+                // 'html' => view('staff.sales_record.daily_sales.partials.record_rows', ['getRecord' => $record])->render()
             ]);
         }
         else{
             return response()->json([
-                'html' => view('admin.sales.partials.record_rows', ['getRecord' => $record])->render()
+                'html' => view('admin.sales_record.daily_sales.partials.record_rows', ['getRecord' => $record])->render()
             ]);
         }
     }
@@ -54,10 +55,10 @@ class SalesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            return view('staff.sales.add', $data);
+            // return view('staff.sales_record.daily_sales.add', $data);
         }
         else{   
-            return view('admin.sales.add', $data);
+            return view('admin.sales_record.daily_sales.add', $data);
         }
     }   
 
@@ -129,10 +130,10 @@ class SalesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            return view('staff.sales.view', $data);
+            // return view('staff.sales_record.daily_sales.view', $data);
         }
         else{
-            return view('admin.sales.view', $data);
+            return view('admin.sales_record.daily_sales.view', $data);
         }
     }
 
@@ -142,7 +143,7 @@ class SalesController extends Controller
         $data['header_title'] = "Edit Sales";
 
         $data['getRecord'] = Sales::findOrFail($id);
-        return view('admin.sales.edit', $data);
+        return view('admin.sales_record.daily_sales.edit', $data);
     }
 
 
@@ -218,5 +219,151 @@ class SalesController extends Controller
 
         return redirect()->route('sales.list')->with('warning', 'Sales Deleted Successfully!');
     }
+
+
+
+
+    // MONTHLY SALES CODES
+    public function monthlyList(Request $request)
+    {        
+        $data['getRecord'] = MonthlySales::getRecord($request)->paginate(100);
+
+        $data['header_title'] = "Monthly Sales";
+
+        if(Auth::user()->user_type == 2)
+        {
+            // return view('staff.sale_record.monthly_sales.list', $data);
+        }
+        else{
+            return view('admin.sales_record.monthly_sales.list', $data);
+        }
+    }
+
+    
+
+
+    public function monthlyAjaxSearch(Request $request)
+    {
+        $record = MonthlySales::getRecord($request)->take(100)->get(); // Get without pagination for AJAX
+
+        if(Auth::user()->user_type == 2)
+        {
+            return response()->json([
+                // 'html' => view('staff.sales_record.monthly_sales.partials.record_rows', ['getRecord' => $record])->render()
+            ]);
+        }
+        else{
+
+            return response()->json([
+                'html' => view('admin.sales_record.monthly_sales.partials.record_rows', ['getRecord' => $record])->render()
+            ]);
+        }
+
+    }
+
+
+    public function monthlyAdd()
+    {
+        $data['header_title'] = "Add Monthly Sales";
+
+        if(Auth::user()->user_type == 2)
+        {
+            // return view('staff.sale_record.monthly_sale.add', $data);
+        }
+        else{
+            return view('admin.sales_record.monthly_sales.add', $data);
+        }
+    }   
+
+
+    public function monthlyStore(Request $request)
+    {
+        // VALIDATION
+        $request->validate([
+            
+        ]);
+
+        $record = new MonthlySales();
+
+        $record->year               = $request->year;
+        $record->month              = $request->month;
+        $record->total_sales        = $request->total_sales;
+        $record->total_expense      = $request->total_expense;
+        $record->gross_profit       = $request->gross_profit;
+        $record->remarks            = $request->remarks;
+        $record->staff_id           = Auth::user()->id;
+
+        $record->save();
+
+        if(Auth::user()->user_type == 2)
+        {
+            // return redirect()->route('staff.monthly_sales.list')->with('success', 'Record added successfully.');
+        }
+        else{
+            return redirect()->route('monthly_sales.list')->with('success', 'Record added successfully.');
+        }
+    }
+
+
+
+    public function monthlyEdit($id)
+    {
+        $data['header_title'] = "Edit sale";
+
+        $data['getRecord'] = MonthlySales::findOrFail($id);
+
+        if(Auth::user()->user_type == 2)
+        {
+            // return view('staff.sales_record.monthly_sales.edit', $data);
+        }
+        else{
+            return view('admin.sales_record.monthly_sales.edit', $data);
+        }
+    }
+
+
+    public function monthlyUpdate(Request $request, $id)
+    {
+        $request->validate([
+            
+            
+        ]); 
+
+        $record = MonthlySales::findOrFail($id);
+
+        $record->year               = $request->year;
+        $record->month              = $request->month;
+        $record->total_sales        = $request->total_sales;
+        $record->total_expense      = $request->total_expense;
+        $record->gross_profit       = $request->gross_profit;
+        $record->remarks            = $request->remarks;
+        $record->updated_by         = Auth::user()->id;
+       
+        $record->save();
+
+        return redirect()->route('monthly_sales.list')->with('success', 'Record Updated Successfully!');
+
+    }
+
+
+  
+
+
+    public function monthlyDelete($id)
+    {
+        $record = MonthlySales::findOrFail($id);
+
+        $record->delete();
+
+        return redirect()->route('monthly_sales.list')->with('warning', 'Record Deleted Successfully!');
+    }
+
+
+
+
+
+
+
+
 
 }
