@@ -57,7 +57,7 @@
 
                         <div class="form-group col-md-2">
                             <label>Quantity Fed (KG)</label>
-                            <input class="form-control" type="number" name="quantity_fed" placeholder="Eg: 30">
+                            <input class="form-control" type="number" name="quantity_fed" placeholder="Eg: 30" step="any">
                         </div>
 
                         <div class="form-group col-md-2">

@@ -32,7 +32,7 @@
                   <div class="form-group col-md-4">
                     <label>Fav Icon</label>
                     <input type="file" class="form-control" name="favicon_icon" >
-                    @if(!empty($getRecord->getFavicon()))
+                    @if(!empty($getRecord))
                         <img src="{{ $getRecord->getFavicon() }}" class="" alt="" style="width: 50px">
                     @endif
                   </div>
@@ -40,7 +40,7 @@
                   <div class="form-group col-md-4">
                     <label>Business Logo</label>
                     <input type="file" class="form-control" name="logo" >
-                    @if(!empty($getRecord->getLogo()))
+                    @if(!empty($getRecord))
                         <img src="{{ $getRecord->getLogo() }}" class="" alt="" style="width: 80px; height:auto">
                     @endif
                   </div>
@@ -49,7 +49,7 @@
                   <div class="form-group col-md-4">
                     <label>Website QR Code</label>
                     <input type="file" class="form-control" name="qr_code" >
-                    @if(!empty($getRecord->getQrCode()))
+                    @if(!empty($getRecord))
                         <img src="{{ $getRecord->getQrCode() }}" class="" alt="" style="width: 50px">
                     @endif
                   </div>

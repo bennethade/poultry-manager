@@ -14,9 +14,10 @@
             
             <td style="min-width: 50px;">{{ $value->year }}</td>
             <td style="min-width: 100px;">{{ $value->month_name }}</td>
-            <td style="min-width: 150px;">{{ $value->opening_balance }}</td>
-            <td style="min-width: 150px;">{{ $value->total_spent }}</td>
-            <td style="min-width: 150px;">{{ $value->closing_balance }}</td>
+            <td style="min-width: 150px;">₦{{ number_format($value->opening_balance, 2) }}</td>
+
+            <td style="min-width: 150px;">₦{{ number_format($value->total_spent, 2) }}</td>
+            <td style="min-width: 150px;">₦{{ number_format($value->closing_balance, 2) }}</td>
 
             <td style="min-width: 300px;">
                 @php

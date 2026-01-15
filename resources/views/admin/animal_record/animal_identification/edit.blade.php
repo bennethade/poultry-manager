@@ -8,7 +8,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Add New Animal</h1>
+            <h1>Edit Animal</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -49,11 +49,22 @@
                         <div class="form-group col-md-3">
                           <label>Sex <span style="color: red">*</span> </label>
                           <select name="sex" id="" class="form-control" required>
-                            <option value="">Select Sex</option> 
-                            <option {{ (old('sex', $getRecord->sex) == 'Male') ? 'selected' : '' }} value="Male">Male</option> 
-                            <option {{ (old('sex', $getRecord->sex) == 'Female') ? 'selected' : '' }} value="Female">Female</option> 
+                            <option value="">--Select Sex--</option> 
+                            <option {{ (old('sex', $getRecord->sex) == 'Male') ? 'selected' : '' }} value="Male">Boar</option> 
+                            <option {{ (old('sex', $getRecord->sex) == 'Female') ? 'selected' : '' }} value="Female">Sow</option> 
                           </select>
                           <div style="color: red;">{{ $errors->first('sex') }}</div>
+                        </div>
+                        
+                        <div class="form-group col-md-3">
+                          <label>Stage <span style="color: red"></span> </label>
+                          <select name="stage" id="" class="form-control">
+                            <option value="">--Select stage--</option> 
+                            <option {{ (old('stage', $getRecord->stage) == 'Adult') ? 'selected' : '' }} value="Adult">Adult</option> 
+                            <option {{ (old('stage', $getRecord->stage) == 'Boar Piglet') ? 'selected' : '' }} value="Boar Piglet">Boar Piglet</option> 
+                            <option {{ (old('stage', $getRecord->stage) == 'Gilt Piglet') ? 'selected' : '' }} value="Gilt Piglet">Gilt Piglet</option> 
+                          </select>
+                          <div style="color: red;">{{ $errors->first('stage') }}</div>
                         </div>
                         
                         
@@ -62,6 +73,13 @@
                             <input type="date" class="form-control" name="date_entry" value="{{ old('date_entry', $getRecord->date_entry) }}">
                             <div style="color: red;">{{ $errors->first('date_entry') }}</div>
                         </div>
+
+                        <div class="form-group col-md-5">
+                          <label>Breed</label>
+                            <input type="text" class="form-control" name="breed" placeholder="Eg: TN-TEMPO" value="{{ old('breed', $getRecord->breed) }}">
+                            <div style="color: red;">{{ $errors->first('breed') }}</div>
+                        </div>
+
 
                         <div class="form-group col-md-4">
                           <label>Initial Weight</label>
@@ -77,31 +95,36 @@
 
 
                         <div class="form-group col-md-4">
+                          <label>Production Stage <span style="color: red">*</span> </label>
+                          <select name="production_stage" id="" class="form-control" required>
+                            <option value="">--Select Production Stage--</option> 
+                            <option {{ (old('production_stage', $getRecord->production_stage) == 'Breeder') ? 'selected' : '' }} value="Breeder">Breeder</option> 
+                            <option {{ (old('production_stage', $getRecord->production_stage) == 'Farrowing') ? 'selected' : '' }} value="Farrowing">Farrowing</option> 
+                            <option {{ (old('production_stage', $getRecord->production_stage) == 'Fattener') ? 'selected' : '' }} value="Fattener">Fattener</option> 
+                            <option {{ (old('production_stage', $getRecord->production_stage) == 'Gestation') ? 'selected' : '' }} value="Gestation">Gestation</option> 
+                            <option {{ (old('production_stage', $getRecord->production_stage) == 'Gilt') ? 'selected' : '' }} value="Gilt">Gilt</option> 
+                            <option {{ (old('production_stage', $getRecord->production_stage) == 'Grower') ? 'selected' : '' }} value="Grower">Grower</option> 
+                            <option {{ (old('production_stage', $getRecord->production_stage) == 'Lactating') ? 'selected' : '' }} value="Lactating">Lactating</option> 
+                          </select>
+                          <div style="color: red;">{{ $errors->first('production_stage') }}</div>
+                        </div>
+
+
+                        <div class="form-group col-md-4">
                           <label>Status <span style="color: red">*</span> </label>
                           <select name="status" id="" class="form-control" required>
-                            <option value="">Select Status</option> 
-                            <option {{ (old('status', $getRecord->status) == 'Breeder') ? 'selected' : '' }} value="Breeder">Breeder</option> 
-                            <option {{ (old('status', $getRecord->status) == 'Grower') ? 'selected' : '' }} value="Grower">Grower</option> 
-                            <option {{ (old('status', $getRecord->status) == 'Fattener') ? 'selected' : '' }} value="Fattener">Fattener</option> 
+                            <option {{ (old('status', $getRecord->status) == '1') ? 'selected' : '' }} value="1">Active</option> 
+                            <option {{ (old('status', $getRecord->status) == '0') ? 'selected' : '' }} value="0">Inactive</option> 
                           </select>
                           <div style="color: red;">{{ $errors->first('status') }}</div>
                         </div>
 
-                        {{-- <div class="form-group col-md-4">
-                            <label>Picture </label>
-                            <input type="file" class="form-control" name="picture" >
-                            <div style="color: red;">{{ $errors->first('picture') }}</div>
-                        </div> --}}
-
                         <div class="form-group col-md-12">
                             <label>Remarks <span style="color: red"></span> </label>
-                            <textarea class="form-control" name="remarks" rows="3" placeholder="Add details of activity">{{ old('remarks', $getRecord->remarks) }}</textarea>
+                            <textarea class="form-control" name="remarks" rows="3" placeholder="Any additional info">{{ old('remarks', $getRecord->remarks) }}</textarea>
                             <div style="color: red;">{{ $errors->first('remarks') }}</div>
                         </div>
-                        
-                        
                     </div>
-
                 </div>
 
                 <div class="card-footer">

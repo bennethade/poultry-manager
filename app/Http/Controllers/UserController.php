@@ -27,9 +27,7 @@ class UserController extends Controller
     {
         $setting                            = Setting::getSingle();
 
-        $setting->favicon_icon              = trim($request->favicon_icon);
-        $setting->logo                      = trim($request->logo);
-        $setting->qr_code                   = trim($request->qr_code);
+        
         $setting->business_name             = trim($request->business_name);
         $setting->abbreviation              = trim($request->abbreviation);
         $setting->address                   = trim($request->address);
@@ -51,21 +49,6 @@ class UserController extends Controller
             $setting->qr_code = $filename;
         }
 
-
-        if(!empty($request->file('barcode')))
-        {
-            $ext = $request->file('barcode')->getClientOriginalExtension();
-            $file = $request->file('barcode');
-            $randomStr = date('Ymdhis').Str::random(10);
-            $filename = strtolower($randomStr).'.'.$ext;
-            $file->move('upload/setting/', $filename); 
-
-            // $file = Image::read($request->file('barcode'));     //Image Intervention Lines
-            // $file->resize(300, 200);
-            // $file->save('upload/setting/'.$filename); 
-
-            $setting->barcode = $filename;
-        }
 
 
         if(!empty($request->file('logo')))

@@ -28,13 +28,19 @@
                 @csrf
                 <div class="card-body">
                     <div class="row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-3">
                             <label>Received Date <span style="color: red">*</span> </label>
                             <input type="date" class="form-control" name="received_date" required value="{{ old('received_date') }}">
                             <div style="color: red;">{{ $errors->first('received_date') }}</div>
                         </div>
 
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-5">
+                            <label>Feed Material</label>
+                            <input type="text" class="form-control" name="feed_material" placeholder="Feed Material" value="{{ old('feed_material') }}">
+                            <div style="color: red;">{{ $errors->first('feed_material') }}</div>
+                        </div>
+                        
+                        <div class="form-group col-md-4">
                             <label>Feed Type</label>
                             <input type="text" class="form-control" name="feed_type" placeholder="Feed Type" value="{{ old('feed_type') }}">
                             <div style="color: red;">{{ $errors->first('feed_type') }}</div>
@@ -43,13 +49,13 @@
 
                         <div class="form-group col-md-4">
                             <label>Quantity Received (KG)</label>
-                            <input type="number" class="form-control" name="quantity_received" placeholder="eg 50" value="{{ old('quantity_received') }}">
+                            <input type="number" class="form-control" name="quantity_received" placeholder="eg 50" value="{{ old('quantity_received') }}" step="any">
                             <div style="color: red;">{{ $errors->first('quantity_received') }}</div>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label>Remaining Stcok (KG)</label>
-                            <input type="number" class="form-control" name="remaining_stock" placeholder="eg 20" value="{{ old('remaining_stock') }}">
+                            <input type="number" class="form-control" name="remaining_stock" placeholder="eg 20" value="{{ old('remaining_stock') }}" step="any">
                             <div style="color: red;">{{ $errors->first('remaining_stock') }}</div>
                         </div>
 
@@ -61,10 +67,16 @@
                         </div>
 
 
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-3">
                             <label>Cost</label>
-                            <input type="number" class="form-control" name="cost" placeholder="2000" value="{{ old('cost') }}">
+                            <input type="number" class="form-control" name="cost" placeholder="7000" value="{{ old('cost') }}" step="any">
                             <div style="color: red;">{{ $errors->first('cost') }}</div>
+                        </div>
+
+                        <div class="form-group col-md-3">
+                            <label>Cost Per KG</label>
+                            <input type="number" class="form-control" name="cost_per_kg" placeholder="500" value="{{ old('cost_per_kg') }}" step="any">
+                            <div style="color: red;">{{ $errors->first('cost_per_kg') }}</div>
                         </div>
                         
 

@@ -17,11 +17,11 @@
         <td style="min-width: 150px;">{{ $record->editor?->name }} {{ $record->editor?->last_name }}</td>
         <td style="min-width: 150px;">                                        
             <a href="{{ route('growth_performance.edit', [$record->id]) }}" class="btn btn-primary btn-sm">Edit</a>
-            <form action="{{ url('admin/animal_record/growth_performance/delete/'.$record->id) }}" method="POST" class="d-inline-block delete-form">
+            {{-- <form action="{{ url('admin/animal_record/growth_performance/delete/'.$record->id) }}" method="POST" class="d-inline-block delete-form">
                 @csrf
                 @method('DELETE')
                 <button type="button" class="btn btn-sm btn-danger delete">Delete</button>
-            </form>
+            </form> --}}
         </td>
     </tr>
 @endforeach

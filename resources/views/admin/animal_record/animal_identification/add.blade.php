@@ -49,11 +49,22 @@
                         <div class="form-group col-md-3">
                           <label>Sex <span style="color: red">*</span> </label>
                           <select name="sex" id="" class="form-control" required>
-                            <option value="">Select Sex</option> 
-                            <option {{ (old('sex') == 'Male') ? 'selected' : '' }} value="Male">Male</option> 
-                            <option {{ (old('sex') == 'Female') ? 'selected' : '' }} value="Female">Female</option> 
+                            <option value="">--Select Sex--</option> 
+                            <option {{ (old('sex') == 'Male') ? 'selected' : '' }} value="Male">Boar</option> 
+                            <option {{ (old('sex') == 'Female') ? 'selected' : '' }} value="Female">Sow</option> 
                           </select>
                           <div style="color: red;">{{ $errors->first('sex') }}</div>
+                        </div>
+                        
+                        <div class="form-group col-md-3">
+                          <label>Stage <span style="color: red"></span> </label>
+                          <select name="stage" id="" class="form-control">
+                            <option value="">--Select stage--</option> 
+                            <option {{ (old('stage') == 'Adult') ? 'selected' : '' }} value="Adult">Adult</option> 
+                            <option {{ (old('stage') == 'Boar Piglet') ? 'selected' : '' }} value="Boar Piglet">Boar Piglet</option> 
+                            <option {{ (old('stage') == 'Gilt Piglet') ? 'selected' : '' }} value="Gilt Piglet">Gilt Piglet</option> 
+                          </select>
+                          <div style="color: red;">{{ $errors->first('stage') }}</div>
                         </div>
                         
                         
@@ -62,6 +73,13 @@
                             <input type="date" class="form-control" name="date_entry" value="{{ old('date_entry') }}">
                             <div style="color: red;">{{ $errors->first('date_entry') }}</div>
                         </div>
+
+                        <div class="form-group col-md-5">
+                          <label>Breed</label>
+                            <input type="text" class="form-control" name="breed" placeholder="Eg: TN-TEMPO" value="{{ old('breed') }}">
+                            <div style="color: red;">{{ $errors->first('breed') }}</div>
+                        </div>
+
 
                         <div class="form-group col-md-4">
                           <label>Initial Weight</label>
@@ -77,31 +95,36 @@
 
 
                         <div class="form-group col-md-4">
+                          <label>Production Stage <span style="color: red">*</span> </label>
+                          <select name="production_stage" id="" class="form-control" required>
+                            <option value="">--Select Production Stage--</option> 
+                            <option {{ (old('production_stage') == 'Breeder') ? 'selected' : '' }} value="Breeder">Breeder</option> 
+                            <option {{ (old('production_stage') == 'Farrowing') ? 'selected' : '' }} value="Farrowing">Farrowing</option> 
+                            <option {{ (old('production_stage') == 'Fattener') ? 'selected' : '' }} value="Fattener">Fattener</option> 
+                            <option {{ (old('production_stage') == 'Gestation') ? 'selected' : '' }} value="Gestation">Gestation</option> 
+                            <option {{ (old('production_stage') == 'Gilt') ? 'selected' : '' }} value="Gilt">Gilt</option> 
+                            <option {{ (old('production_stage') == 'Grower') ? 'selected' : '' }} value="Grower">Grower</option> 
+                            <option {{ (old('production_stage') == 'Lactating') ? 'selected' : '' }} value="Lactating">Lactating</option> 
+                          </select>
+                          <div style="color: red;">{{ $errors->first('production_stage') }}</div>
+                        </div>
+
+
+                        <div class="form-group col-md-4">
                           <label>Status <span style="color: red">*</span> </label>
                           <select name="status" id="" class="form-control" required>
-                            <option value="">Select Status</option> 
-                            <option {{ (old('status') == 'Breeder') ? 'selected' : '' }} value="Breeder">Breeder</option> 
-                            <option {{ (old('status') == 'Grower') ? 'selected' : '' }} value="Grower">Grower</option> 
-                            <option {{ (old('status') == 'Fattener') ? 'selected' : '' }} value="Fattener">Fattener</option> 
+                            <option {{ (old('status') == '1') ? 'selected' : '' }} value="1">Active</option> 
+                            {{-- <option {{ (old('status') == '0') ? 'selected' : '' }} value="0">In Active</option>  --}}
                           </select>
                           <div style="color: red;">{{ $errors->first('status') }}</div>
                         </div>
 
-                        {{-- <div class="form-group col-md-4">
-                            <label>Picture </label>
-                            <input type="file" class="form-control" name="picture" >
-                            <div style="color: red;">{{ $errors->first('picture') }}</div>
-                        </div> --}}
-
                         <div class="form-group col-md-12">
                             <label>Remarks <span style="color: red"></span> </label>
-                            <textarea class="form-control" name="remarks" rows="3" placeholder="Add details of activity">{{ old('remarks') }}</textarea>
+                            <textarea class="form-control" name="remarks" rows="3" placeholder="Any additional info">{{ old('remarks') }}</textarea>
                             <div style="color: red;">{{ $errors->first('remarks') }}</div>
                         </div>
-                        
-                        
                     </div>
-
                 </div>
 
                 <div class="card-footer">

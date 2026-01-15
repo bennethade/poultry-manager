@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->integer('tag_id');
+            // $table->integer('tag_id');
+            $table->integer('pig_id');
             $table->string('item_type')->nullable();
             $table->string('reason');
             $table->string('quantity')->nullable();
-            $table->float('price');
+            $table->decimal('price', 20, 2)->nullable();
             $table->boolean('sold_on_discount')->default(false);
-            $table->float('discounted_price')->nullable();
+            $table->decimal('discounted_price', 20, 2)->nullable();
             $table->string('buyer_name')->nullable();
             $table->string('buyer_phone')->nullable();
             $table->date('date');

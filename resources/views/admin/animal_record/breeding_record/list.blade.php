@@ -186,10 +186,10 @@
                     @foreach ($getRecord as $value)
                         <tr>
                             <td>{{ $id++ }}</td>
-                            <td style="min-width: 100px;">{{ $value->id }}</td>
+                            <td style="min-width: 150px;"><span class="badge badge-info">{{ $value->breed_id }}</span></td>
                             
-                            <td style="min-width: 80px;">{{ $value->sow->tag_id }}</td>
-                            <td style="min-width: 80px;">{{ $value->boar->tag_id }}</td>
+                            <td style="min-width: 80px;"><span class="badge badge-primary">{{ $value->sow->tag_id }}</span></td>
+                            <td style="min-width: 80px;"><span class="badge badge-secondary">{{ $value->boar->tag_id }}</span></td>
                             <td style="min-width: 120px;">{{ $value->type }}</td>
                             <td style="min-width: 120px;">{{ date('d-m-Y', strtotime($value->expected_farrow_date)) }}</td>
                             <td style="min-width: 120px;">{{ date('d-m-Y', strtotime($value->actual_farrow_date)) }}</td>
@@ -235,8 +235,8 @@
                                 @endif
                             </td>
 
-                            <td style="min-width: 150px;">
-                                {{-- <a href="{{ route('animal_identification.view', [$value->id]) }}" class="btn btn-warning btn-sm">View</a> --}}
+                            <td style="min-width: 250px;">
+                                <a href="{{ route('breeding_record.more_record', [$value->id]) }}" class="btn btn-secondary btn-sm">More Record</a>
                                 
                                 <a href="{{ route('breeding_record.edit', [$value->id]) }}" class="btn btn-primary btn-sm">Edit</a>
 

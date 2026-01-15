@@ -8,6 +8,7 @@ use App\Models\Sales;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
 
@@ -22,7 +23,7 @@ class SalesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.sales_record.daily_sales.list', $data);
+            return view('staff.sales_record.daily_sales.list', $data);
         }
         else{
             return view('admin.sales_record.daily_sales.list', $data);
@@ -39,7 +40,7 @@ class SalesController extends Controller
         if(Auth::user()->user_type == 2)
         {
             return response()->json([
-                // 'html' => view('staff.sales_record.daily_sales.partials.record_rows', ['getRecord' => $record])->render()
+                'html' => view('staff.sales_record.daily_sales.partials.record_rows', ['getRecord' => $record])->render()
             ]);
         }
         else{
@@ -54,11 +55,11 @@ class SalesController extends Controller
     {
         $data['header_title'] = "Add New Sales";
 
-        $data['pigs'] = Pig::orderBy('tag_id')->get();
+        $data['pigs'] = Pig::orderBy('tag_id')->where('status', true)->get();
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.sales_record.daily_sales.add', $data);
+            return view('staff.sales_record.daily_sales.add', $data);
         }
         else{   
             return view('admin.sales_record.daily_sales.add', $data);
@@ -114,6 +115,14 @@ class SalesController extends Controller
 
             $record->picture = $filename;  //For the DB Fields
         }
+        
+
+         // ✅ Update pig status
+        Pig::where('id', $request->pig_id)
+            ->update([
+                'status' => false,
+                'inactive_reason' => $request->reason
+                ]);
 
 
         $record->save();
@@ -139,7 +148,7 @@ class SalesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.sales_record.daily_sales.view', $data);
+            return view('staff.sales_record.daily_sales.view', $data);
         }
         else{
             return view('admin.sales_record.daily_sales.view', $data);
@@ -151,10 +160,16 @@ class SalesController extends Controller
     {
         $data['header_title'] = "Edit Sales";
 
-        $data['pigs'] = Pig::orderBy('tag_id')->get();
+        $data['pigs'] = Pig::orderBy('tag_id')->where('status', true)->get();
 
         $data['getRecord'] = Sales::findOrFail($id);
-        return view('admin.sales_record.daily_sales.edit', $data);
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.sales_record.daily_sales.edit', $data);
+        }
+        else{   
+            return view('admin.sales_record.daily_sales.edit', $data);
+        }
     }
 
 
@@ -212,8 +227,13 @@ class SalesController extends Controller
 
        
         $record->save();
-
-        return redirect()->route('sales.list')->with('success', 'Sales Updated Successfully!');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.sales.list')->with('success', 'Sales Updated Successfully!');
+        }
+        else{
+            return redirect()->route('sales.list')->with('success', 'Sales Updated Successfully!');
+        }
 
     }
 
@@ -231,8 +251,13 @@ class SalesController extends Controller
         }
 
         $record->delete();
-
-        return redirect()->route('sales.list')->with('warning', 'Sales Deleted Successfully!');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.sales.list')->with('warning', 'Sales Deleted Successfully!');
+        }
+        else{
+            return redirect()->route('sales.list')->with('warning', 'Sales Deleted Successfully!');
+        }
     }
 
 
@@ -247,7 +272,7 @@ class SalesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.sale_record.monthly_sales.list', $data);
+            return view('staff.sales_record.monthly_sales.list', $data);
         }
         else{
             return view('admin.sales_record.monthly_sales.list', $data);
@@ -264,7 +289,7 @@ class SalesController extends Controller
         if(Auth::user()->user_type == 2)
         {
             return response()->json([
-                // 'html' => view('staff.sales_record.monthly_sales.partials.record_rows', ['getRecord' => $record])->render()
+                'html' => view('staff.sales_record.monthly_sales.partials.record_rows', ['getRecord' => $record])->render()
             ]);
         }
         else{
@@ -283,7 +308,7 @@ class SalesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.sale_record.monthly_sale.add', $data);
+            return view('staff.sales_record.monthly_sales.add', $data);
         }
         else{
             return view('admin.sales_record.monthly_sales.add', $data);
@@ -312,7 +337,7 @@ class SalesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return redirect()->route('staff.monthly_sales.list')->with('success', 'Record added successfully.');
+            return redirect()->route('staff.monthly_sales.list')->with('success', 'Record added successfully.');
         }
         else{
             return redirect()->route('monthly_sales.list')->with('success', 'Record added successfully.');
@@ -329,7 +354,7 @@ class SalesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.sales_record.monthly_sales.edit', $data);
+            return view('staff.sales_record.monthly_sales.edit', $data);
         }
         else{
             return view('admin.sales_record.monthly_sales.edit', $data);
@@ -356,7 +381,13 @@ class SalesController extends Controller
        
         $record->save();
 
-        return redirect()->route('monthly_sales.list')->with('success', 'Record Updated Successfully!');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.monthly_sales.list')->with('success', 'Record Updated Successfully!');
+        }
+        else{
+            return redirect()->route('monthly_sales.list')->with('success', 'Record Updated Successfully!');
+        }
 
     }
 
@@ -370,7 +401,59 @@ class SalesController extends Controller
 
         $record->delete();
 
-        return redirect()->route('monthly_sales.list')->with('warning', 'Record Deleted Successfully!');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.monthly_sales.list')->with('warning', 'Record Deleted Successfully!');
+        }
+        else{
+            return redirect()->route('monthly_sales.list')->with('warning', 'Record Deleted Successfully!');
+        }
+    }
+
+
+
+    public function generalSalesReport()
+    {
+        $data['header_title'] = "Sales Report";
+
+        $years = DB::table('monthly_sales')
+            ->select('year')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->pluck('year');
+
+        return view('admin.report.general_sales', compact('years'), $data);
+    }
+
+    public function generalSalesReportData(Request $request)
+    {
+        $year = $request->year;
+
+        $sales = DB::table('monthly_sales')
+            ->where('year', $year)
+            ->orderBy('month')
+            ->get();
+
+        $months = [];
+        $totalSales = [];
+        $totalExpense = [];
+        $grossProfit = [];
+
+        for ($i = 1; $i <= 12; $i++) {
+            $record = $sales->firstWhere('month', $i);
+
+            $months[] = date('M', mktime(0, 0, 0, $i, 1));
+            $totalSales[]   = $record->total_sales ?? 0;
+            $totalExpense[] = $record->total_expense ?? 0;
+            $grossProfit[]  = $record->gross_profit ?? 0;
+        }
+
+        return response()->json([
+            'months' => $months,
+            'total_sales' => $totalSales,
+            'total_expense' => $totalExpense,
+            'gross_profit' => $grossProfit,
+        ]);
     }
 
 

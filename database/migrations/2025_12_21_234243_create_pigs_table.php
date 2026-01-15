@@ -14,15 +14,19 @@ return new class extends Migration
         Schema::create('pigs', function (Blueprint $table) {
             $table->id();
             $table->string('tag_id')->unique();
-            $table->integer('breed_id')->nullable();
+            $table->string('source')->nullable();
             $table->date('dob')->nullable();
             $table->enum('sex', ['Male', 'Female'])->nullable();
-            $table->string('source')->nullable();
+            $table->string('stage')->nullable();
             $table->date('date_entry')->nullable();
+            $table->string('breed')->nullable();
             $table->decimal('initial_weight', 8, 2)->nullable();
             $table->decimal('current_weight', 8, 2)->nullable();
-            $table->enum('status', ['Breeder','Grower','Fattener'])->nullable();
+            $table->string('production_stage')->nullable();
+            $table->boolean('status')->default(true);
+            $table->string('inactive_reason')->nullable();
             $table->text('remarks')->nullable();
+
             $table->unsignedBigInteger('staff_id')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

@@ -8,10 +8,9 @@
 @foreach ($records as $value)
 <tr>
     <td>{{ $id++ }}</td>
-    <td>{{ $value->id }}</td>
-
-    <td style="min-width: 80px;">{{ $value->sow->tag_id ?? '-' }}</td>
-    <td style="min-width: 80px;">{{ $value->boar->tag_id ?? '-' }}</td>
+    <td style="min-width: 150px;"><span class="badge badge-info">{{ $value->breed_id }}</span></td>
+    <td style="min-width: 80px;"><span class="badge badge-primary">{{ $value->sow->tag_id }}</span></td>
+    <td style="min-width: 80px;"><span class="badge badge-secondary">{{ $value->boar->tag_id }}</span></td>
     <td style="min-width: 120px;">{{ $value->type }}</td>
     <td style="min-width: 120px;">{{ date('d-m-Y', strtotime($value->expected_farrow_date)) }}</td>
     <td style="min-width: 120px;">{{ date('d-m-Y', strtotime($value->actual_farrow_date)) }}</td>
@@ -54,16 +53,14 @@
     </td>
 
     <td style="min-width: 150px;">
+        <a href="{{ route('breeding_record.more_record', [$value->id]) }}" class="btn btn-secondary btn-sm">More Record</a>
+
         <a href="{{ route('breeding_record.edit', $value->id) }}" class="btn btn-primary btn-sm">Edit</a>
 
-        <form action="{{ url('admin/animal_record/breeding_record/delete/'.$value->id) }}"
-              method="POST"
-              class="d-inline-block delete-form">
+        <form action="{{ url('admin/animal_record/breeding_record/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
             @csrf
             @method('DELETE')
-            <button type="submit" class="btn btn-danger btn-sm delete">
-                Delete
-            </button>
+            <button type="submit" class="btn btn-danger btn-sm delete"> Delete</button>
         </form>
     </td>
 </tr>

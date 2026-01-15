@@ -13,14 +13,28 @@
             <td>{{ $id++ }}</td>
             
             <td style="min-width: 100px;"> <span class="badge bg-info">{{ $value->tag_id }}</span></td>
-            <td style="min-width: 100px;">{{ $value->breed_id }}</td>
+            <td style="min-width: 100px;">{{ $value->breed }}</td>
             <td style="min-width: 100px;">{{ date('d-m-Y', strtotime($value->dob)) }}</td>
-            <td style="min-width: 50px;">{{ $value->sex }}</td>
+            <td style="min-width: 50px;">
+                @if ($value->sex == 'Male')
+                    Boar
+                @else
+                    Sow
+                @endif
+            </td>
+            <td style="min-width: 100px;">{{ $value->stage }}</td>
             <td style="min-width: 100px;">{{ $value->source }}</td>
             <td style="min-width: 100px;">{{ date('d-m-Y', strtotime($value->date_entry)) }}</td>
             <td style="min-width: 100px;">{{ $value->initial_weight }}</td>
             <td style="min-width: 100px;">{{ $value->current_weight }}</td>
-            <td style="min-width: 100px;">{{ $value->status }}</td>
+            <td style="min-width: 100px;">{{ $value->production_stage }}</td>
+            <td style="min-width: 100px;">
+                @if ($value->status == 1)
+                    <span class="badge badge-success">Active</span>
+                @else
+                    <span class="badge badge-warning">Inactive</span>
+                @endif
+            </td>
 
             <td style="min-width: 350px;">
                 @php
@@ -63,16 +77,15 @@
 
             <td style="min-width: 150px;">{{ $value->updated_by_name }} {{ $value->updated_by_last_name }} {{ $value->updated_by_other_name }}</td>
 
-            <td style="min-width: 200px;">
-                <a href="{{ route('animal_identification.view', [$value->id]) }}" class="btn btn-warning btn-sm">View</a>
+            <td style="min-width: 150px;">
                 
                 <a href="{{ route('animal_identification.edit', [$value->id]) }}" class="btn btn-primary btn-sm">Edit</a>
 
-                <form action="{{ url('admin/animal_record/animal_identification/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
+                {{-- <form action="{{ url('admin/animal_record/animal_identification/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-danger delete">Delete</button>
-                </form>
+                </form> --}}
 
                 
             </td>

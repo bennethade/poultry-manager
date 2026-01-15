@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->year('year');
             $table->tinyInteger('month'); // 1 - 12
-            $table->decimal('opening_balance', 12, 2)->nullable();
-            $table->decimal('total_spent', 12, 2)->nullable();
-            $table->decimal('closing_balance', 12, 2)->nullable();
+            $table->decimal('opening_balance', 20, 2)->nullable();
+            $table->decimal('total_spent', 20, 2)->nullable();
+            $table->decimal('closing_balance', 20, 2)->nullable();
             $table->text('remarks')->nullable();
 
             $table->unsignedBigInteger('staff_id');

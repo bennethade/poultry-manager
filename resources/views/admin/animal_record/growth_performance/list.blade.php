@@ -54,27 +54,27 @@
 
                                 <div class="col-md-3">
                                     <label>Age (Days)</label>
-                                    <input type="number" class="form-control" name="age_in_days">
+                                    <input type="number" class="form-control" name="age_in_days" placeholder="Age in days">
                                 </div>
 
                                 <div class="col-md-3">
                                     <label>Age (Weeks)</label>
-                                    <input type="number" class="form-control" name="age_in_weeks">
+                                    <input type="number" class="form-control" name="age_in_weeks" placeholder="Age in weeks">
                                 </div>
 
                                 <div class="col-md-3">
                                     <label>Weight (kg)</label>
-                                    <input type="number" step="0.1" class="form-control" name="weight">
+                                    <input type="number" class="form-control" name="weight" step="any" placeholder="Eg: 12.5">
                                 </div>
 
                                 <div class="col-md-4 mt-2">
                                     <label>Feed Type</label>
-                                    <input type="text" class="form-control" name="feed_type">
+                                    <input type="text" class="form-control" name="feed_type" placeholder="Feed type">
                                 </div>
 
                                 <div class="col-md-8 mt-2">
                                     <label>Remarks</label>
-                                    <textarea class="form-control" name="remarks" rows="1"></textarea>
+                                    <textarea class="form-control" name="remarks" rows="1" placeholder="Any additional notes"></textarea>
                                 </div>
 
                                 <div class="col-md-12 mt-3">
@@ -139,7 +139,8 @@
                                             <td style="min-width: 150px;">{{ $record->staff?->name }} {{ $record->staff?->last_name }}</td>
                                             <td style="min-width: 100px;">{{ $record->created_at }}</td>
                                             <td style="min-width: 150px;">{{ $record->editor?->name }} {{ $record->editor?->last_name }}</td>
-                                            <td style="min-width: 150px;">                                        
+                                            <td style="min-width: 250px;">                                        
+                                                <a href="{{ route('growth_performance.more_record', [$record->id]) }}" class="btn btn-secondary btn-sm">More Record</a>
                                                 <a href="{{ route('growth_performance.edit', [$record->id]) }}" class="btn btn-primary btn-sm">Edit</a>
                                                 <form action="{{ url('admin/animal_record/growth_performance/delete/'.$record->id) }}" method="POST" class="d-inline-block delete-form">
                                                     @csrf

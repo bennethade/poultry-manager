@@ -16,9 +16,9 @@ return new class extends Migration
             $table->date('formulation_date');
             $table->string('feed_stage')->nullable();
             $table->string('ingredients_used')->nullable();
-            $table->decimal('quantity')->nullable();
-            $table->decimal('cost')->nullable();
-            $table->decimal('total_output')->nullable();
+            $table->decimal('quantity', 10, 2)->nullable();
+            $table->decimal('cost', 20, 2)->nullable();
+            $table->decimal('total_output', 10, 2)->nullable();
             $table->text('remarks')->nullable();
 
             $table->unsignedBigInteger('staff_id');

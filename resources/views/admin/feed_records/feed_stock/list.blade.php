@@ -77,12 +77,14 @@
                 <thead>
                   <tr>
                     <th>S/N</th>
+                    <th>Feed Material</th>
                     <th>Feed Type</th>
                     <th>Received Date</th>
-                    <th>Quantity Received</th>
+                    <th>Quantity Received(kg)</th>
                     <th>Supplier</th>
                     <th>Cost</th>
-                    <th>Remaining Stcok</th>
+                    <th>Cost Per KG</th>
+                    <th>Remaining Stock</th>
                     <th>Picture</th>
                     <th>Note</th>
                     <th>Recorded By</th>

@@ -11,7 +11,7 @@
         @endif
         
         </td>
-        <td>{{ $value->name }} {{ $value->last_name }}</td>
+        <td style="min-width: 150px;">{{ $value->name }} {{ $value->last_name }}</td>
         <td>{{ $value->email }}</td>
         <td>{{ $value->gender }}</td>
         <td style="min-width: 100px;">{{ date('d-m-Y', strtotime($value->date_of_birth)) }}</td>

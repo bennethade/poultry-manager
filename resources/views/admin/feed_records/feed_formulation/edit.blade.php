@@ -42,19 +42,19 @@
 
                         <div class="form-group col-md-3">
                             <label>Quantity (KG)</label>
-                            <input type="number" class="form-control" name="quantity" placeholder="Eg: 20" value="{{ old('quantity', $getRecord->quantity) }}">
+                            <input type="number" class="form-control" name="quantity" placeholder="Eg: 20" value="{{ old('quantity', $getRecord->quantity) }}" step="any">
                             <div style="color: red;">{{ $errors->first('quantity') }}</div>
                         </div>
 
                         <div class="form-group col-md-3">
                             <label>Total Output (KG)</label>
-                            <input type="number" class="form-control" name="total_output" placeholder="Eg: 30" value="{{ old('total_output', $getRecord->total_output) }}">
+                            <input type="number" class="form-control" name="total_output" placeholder="Eg: 30" value="{{ old('total_output', $getRecord->total_output) }}" step="any">
                             <div style="color: red;">{{ $errors->first('total_output') }}</div>
                         </div>
 
                         <div class="form-group col-md-3">
                             <label>Cost</label>
-                            <input type="number" class="form-control" name="cost" placeholder="2000" value="{{ old('cost', $getRecord->cost) }}">
+                            <input type="number" class="form-control" name="cost" placeholder="2000" value="{{ old('cost', $getRecord->cost) }}" step="any">
                             <div style="color: red;">{{ $errors->first('cost') }}</div>
                         </div>
 

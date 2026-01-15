@@ -7,6 +7,7 @@ use App\Models\MonthlyExpense;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
 
@@ -21,7 +22,7 @@ class ExpensesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.expense_record.daily_expense.list', $data);
+            return view('staff.expense_record.daily_expense.list', $data);
         }
         else{
             return view('admin.expense_record.daily_expense.list', $data);
@@ -38,7 +39,7 @@ class ExpensesController extends Controller
         if(Auth::user()->user_type == 2)
         {
             return response()->json([
-                // 'html' => view('staff.expense_record.daily_expense.partials.record_rows', ['getRecord' => $record])->render()
+                'html' => view('staff.expense_record.daily_expense.partials.record_rows', ['getRecord' => $record])->render()
             ]);
         }
         else{
@@ -57,7 +58,7 @@ class ExpensesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.expense_record.daily_expense.add', $data);
+            return view('staff.expense_record.daily_expense.add', $data);
         }
         else{
             return view('admin.expense_record.daily_expense.add', $data);
@@ -107,10 +108,10 @@ class ExpensesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return redirect()->route('staff.expenses.list')->with('success', 'Expenses added successfully.');
+            return redirect()->route('staff.expenses.list')->with('success', 'Expense added successfully.');
         }
         else{
-            return redirect()->route('expenses.list')->with('success', 'Expenses added successfully.');
+            return redirect()->route('expenses.list')->with('success', 'Expense added successfully.');
         }
     }
 
@@ -125,7 +126,7 @@ class ExpensesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.expense_record.daily_expense.view', $data);
+            return view('staff.expense_record.daily_expense.view', $data);
         }
         else{
             return view('admin.expense_record.daily_expense.view', $data);
@@ -138,7 +139,14 @@ class ExpensesController extends Controller
         $data['header_title'] = "Edit Expense";
 
         $data['getRecord'] = Expenses::findOrFail($id);
-        return view('admin.expense_record.daily_expense.edit', $data);
+        
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.expense_record.daily_expense.edit', $data);
+        }
+        else{
+            return view('admin.expense_record.daily_expense.edit', $data);
+        }
     }
 
 
@@ -185,7 +193,13 @@ class ExpensesController extends Controller
        
         $record->save();
 
-        return redirect()->route('expenses.list')->with('success', 'Expense Updated Successfully!');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.expenses.list')->with('success', 'Expense Updated Successfully!');
+        }
+        else{
+            return redirect()->route('expenses.list')->with('success', 'Expense Updated Successfully!');
+        }
 
     }
 
@@ -204,7 +218,13 @@ class ExpensesController extends Controller
 
         $record->delete();
 
-        return redirect()->route('expenses.list')->with('warning', 'Expense Deleted Successfully!');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.expenses.list')->with('warning', 'Expense Deleted Successfully!');
+        }
+        else{
+            return redirect()->route('expenses.list')->with('warning', 'Expense Deleted Successfully!');
+        }
     }
 
 
@@ -220,7 +240,7 @@ class ExpensesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.expense_record.monthly_expense.list', $data);
+            return view('staff.expense_record.monthly_expense.list', $data);
         }
         else{
             return view('admin.expense_record.monthly_expense.list', $data);
@@ -237,7 +257,7 @@ class ExpensesController extends Controller
         if(Auth::user()->user_type == 2)
         {
             return response()->json([
-                // 'html' => view('staff.expense_record.monthly_expense.partials.record_rows', ['getRecord' => $record])->render()
+                'html' => view('staff.expense_record.monthly_expense.partials.record_rows', ['getRecord' => $record])->render()
             ]);
         }
         else{
@@ -256,7 +276,7 @@ class ExpensesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.expense_record.monthly_expense.add', $data);
+            return view('staff.expense_record.monthly_expense.add', $data);
         }
         else{
             return view('admin.expense_record.monthly_expense.add', $data);
@@ -285,7 +305,7 @@ class ExpensesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return redirect()->route('staff.monthly_expenses.list')->with('success', 'Record added successfully.');
+            return redirect()->route('staff.monthly_expenses.list')->with('success', 'Record added successfully.');
         }
         else{
             return redirect()->route('monthly_expenses.list')->with('success', 'Record added successfully.');
@@ -303,7 +323,7 @@ class ExpensesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.expense_record.monthly_expense.view', $data);
+            return view('staff.expense_record.monthly_expense.view', $data);
         }
         else{
             return view('admin.expense_record.monthly_expense.view', $data);
@@ -319,7 +339,7 @@ class ExpensesController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.expense_record.monthly_expense.edit', $data);
+            return view('staff.expense_record.monthly_expense.edit', $data);
         }
         else{
             return view('admin.expense_record.monthly_expense.edit', $data);
@@ -346,7 +366,13 @@ class ExpensesController extends Controller
        
         $record->save();
 
-        return redirect()->route('monthly_expenses.list')->with('success', 'Record Updated Successfully!');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.monthly_expenses.list')->with('success', 'Record Updated Successfully!');
+        }
+        else{
+            return redirect()->route('monthly_expenses.list')->with('success', 'Record Updated Successfully!');
+        }
 
     }
 
@@ -360,7 +386,60 @@ class ExpensesController extends Controller
 
         $record->delete();
 
-        return redirect()->route('monthly_expenses.list')->with('warning', 'Record Deleted Successfully!');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.monthly_expenses.list')->with('warning', 'Record Deleted Successfully!');
+        }
+        else{
+            return redirect()->route('monthly_expenses.list')->with('warning', 'Record Deleted Successfully!');
+        }
+    }
+
+
+
+    public function generalExpenseReport()
+    {
+        $data['header_title'] = "Expense Report";
+
+        $years = DB::table('monthly_expenses')
+            ->select('year')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->pluck('year');
+
+        return view('admin.report.general_expense', compact('years'), $data);
+    }
+
+
+    public function generalExpenseReportData(Request $request)
+    {
+        $year = $request->year;
+
+        $expenses = DB::table('monthly_expenses')
+            ->where('year', $year)
+            ->orderBy('month')
+            ->get();
+
+        $months = [];
+        $opening = [];
+        $spent = [];
+        $closing = [];
+
+        for ($i = 1; $i <= 12; $i++) {
+            $record = $expenses->firstWhere('month', $i);
+
+            $months[] = date('M', mktime(0, 0, 0, $i, 1));
+            $opening[] = $record->opening_balance ?? 0;
+            $spent[]   = $record->total_spent ?? 0;
+            $closing[] = $record->closing_balance ?? 0;
+        }
+
+        return response()->json([
+            'months' => $months,
+            'opening' => $opening,
+            'spent' => $spent,
+            'closing' => $closing,
+        ]);
     }
 
 

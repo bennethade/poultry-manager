@@ -14,9 +14,9 @@
         
         <td style="min-width: 130px;">{{ $record->age_given }}</td>
 
-        <td style="min-width: 130px;">{{ $record->date_given }}</td>
+        <td style="min-width: 130px;">{{ date('d-m-Y', strtotime($record->date_given)) }}</td>
 
-        <td style="min-width: 130px;">{{ $record->next_due_date }}</td>
+        <td style="min-width: 130px;">{{ date('d-m-Y', strtotime($record->next_due_date)) }}</td>
         
         <td style="min-width: 150px;" >{{ $record->administered_by }}</td>
 
@@ -34,11 +34,17 @@
             </span>
         </td>
         
-        <td style="min-width: 150px;">{{ $record->staff->name ?? '-' }}</td>
+        <td style="min-width: 150px;">
+            {{ $record->staff?->name }}
+            {{ $record->staff?->last_name }}
+        </td>
         
         <td style="min-width: 130px;">{{ $record->created_at->format('d-m-Y H:i:s') }}</td>
 
-        <td style="min-width: 150px;">{{ $record->editor->name ?? '-' }}</td>
+        <td style="min-width: 150px;">
+            {{ $record->editor?->name }}
+            {{ $record->editor?->last_name }}
+        </td>
 
         <td style="min-width: 120px;">
             {{-- <a href="{{ route('vaccine_schedule.view', $record->id) }}" class="btn btn-info btn-sm">

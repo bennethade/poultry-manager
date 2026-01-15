@@ -21,7 +21,11 @@
 
     <td style="min-width: 150px;">{{ $record->editor->name ?? '-' }} {{ $record->editor?->last_name }}</td>
 
-    <td style="min-width: 120px;">
+    <td style="min-width: 200px;">
+        <a href="{{ route('vaccine_log.more_record',$record->id) }}" class="btn btn-secondary btn-sm">
+            More Record
+        </a>
+
         <a href="{{ route('vaccine_log.edit',$record->id) }}" class="btn btn-warning btn-sm">
             <i class="fas fa-edit"></i>
         </a>

@@ -1,0 +1,260 @@
+@extends('layouts.app')
+
+@section('content')
+
+
+
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h5>More Record for: <span class="badge badge-info">{{ $getBreedRecord->breed_id }}</span></h5>
+        </div>
+        <div class="col-sm-6" style="text-align: right;">
+            <h5>Breed Type: <span style="color: brown">{{ $getBreedRecord->type }}</span></h5>
+        </div>
+        
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+
+
+  <section class="content">
+    <div class="container-fluid">
+      
+      <div class="card">
+        <form action="{{ route('staff.breeding_record.more_record.store', $getBreedRecord->id) }}" method="POST" class="breeding-form">
+            @csrf
+
+            <div class="card-body">
+                <h4 id="toggleBreedForm"
+                    style="text-align: center; margin-bottom:10px; cursor:pointer;">
+                    <b>
+                        <i class="fa fa-plus-circle text-primary"></i>
+                        Add Record
+                    </b>
+                </h4>
+
+                @include('_message')
+                
+                
+                <div id="breedFormBody" style="display:none;">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label>Date</label>
+                            <input type="date" class="form-control" name="date" required>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Number Alive</label>
+                            <input type="number" class="form-control" name="number_alive" placeholder="Number alive">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Still Birth</label>
+                            <input type="number" class="form-control" name="still_birth" placeholder="Still birth">
+                        </div>
+
+                        <div class="col-md-6 mt-2">
+                            <label>More Detail</label>
+                            <textarea class="form-control" name="more_detail" rows="2" placeholder="Breeding explanation"></textarea>
+                        </div>
+                        
+                        <div class="col-md-6 mt-2">
+                            <label>Remarks</label>
+                            <textarea class="form-control" name="remarks" rows="2" placeholder="Any additional notes"></textarea>
+                        </div>
+
+                        <div class="col-md-12 mt-3">
+                            <button class="btn btn-primary">Save Record</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+        
+      </div>    
+
+    </div>
+  </section>
+
+
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+         
+        <!-- /.col -->
+        <div class="col-md-12">
+
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3 class="card-title mb-0">Record List</h3>
+            </div>
+
+            <div class="card-body p-0" style="overflow: auto;">
+              <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>S/N</th>
+                        <th>Date</th>
+                        <th>Number Alive</th>
+                        <th>Still Birth</th>
+                        <th>More Detail</th>
+                        <th>Remarks</th>
+                        <th>Recorded By</th>
+                        <th>Recorded Date</th>
+                        <th>Edited By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  
+                  
+                    @php
+                        use Illuminate\Support\Str;
+
+                        $id = 1;
+                    @endphp
+
+                    @foreach ($getRecord as $value)
+                        <tr>
+                            <td>{{ $id++ }}</td>
+                            <td style="min-width: 120px;">{{ date('d-m-Y', strtotime($value->date)) }}</td>
+                            <td style="min-width: 100px;">{{ $value->number_alive }}</td>
+                            <td style="min-width: 100px;">{{ $value->still_birth }}</td>
+                            <td style="min-width: 250px;">{{ $value->more_detail }}</td>
+
+                            <td style="min-width: 300px;">
+                                @php
+                                    $fullText = $value->remarks;
+                                    $shortText = Str::limit($fullText, 100);
+                                @endphp
+
+                                <span class="short-text">
+                                    {{ $shortText }}
+                                    @if (strlen($fullText) > 100)
+                                        <a href="javascript:void(0)" class="read-more text-primary">[keep reading]</a>
+                                    @endif
+                                </span>
+
+                                <span class="full-text d-none">
+                                    {{ $fullText }}
+                                    <a href="javascript:void(0)" class="read-less text-danger">[read less]</a>
+                                </span>
+                            </td>
+
+
+
+                            <td style="min-width: 150px;">
+                                @if($value->creator)
+                                    {{ $value->creator->name }}
+                                    {{ $value->creator->last_name }}
+                                    {{ $value->creator->other_name }}
+                                @endif
+                            </td>
+
+                            <td style="min-width: 150px;">{{ date('d-m-Y H:i:A', strtotime($value->created_at)) }}</td>
+
+                            <td style="min-width: 150px;">
+                                @if (!empty($value->editor))
+                                    {{ $value->editor->name }} 
+                                    {{ $value->editor->last_name }} 
+                                    {{ $value->editor->other_name }}
+                                @endif
+                            </td>
+                        </tr>
+
+                    @endforeach
+
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+
+          <!-- Pagination Links -->
+          <div class="mt-2 px-3" style="float: right;">
+              {{ $getRecord->links() }}
+          </div>
+
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+
+
+
+@endsection
+
+
+@section('script')
+
+<!--For SweetAlert2 Library-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <script>
+        $(function() {
+           $('.delete').on('click', function(e) {
+               e.preventDefault();
+               var form = $(this).closest('form');
+               Swal.fire({
+                   title: "Are you sure?",
+                   text: "You want to delete this record?",
+                   icon: "warning",
+                   showCancelButton: true,
+                   confirmButtonColor: '#dc3545',
+                   confirmButtonText: "Yes",
+                   cancelButtonText: "No"
+               }).then((result) => {
+                   if (result.isConfirmed) {
+                       form.submit();
+                   }
+               });
+           });
+       });
+
+
+        // FOR READ MORE AND READ LESS
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('read-more')) {
+                const td = e.target.closest('td');
+                td.querySelector('.short-text').classList.add('d-none');
+                td.querySelector('.full-text').classList.remove('d-none');
+            }
+
+            if (e.target.classList.contains('read-less')) {
+                const td = e.target.closest('td');
+                td.querySelector('.full-text').classList.add('d-none');
+                td.querySelector('.short-text').classList.remove('d-none');
+            }
+        });
+
+
+        // TO TOGGLE BUTTON FORM (SHOW/HIDE)
+        $(document).ready(function () {
+            $('#toggleBreedForm').on('click', function () {
+                $('#breedFormBody').slideToggle(300);
+
+                // Toggle icon
+                $(this).find('i').toggleClass('fa-plus-circle fa-minus-circle');
+            });
+        });
+
+
+    </script>
+
+
+@endsection

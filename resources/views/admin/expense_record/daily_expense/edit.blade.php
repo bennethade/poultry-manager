@@ -78,8 +78,8 @@
                         </div>
 
                         <div class="form-group col-md-6">
-                            <label>Purpose <span style="color: red">*</span> </label>
-                            <textarea class="form-control" name="purpose" rows="3" placeholder="Add details of expense made" required>{{ old('purpose', $getRecord->purpose) }}</textarea>
+                            <label>Purpose <span style="color: red"></span> </label>
+                            <textarea class="form-control" name="purpose" rows="3" placeholder="Optional purpose of expense">{{ old('purpose', $getRecord->purpose) }}</textarea>
                             <div style="color: red;">{{ $errors->first('purpose') }}</div>
                         </div>
                         

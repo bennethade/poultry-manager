@@ -32,6 +32,7 @@ class FeedStock extends Model
                     foreach ($words as $word) {
                         $query->where(function ($q) use ($word) {
                             $q->where('feed_stocks.feed_type', 'like', '%' . $word . '%')
+                            ->orWhere('feed_stocks.feed_material', 'like', '%' . $word . '%')
                             ->orWhere('feed_stocks.quantity_received', 'like', '%' . $word . '%')
                             ->orWhere('feed_stocks.supplier', 'like', '%' . $word . '%')
                             ->orWhere('feed_stocks.cost', 'like', '%' . $word . '%')
@@ -50,7 +51,7 @@ class FeedStock extends Model
 
         }
 
-        return $return->orderBy('feed_stocks.created_at', 'asc');
+        return $return->orderBy('feed_stocks.created_at', 'desc');
     }
 
 

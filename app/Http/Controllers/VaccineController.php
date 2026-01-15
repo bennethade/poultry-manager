@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pig;
+use App\Models\Task;
+use App\Models\TaskCategory;
 use App\Models\VaccineLog;
+use App\Models\VaccineLogMoreRecord;
 use App\Models\VaccineSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +18,13 @@ class VaccineController extends Controller
         $data['header_title'] = "Vaccine Schedule";
         $data['getRecord'] = VaccineSchedule::with(['pig', 'staff', 'editor'])->latest()->paginate(10);
 
-        return view('admin.vaccine_record.vaccine_schedule.list', $data);
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.vaccine_record.vaccine_schedule.list', $data);
+        }
+        else{
+            return view('admin.vaccine_record.vaccine_schedule.list', $data);
+        }
     }
 
 
@@ -35,7 +44,13 @@ class VaccineController extends Controller
                 ->orWhere('remarks', 'like', "%{$query}%");
             })->latest()->get();
 
-        return view('admin.vaccine_record.vaccine_schedule.partials.table_rows',compact('records'));
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.vaccine_record.vaccine_schedule.partials.table_rows',compact('records'));
+        }
+        else{
+            return view('admin.vaccine_record.vaccine_schedule.partials.table_rows',compact('records'));
+        }
     }
 
 
@@ -45,9 +60,15 @@ class VaccineController extends Controller
     public function scheduleAdd()
     {
         $data['header_title'] = "Add Vaccine Schedule";
-        $data['pigs']   = Pig::orderBy('tag_id')->get();
+        $data['pigs']   = Pig::orderBy('tag_id')->where('status', true)->get();
 
-        return view('admin.vaccine_record.vaccine_schedule.add',$data);
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.vaccine_record.vaccine_schedule.add',$data);
+        }
+        else{
+            return view('admin.vaccine_record.vaccine_schedule.add',$data);
+        }
     }
 
     
@@ -56,6 +77,7 @@ class VaccineController extends Controller
     public function scheduleStore(Request $request)
     {
         // dd($request->all());
+        
         $request->validate([
             'pig_id'                => 'required|exists:pigs,id',
             'vaccine_name'          => 'required',
@@ -77,8 +99,85 @@ class VaccineController extends Controller
             'staff_id'              => Auth::id(),
         ]);
 
-        return redirect()->route('vaccine_schedule.list')->with('success', 'Record added successfully.');
+        
+        if(!empty($request->next_due_date)){
+            
+            $category_id = TaskCategory::where('name', 'Vaccine Schedules')->value('id');
+
+            Task::create([
+                'title'         => $request->vaccine_name,
+                'description'   => $request->remarks,
+                'category_id'   => $category_id,
+                'assigned_to'   => Auth::id(),
+                'priority'      => 'medium',
+                'due_date'      => $request->next_due_date,
+                'status'        => 'pending',
+                'staff_id'      => Auth::id(),
+            ]);
+
+        }
+
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.vaccine_schedule.list')->with('success', 'Record added successfully.');
+        }
+        else{
+            return redirect()->route('vaccine_schedule.list')->with('success', 'Record added successfully.');
+        }
     }
+
+
+    // public function scheduleStore(Request $request)
+    // {
+    //     $request->validate([
+    //         'pig_id'          => 'required|exists:pigs,id',
+    //         'vaccine_name'    => 'required|string|max:255',
+    //         'age_given'       => 'nullable|string|max:255',
+    //         'date_given'      => 'nullable|date',
+    //         'next_due_date'   => 'nullable|date',
+    //         'administered_by' => 'nullable|string|max:255',
+    //         'remarks'         => 'nullable|string|max:255',
+    //     ]);
+
+    //     // Save vaccine schedule
+    //     $schedule = VaccineSchedule::create([
+    //         'pig_id'          => $request->pig_id,
+    //         'vaccine_name'    => $request->vaccine_name,
+    //         'age_given'       => $request->age_given,
+    //         'date_given'      => $request->date_given,
+    //         'next_due_date'   => $request->next_due_date,
+    //         'administered_by' => $request->administered_by,
+    //         'remarks'         => $request->remarks,
+    //         'staff_id'        => Auth::id(),
+    //     ]);
+
+    //     // Create task ONLY if next due date exists
+    //     if (!empty($request->next_due_date)) {
+
+    //         $category_id = TaskCategory::where('name', 'Vaccine Schedules')->value('id');
+
+    //         if ($category_id) {
+    //             Task::create([
+    //                 'title'       => $request->vaccine_name,
+    //                 'description' => $request->remarks,
+    //                 'category_id' => $category_id,
+    //                 'assigned_to' => Auth::id(),
+    //                 'priority'    => 'medium',
+    //                 'due_date'    => $request->next_due_date,
+    //                 'status'      => 'pending',
+    //                 'staff_id'    => Auth::id(),
+    //             ]);
+    //         }
+    //     }
+
+    //     if (Auth::user()->user_type == 2) {
+    //         return redirect()->route('staff.vaccine_schedule.list')->with('success', 'Record added successfully!');
+    //     }
+    //     else{
+    //         return redirect()->route('vaccine_schedule.list')->with('success', 'Record added successfully!');
+    //     }
+
+    // }
 
     
     
@@ -96,9 +195,15 @@ class VaccineController extends Controller
     {
         $data['header_title'] = "Edit schedule";
         $data['record'] = VaccineSchedule::findOrFail($id);
-        $data['pigs']   = Pig::orderBy('tag_id')->get();
+        $data['pigs']   = Pig::orderBy('tag_id')->where('status', true)->get();
 
-        return view('admin.vaccine_record.vaccine_schedule.edit', $data);
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.vaccine_record.vaccine_schedule.edit', $data);
+        }
+        else{
+            return view('admin.vaccine_record.vaccine_schedule.edit', $data);
+        }
     }
 
    
@@ -128,7 +233,13 @@ class VaccineController extends Controller
             'updated_by'            => Auth::id(),
         ]);
 
-        return redirect()->route('vaccine_schedule.list')->with('success', 'Record updated successfully.');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.vaccine_schedule.list')->with('success', 'Record updated successfully.');
+        }
+        else{
+            return redirect()->route('vaccine_schedule.list')->with('success', 'Record updated successfully.');
+        }
     }
 
    
@@ -150,7 +261,13 @@ class VaccineController extends Controller
         $data['header_title'] = "Vaccine Log";
         $data['getRecord'] = VaccineLog::with(['staff', 'editor'])->latest()->paginate(10);
 
-        return view('admin.vaccine_record.vaccine_log.list', $data);
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.vaccine_record.vaccine_log.list', $data);
+        }
+        else{
+            return view('admin.vaccine_record.vaccine_log.list', $data);
+        }
     }
 
 
@@ -179,7 +296,13 @@ class VaccineController extends Controller
             ->latest()
             ->get();
 
-        return view('admin.vaccine_record.vaccine_log.partials.table_rows',compact('records'));
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.vaccine_record.vaccine_log.partials.table_rows',compact('records'));
+        }
+        else{
+            return view('admin.vaccine_record.vaccine_log.partials.table_rows',compact('records'));
+        }
     }
 
     
@@ -189,8 +312,14 @@ class VaccineController extends Controller
     {
         $data['header_title'] = "Add Vaccine Log";
 
-        $data['pigs'] = Pig::orderBy('tag_id')->get();
-        return view('admin.vaccine_record.vaccine_log.add', $data);
+        $data['pigs'] = Pig::orderBy('tag_id')->where('status', true)->get();
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.vaccine_record.vaccine_log.add', $data);
+        }
+        else{
+            return view('admin.vaccine_record.vaccine_log.add', $data);
+        }
     }
 
     
@@ -220,7 +349,13 @@ class VaccineController extends Controller
             'staff_id'                  => Auth::id(),
         ]);
 
-        return redirect()->route('vaccine_log.list')->with('success', 'Record added successfully');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.vaccine_log.list')->with('success', 'Record added successfully');
+        }
+        else{
+            return redirect()->route('vaccine_log.list')->with('success', 'Record added successfully');
+        }
     }
 
     
@@ -231,7 +366,14 @@ class VaccineController extends Controller
         $data['header_title'] = "View Vaccine Log";
 
         $data['record'] = VaccineLog::with(['pig', 'staff'])->findOrFail($id);
-        return view('admin.vaccine_record.vaccine_log.view', $data);
+        
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.vaccine_record.vaccine_log.view', $data);
+        }
+        else{
+            return view('admin.vaccine_record.vaccine_log.view', $data);
+        }
     }
 
     
@@ -243,8 +385,16 @@ class VaccineController extends Controller
 
         $data['record'] = VaccineLog::findOrFail($id);
 
-        return view('admin.vaccine_record.vaccine_log.edit', $data);
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.vaccine_record.vaccine_log.edit', $data);
+        }
+        else{
+            return view('admin.vaccine_record.vaccine_log.edit', $data);
+        }
     }
+
+
 
    
     
@@ -274,7 +424,13 @@ class VaccineController extends Controller
             'updated_by'                => Auth::id(),
         ]);
 
-        return redirect()->route('vaccine_log.list')->with('success', 'Record updated successfully');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.vaccine_log.list')->with('success', 'Record updated successfully');
+        }
+        else{
+            return redirect()->route('vaccine_log.list')->with('success', 'Record updated successfully');
+        }
     }
 
     
@@ -286,6 +442,102 @@ class VaccineController extends Controller
 
         return back()->with('warning', 'Record deleted successfully');
     }
+
+
+
+
+    public function logMoreRecord($id)
+    {
+        $data['header_title'] = "More Record";
+
+        $data['getVaccineLog'] = VaccineLog::where('id', $id)->first();
+
+        $data['getRecord'] = VaccineLogMoreRecord::with(['creator', 'editor'])->where('vaccine_log_id', $id)->latest()->paginate(100);
+
+
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.vaccine_record.vaccine_log.more_record', $data);
+        }
+        else{
+            return view('admin.vaccine_record.vaccine_log.more_record', $data);
+        }
+    }
+
+
+
+    public function logMoreRecordStore(Request $request, $id)
+    {
+
+        $request->validate([
+            'date'          => 'required|date',
+            'quantity'      => 'nullable',
+            'remarks'       => 'nullable|string',
+        ]);
+
+
+        VaccineLogMoreRecord::create([
+            'vaccine_log_id'    => $id,
+            'date'              => $request->date,
+            'quantity'          => $request->quantity,
+            'remarks'           => $request->remarks,
+            'staff_id'          => Auth::id(),
+        ]);
+
+        return redirect()->back()->with('success', 'Record added successfully');
+    }
+
+
+
+
+
+    public function logMoreRecordEdit($id)
+    {
+        $data['header_title'] = "Edit Record";
+
+        $data['getRecord'] = VaccineLogMoreRecord::findOrFail($id);
+
+        if(Auth::user()->user_type == 2)
+        {
+            // return view('staff.vaccine_record.vaccine_log.more_record_edit', $data);
+        }
+        else{
+            return view('admin.vaccine_record.vaccine_log.more_record_edit', $data);
+        }
+    }
+
+
+
+    public function logMoreRecordUpdate(Request $request, $id)
+    {
+
+        $request->validate([
+            'date'          => 'required|date',
+            'quantity'      => 'nullable',
+            'remarks'       => 'nullable|string',
+        ]);
+
+        VaccineLogMoreRecord::findOrFail($id)->update([
+                    'date'              => $request->date,
+                    'quantity'          => $request->quantity,
+                    'remarks'           => $request->remarks,
+                    'updated_by'            => Auth::id(),
+                ]);
+
+        return redirect()->back()->with('success', 'Updated successfully');
+    }
+
+
+
+    public function logMoreRecordDelete($id)
+    {
+        VaccineLogMoreRecord::findOrFail($id)->delete();
+
+        return redirect()->back()->with('warning', 'Record Deleted Successfully!');
+    }
+
+
+
 
     
     

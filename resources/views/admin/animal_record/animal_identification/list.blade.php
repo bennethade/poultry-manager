@@ -10,8 +10,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          {{-- <h1>Daily Care Record : ({{ $getRecord->total() }}) Total Recorded</h1> --}}
-          <h1>Animal Identification</h1>
+          <h1>Animal Identification: <span class="badge badge-secondary">{{ $getRecord->total() }}</span></h1>
         </div>
         <div class="col-sm-6" style="text-align: right;">
           <a href="{{ route('animal_identification.add') }}" class="btn btn-primary">Add New Animal</a>
@@ -82,10 +81,12 @@
                     <th>Breed</th>
                     <th>DOB</th>
                     <th>Sex</th>
+                    <th>Stage</th>
                     <th>Source</th>
                     <th>Entery Date</th>
                     <th>Initial Weight</th>
                     <th>Current Weight</th>
+                    <th>Production Stage</th>
                     <th>Status</th>
                     <th>Remarks</th>
                     <th>Recorded By</th>

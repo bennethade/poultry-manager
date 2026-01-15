@@ -25,3 +25,37 @@ if (!function_exists('isApprovedUser')) {
                    ->first();
     }
 }
+
+
+//Get the list of pending tasks for the logged in user
+if (!function_exists('getUserPendingTasks')) {
+    function getUserPendingTasks()
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return 0; // not logged in
+        }
+
+        // Assuming there's a Task model with 'assigned_to' and 'status' fields
+        return \App\Models\Task::where('assigned_to', $user->id)
+                               ->whereIn('status',['pending', 'in_progress'])
+                               ->count();
+    }
+}
+
+
+//Get all pending and inprogress tasks for admin view
+if (!function_exists('getAllPendingTasks')) {
+    function getAllPendingTasks()
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return collect(); // not logged in, return empty collection
+        }
+
+        return \App\Models\Task::whereIn('status', ['pending', 'in_progress']) // include both pending and in-progress tasks
+                               ->count();
+    }
+}

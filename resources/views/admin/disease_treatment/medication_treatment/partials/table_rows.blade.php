@@ -12,8 +12,26 @@
     <td style="min-width: 200px;">{{ $record->duration }}</td>
     <td style="min-width: 200px;">{{ $record->administered_by ?? '-' }}</td>
     
-    <td style="min-width: 300px;">{{ Str::limit($record->remarks, 100) }}</td>
-    
+
+    <td style="min-width: 350px;">
+        @php
+            $fullText = $record->remarks;
+            $shortText = Str::limit($fullText, 100);
+        @endphp
+
+        <span class="short-text">
+            {{ $shortText }}
+            @if (strlen($fullText) > 100)
+                <a href="javascript:void(0)" class="read-more text-primary">[keep reading]</a>
+            @endif
+        </span>
+
+        <span class="full-text d-none">
+            {{ $fullText }}
+            <a href="javascript:void(0)" class="read-less text-danger">[read less]</a>
+        </span>
+    </td>
+
     
     <td style="min-width: 150px;">{{ $record->staff->name ?? '-' }} {{ $record->staff?->last_name }}</td>
 
@@ -21,7 +39,11 @@
 
     <td style="min-width: 150px;">{{ $record->editor->name ?? '-' }} {{ $record->editor?->last_name }}</td>
 
-    <td style="min-width: 120px;">
+    <td style="min-width: 200px;">
+        <a href="{{ route('medication_treatment.more_record',$record->id) }}" class="btn btn-secondary btn-sm">
+            More Record
+        </a>
+
         <a href="{{ route('medication_treatment.edit',$record->id) }}" class="btn btn-warning btn-sm">
             <i class="fas fa-edit"></i>
         </a>
@@ -42,3 +64,25 @@
     </td>
 </tr>
 @endforelse
+
+
+
+@section('script')
+
+<script>
+    document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('read-more')) {
+                const td = e.target.closest('td');
+                td.querySelector('.short-text').classList.add('d-none');
+                td.querySelector('.full-text').classList.remove('d-none');
+            }
+
+            if (e.target.classList.contains('read-less')) {
+                const td = e.target.closest('td');
+                td.querySelector('.full-text').classList.add('d-none');
+                td.querySelector('.short-text').classList.remove('d-none');
+            }
+        });
+</script>
+
+@endsection

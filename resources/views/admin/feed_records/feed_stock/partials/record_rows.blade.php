@@ -7,11 +7,13 @@
         <tr>
             <td>{{ $id++ }}</td>
             
+            <td style="min-width: 200px;">{{ $value->feed_material }}</td>
             <td style="min-width: 200px;">{{ $value->feed_type }}</td>
             <td style="min-width: 100px;">{{ date('d-m-Y', strtotime($value->received_date)) }}</td>
             <td style="min-width: 100px;">{{ $value->quantity_received }}</td>
             <td style="min-width: 100px;">{{ $value->supplier }}</td>
             <td style="min-width: 50px;">{{ $value->cost }}</td>
+            <td style="min-width: 100px;">{{ $value->cost_per_kg }}</td>
             <td style="min-width: 100px;">{{ $value->remaining_stock }}</td>
 
             <td>
@@ -54,7 +56,9 @@
 
             <td style="min-width: 150px;">{{ $value->updated_by_name }} {{ $value->updated_by_last_name }} {{ $value->updated_by_other_name }}</td>
 
-            <td style="min-width: 150px;">
+            <td style="min-width: 250px;">
+                <a href="{{ route('feed_stock.more_record', [$value->id]) }}" class="btn btn-secondary btn-sm">More Record</a>
+
                 <a href="{{ route('feed_stock.edit', [$value->id]) }}" class="btn btn-primary btn-sm">Edit</a>
 
                 <form action="{{ url('admin/feed_record/feed_stock/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
@@ -62,7 +66,6 @@
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-danger delete">Delete</button>
                 </form>
-                
             </td>
         </tr>
     @endforeach

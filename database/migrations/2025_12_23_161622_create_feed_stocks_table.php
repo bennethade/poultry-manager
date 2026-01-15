@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('feed_stocks', function (Blueprint $table) {
             $table->id();
             $table->date('received_date');
+            $table->string('feed_material')->nullable();
             $table->string('feed_type');
-            $table->float('quantity_received')->comment('in kg');
+            $table->decimal('quantity_received', 10, 2)->comment('in kg');
             $table->string('supplier');
-            $table->decimal('cost', 10, 2);
-            $table->float('remaining_stock')->nullable()->comment('in kg');
+            $table->decimal('cost', 20, 2);
+            $table->decimal('cost_per_kg', 20, 2);
+            $table->decimal('remaining_stock',10, 2)->nullable()->comment('in kg');
             $table->string('picture')->nullable();
             $table->text('notes')->nullable();
 

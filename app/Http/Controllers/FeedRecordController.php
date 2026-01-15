@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\feedFormulation;
+use App\Models\FeedFormulation;
 use App\Models\FeedStock;
+use App\Models\FeedStockMoreRecord;
 use App\Models\FeedUsage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,12 +21,13 @@ class FeedRecordController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.feed_records.feed_stock.list', $data);
+            return view('staff.feed_records.feed_stock.list', $data);
         }
         else{
             return view('admin.feed_records.feed_stock.list', $data);
         }
     }
+    
 
 
     public function stockAjaxSearch(Request $request)
@@ -35,7 +37,7 @@ class FeedRecordController extends Controller
         if(Auth::user()->user_type == 2)
         {
             return response()->json([
-                // 'html' => view('staff.feed_records.feed_stock.partials.record_rows', ['getRecord' => $record])->render()
+                'html' => view('staff.feed_records.feed_stock.partials.record_rows', ['getRecord' => $record])->render()
             ]);
         }
         else{
@@ -53,7 +55,7 @@ class FeedRecordController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.feed_records.feed_stock.add', $data);
+            return view('staff.feed_records.feed_stock.add', $data);
         }
         else{
             return view('admin.feed_records.feed_stock.add', $data);
@@ -73,10 +75,12 @@ class FeedRecordController extends Controller
         $record = new FeedStock();
 
         $record->received_date          = $request->received_date;
+        $record->feed_material          = $request->feed_material;
         $record->feed_type              = $request->feed_type;
         $record->quantity_received      = $request->quantity_received;
         $record->supplier               = $request->supplier;
         $record->cost                   = $request->cost;
+        $record->cost_per_kg            = $request->cost_per_kg;
         $record->remaining_stock        = $request->remaining_stock;
         $record->notes                  = $request->notes;
         $record->staff_id               = Auth::user()->id;
@@ -100,7 +104,7 @@ class FeedRecordController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return redirect()->route('staff.feed_stock.list')->with('success', 'Farm record added successfully.');
+            return redirect()->route('staff.feed_stock.list')->with('success', 'Record added successfully.');
         }
         else{
             return redirect()->route('feed_stock.list')->with('success', 'Record added successfully.');
@@ -114,8 +118,15 @@ class FeedRecordController extends Controller
         $data['header_title'] = "Edit Record";
 
         $data['getRecord'] = FeedStock::findOrFail($id);
-        return view('admin.feed_records.feed_stock.edit', $data);
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.feed_records.feed_stock.edit', $data);
+        }
+        else{
+            return view('admin.feed_records.feed_stock.edit', $data);
+        }
     }
+    
 
 
     public function stockUpdate(Request $request, $id)
@@ -129,10 +140,12 @@ class FeedRecordController extends Controller
         $record = FeedStock::findOrFail($id);
 
         $record->received_date          = $request->received_date;
+        $record->feed_material          = $request->feed_material;
         $record->feed_type              = $request->feed_type;
         $record->quantity_received      = $request->quantity_received;
         $record->supplier               = $request->supplier;
         $record->cost                   = $request->cost;
+        $record->cost_per_kg            = $request->cost_per_kg;
         $record->remaining_stock        = $request->remaining_stock;
         $record->notes                  = $request->notes;
         $record->updated_by       = Auth::user()->id;
@@ -159,7 +172,13 @@ class FeedRecordController extends Controller
        
         $record->save();
 
-        return redirect()->route('feed_stock.list')->with('success', 'Record Updated Successfully!');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.feed_stock.list')->with('success', 'Record Updated Successfully!');
+        }
+        else{
+            return redirect()->route('feed_stock.list')->with('success', 'Record Updated Successfully!');
+        }
 
     }
 
@@ -178,8 +197,113 @@ class FeedRecordController extends Controller
         
         $record->delete();
 
-        return redirect()->route('feed_stock.list')->with('warning', 'Record Deleted Successfully!');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.feed_stock.list')->with('warning', 'Record Deleted Successfully!');
+        }
+        else{
+            return redirect()->route('feed_stock.list')->with('warning', 'Record Deleted Successfully!');
+        }
     }
+
+
+
+
+    public function stockMoreDetail($id)
+    {
+        $data['header_title'] = "More Detail";
+
+        $data['getFeedStock'] = FeedStock::findOrFail($id);
+
+        $data['getRecord'] = FeedStockMoreRecord::with(['creator', 'editor'])->where('feed_stock_id', $id)->orderBy('created_at', 'desc')->paginate(100);
+
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.feed_records.feed_stock.more_record', $data);
+        }
+        else{
+            return view('admin.feed_records.feed_stock.more_record', $data);
+        }
+    }
+
+
+    public function stockMoreDetailStore(Request $request, $id)
+    {
+        // dd($request->date);
+
+
+        $request->validate([
+            'date'                  => 'required|date',
+            'quantity_used'         => 'nullable',
+            'quantity_remaining'    => 'nullable|string',
+        ]);
+
+
+        FeedStockMoreRecord::create([
+            'feed_stock_id'         => $id,
+            'date'                  => $request->date,
+            'quantity_used'         => $request->quantity_used,
+            'quantity_remaining'    => $request->quantity_remaining,
+            'remarks'               => $request->remarks,
+            'staff_id'              => Auth::id(),
+        ]);
+
+        return redirect()->back()->with('success', 'Record added successfully');
+    }
+
+
+
+
+
+    public function stockMoreDetailEdit($id)
+    {
+        $data['header_title'] = "Edit Record";
+
+        $data['getRecord'] = FeedStockMoreRecord::findOrFail($id);
+
+        if(Auth::user()->user_type == 2)
+        {
+            // return view('staff.feed_records.feed_stock.more_record_edit', $data);
+        }
+        else{
+            return view('admin.feed_records.feed_stock.more_record_edit', $data);
+        }
+    }
+
+
+
+    public function stockMoreDetailUpdate(Request $request, $id)
+    {
+        // dd($request->date);
+
+
+        $request->validate([
+            'date'                  => 'required|date',
+            'quantity_used'         => 'nullable',
+            'quantity_remaining'    => 'nullable|string',
+        ]);
+
+        FeedStockMoreRecord::findOrFail($id)->update([
+                    'date'                  => $request->date,
+                    'quantity_used'         => $request->quantity_used,
+                    'quantity_remaining'    => $request->quantity_remaining,
+                    'remarks'               => $request->remarks,
+                    'updated_by'            => Auth::id(),
+                ]);
+
+        return redirect()->back()->with('success', 'Updated successfully');
+    }
+
+
+
+    public function stockMoreDetailDelete($id)
+    {
+        FeedStockMoreRecord::findOrFail($id)->delete();
+
+        return redirect()->back()->with('warning', 'Record Deleted Successfully!');
+    }
+
+
 
 
 
@@ -195,7 +319,7 @@ class FeedRecordController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.feed_records.feed_usage.list', $data);
+            return view('staff.feed_records.feed_usage.list', $data);
         }
         else{
             return view('admin.feed_records.feed_usage.list', $data);
@@ -227,7 +351,13 @@ class FeedRecordController extends Controller
             'staff_id'      => Auth::user()->id,
         ]);
 
-        return redirect()->route('daily_feed_usage.list')->with('success', 'Record added successfully.');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.daily_feed_usage.list')->with('success', 'Record added successfully.');
+        }
+        else{
+            return redirect()->route('daily_feed_usage.list')->with('success', 'Record added successfully.');
+        }
     }
 
 
@@ -239,7 +369,7 @@ class FeedRecordController extends Controller
         
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.feed_records.feed_usage.edit', $data);
+            return view('staff.feed_records.feed_usage.edit', $data);
         }
         else{
             return view('admin.feed_records.feed_usage.edit', $data);
@@ -271,7 +401,13 @@ class FeedRecordController extends Controller
 
         $record->save();
 
-        return redirect()->route('daily_feed_usage.list')->with('success', 'Record Updated Successfully!');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.daily_feed_usage.list')->with('success', 'Record Updated Successfully!');
+        }
+        else{
+            return redirect()->route('daily_feed_usage.list')->with('success', 'Record Updated Successfully!');
+        }
 
     }   
 
@@ -311,7 +447,7 @@ class FeedRecordController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.feed_records.feed_usage.partials.table_rows',compact('records'))->render();
+            return view('staff.feed_records.feed_usage.partials.table_rows',compact('records'))->render();
         }
         else{
             return view('admin.feed_records.feed_usage.partials.table_rows',compact('records'))->render();
@@ -329,7 +465,7 @@ class FeedRecordController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return redirect()->route('staff.daily_feed_usage.list')->with('warning', 'Record Deleted Successfully!');
+            return redirect()->route('staff.daily_feed_usage.list')->with('warning', 'Record Deleted Successfully!');
         }
         else{
             return redirect()->route('daily_feed_usage.list')->with('warning', 'Record Deleted Successfully!');
@@ -343,13 +479,13 @@ class FeedRecordController extends Controller
     // FOR FEED FORMULATION
     public function formulationList(Request $request)
     {
-        $data['getRecord'] = feedFormulation::with(['staff', 'editor'])->orderBy('created_at', 'desc')->paginate(100);
+        $data['getRecord'] = FeedFormulation::with(['staff', 'editor'])->orderBy('created_at', 'desc')->paginate(100);
 
         $data['header_title'] = "Feed Formulation";
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.feed_records.feed_formulation.list', $data);
+            return view('staff.feed_records.feed_formulation.list', $data);
         }
         else{
             return view('admin.feed_records.feed_formulation.list', $data);
@@ -367,7 +503,7 @@ class FeedRecordController extends Controller
         if(Auth::user()->user_type == 2)
         {
             return response()->json([
-                // 'html' => view('staff.feed_records.feed_formulation.partials.record_rows', ['getRecord' => $record])->render()
+                'html' => view('staff.feed_records.feed_formulation.partials.record_rows', ['getRecord' => $record])->render()
             ]);
         }
         else{
@@ -385,7 +521,7 @@ class FeedRecordController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.feed_records.feed_formulation.add', $data);
+            return view('staff.feed_records.feed_formulation.add', $data);
         }
         else{
             return view('admin.feed_records.feed_formulation.add', $data);
@@ -414,7 +550,7 @@ class FeedRecordController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return redirect()->route('staff.feed_stock.list')->with('success', 'Farm record added successfully.');
+            return redirect()->route('staff.feed_formulation.list')->with('success', 'Record added successfully.');
         }
         else{
             return redirect()->route('feed_formulation.list')->with('success', 'Record added successfully.');
@@ -428,7 +564,14 @@ class FeedRecordController extends Controller
         $data['header_title'] = "Edit Record";
 
         $data['getRecord'] = FeedFormulation::findOrFail($id);
-        return view('admin.feed_records.feed_formulation.edit', $data);
+        
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.feed_records.feed_formulation.edit', $data);
+        }
+        else{
+            return view('admin.feed_records.feed_formulation.edit', $data);
+        }
     }
 
 
@@ -450,8 +593,13 @@ class FeedRecordController extends Controller
             'updated_by'       => Auth::user()->id,
         ]);
 
-
-        return redirect()->route('feed_formulation.list')->with('success', 'Record Updated Successfully!');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.feed_formulation.list')->with('success', 'Record Updated Successfully!');
+        }
+        else{
+            return redirect()->route('feed_formulation.list')->with('success', 'Record Updated Successfully!');
+        }
 
     }
 
@@ -465,7 +613,13 @@ class FeedRecordController extends Controller
         
         $record->delete();
 
-        return redirect()->route('feed_formulation.list')->with('warning', 'Record Deleted Successfully!');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.feed_formulation.list')->with('warning', 'Record Deleted Successfully!');
+        }
+        else{
+            return redirect()->route('feed_formulation.list')->with('warning', 'Record Deleted Successfully!');
+        }
     }
 
 

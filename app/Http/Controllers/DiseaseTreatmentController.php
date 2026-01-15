@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DiseaseIncidence;
 use App\Models\MedicationTreatment;
+use App\Models\MedicationTreatmentMoreRecord;
 use App\Models\Pig;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,7 +18,14 @@ class DiseaseTreatmentController extends Controller
         $data['header_title'] = "Disease Incidence";
         $data['getRecord'] = DiseaseIncidence::with(['pig', 'staff', 'editor'])->latest()->paginate(10);
 
-        return view('admin.disease_treatment.disease_incidence.list', $data);
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.disease_treatment.disease_incidence.list', $data);
+        }
+        else
+        {
+            return view('admin.disease_treatment.disease_incidence.list', $data);
+        }
     }
 
 
@@ -39,7 +47,14 @@ class DiseaseTreatmentController extends Controller
             ->latest()
             ->get();
 
-        return view('admin.disease_treatment.disease_incidence.partials.table_rows',compact('records'));
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.disease_treatment.disease_incidence.partials.table_rows',compact('records'));
+        }
+        else
+        {
+            return view('admin.disease_treatment.disease_incidence.partials.table_rows',compact('records'));
+        }
     }
 
 
@@ -49,10 +64,16 @@ class DiseaseTreatmentController extends Controller
     public function incidenceAdd()
     {
         $data['header_title'] = "Add Incidence";
-        $data['pigs']   = Pig::orderBy('tag_id')->get();
+        $data['pigs']   = Pig::orderBy('tag_id')->where('status', true)->get();
         // $staffs = User::orderBy('name')->get();
 
-        return view('admin.disease_treatment.disease_incidence.add',$data);
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.disease_treatment.disease_incidence.add',$data);
+        }
+        else{
+            return view('admin.disease_treatment.disease_incidence.add',$data);
+        }
     }
 
     
@@ -81,7 +102,13 @@ class DiseaseTreatmentController extends Controller
             'staff_id'          => Auth::id(),
         ]);
 
-        return redirect()->route('disease_incidence.list')->with('success', 'Record added successfully.');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.disease_incidence.list')->with('success', 'Record added successfully.');
+        }
+        else{
+            return redirect()->route('disease_incidence.list')->with('success', 'Record added successfully.');
+        }
     }
 
     
@@ -100,9 +127,15 @@ class DiseaseTreatmentController extends Controller
     {
         $data['header_title'] = "Edit Incidence";
         $data['record'] = DiseaseIncidence::findOrFail($id);
-        $data['pigs']   = Pig::orderBy('tag_id')->get();
+        $data['pigs']   = Pig::orderBy('tag_id')->where('status', true)->get();
 
-        return view('admin.disease_treatment.disease_incidence.edit', $data);
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.disease_treatment.disease_incidence.edit', $data);
+        }
+        else{
+            return view('admin.disease_treatment.disease_incidence.edit', $data);
+        }
     }
 
    
@@ -132,7 +165,13 @@ class DiseaseTreatmentController extends Controller
             'updated_by'        => Auth::id(),
         ]);
 
-        return redirect()->route('disease_incidence.list')->with('success', 'Record updated successfully.');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.disease_incidence.list')->with('success', 'Record updated successfully.');
+        }
+        else{
+            return redirect()->route('disease_incidence.list')->with('success', 'Record updated successfully.');
+        }
     }
 
    
@@ -152,10 +191,19 @@ class DiseaseTreatmentController extends Controller
     public function medicationList()
     {
         $data['header_title'] = "Medication & Treatment";
-        $data['getRecord'] = MedicationTreatment::with(['pig', 'staff', 'editor'])->latest()->paginate(10);
+        $data['getRecord'] = MedicationTreatment::with(['pig', 'staff', 'editor'])->latest()->paginate(100);
 
-        return view('admin.disease_treatment.medication_treatment.list', $data);
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.disease_treatment.medication_treatment.list', $data);
+        }
+        else{
+            return view('admin.disease_treatment.medication_treatment.list', $data);
+        }
     }
+
+
+    
 
 
 
@@ -178,7 +226,13 @@ class DiseaseTreatmentController extends Controller
             ->latest()
             ->get();
 
-        return view('admin.disease_treatment.medication_treatment.partials.table_rows',compact('records'));
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.disease_treatment.medication_treatment.partials.table_rows',compact('records'));
+        }
+        else{
+            return view('admin.disease_treatment.medication_treatment.partials.table_rows',compact('records'));
+        }
     }
 
     
@@ -186,8 +240,14 @@ class DiseaseTreatmentController extends Controller
 
     public function medicationAdd()
     {
-        $data['pigs'] = Pig::orderBy('tag_id')->get();
-        return view('admin.disease_treatment.medication_treatment.add', $data);
+        $data['pigs'] = Pig::orderBy('tag_id')->where('status', true)->get();
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.disease_treatment.medication_treatment.add', $data);
+        }
+        else{
+            return view('admin.disease_treatment.medication_treatment.add', $data);
+        }
     }
 
     
@@ -214,7 +274,13 @@ class DiseaseTreatmentController extends Controller
             'staff_id'        => Auth::id(),
         ]);
 
-        return redirect()->route('medication_treatment.list')->with('success', 'Record added successfully');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.medication_treatment.list')->with('success', 'Record added successfully');
+        }
+        else{
+            return redirect()->route('medication_treatment.list')->with('success', 'Record added successfully');
+        }
     }
 
     
@@ -223,7 +289,13 @@ class DiseaseTreatmentController extends Controller
     public function medicationView($id)
     {
         $record = MedicationTreatment::with(['pig', 'staff'])->findOrFail($id);
-        return view('admin.disease_treatment.medication_treatment.view', compact('record'));
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.disease_treatment.medication_treatment.view', compact('record'));
+        }
+        else{
+            return view('admin.disease_treatment.medication_treatment.view', compact('record'));
+        }
     }
 
     
@@ -232,9 +304,15 @@ class DiseaseTreatmentController extends Controller
     public function medicationEdit($id)
     {
         $record = MedicationTreatment::findOrFail($id);
-        $pigs   = Pig::orderBy('tag_id')->get();
+        $pigs   = Pig::orderBy('tag_id')->where('status', true)->get();
 
-        return view('admin.disease_treatment.medication_treatment.edit', compact('record','pigs'));
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.disease_treatment.medication_treatment.edit', compact('record','pigs'));
+        }
+        else{
+            return view('admin.disease_treatment.medication_treatment.edit', compact('record','pigs'));
+        }
     }
 
    
@@ -263,8 +341,13 @@ class DiseaseTreatmentController extends Controller
             'updated_by'      => Auth::id(),
         ]);
 
-        return redirect()->route('medication_treatment.list')
-            ->with('success', 'Medication record updated successfully');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.medication_treatment.list')->with('success', 'Medication record updated successfully');
+        }
+        else{
+            return redirect()->route('medication_treatment.list')->with('success', 'Medication record updated successfully');
+        }
     }
 
     
@@ -278,7 +361,105 @@ class DiseaseTreatmentController extends Controller
     }
 
     
-    
+
+
+
+    public function medicationMoreRecord($id)
+    {
+        $data['header_title'] = "More Record";
+
+        $data['getMedicationTreatment'] = MedicationTreatment::with('pig')->where('id', $id)->first();
+
+        $data['getRecord'] = MedicationTreatmentMoreRecord::with(['creator', 'editor'])->where('medication_treatment_id', $id)->latest()->paginate(100);
+
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.disease_treatment.medication_treatment.more_record', $data);
+        }
+        else{
+            return view('admin.disease_treatment.medication_treatment.more_record', $data);
+        }
+    }
+
+
+    public function medicationMoreRecordStore(Request $request, $id)
+    {
+        $request->validate([
+            'date'              => 'required|date',
+            'drug_info'         => 'nullable|string',
+            'dosage'            => 'nullable|string',
+            'initial_remark'    => 'nullable|string',
+            'current_remark'    => 'nullable|string',
+        ]);
+
+        MedicationTreatmentMoreRecord::create([
+            'medication_treatment_id'   => $id,
+            'date'                      => $request->date,
+            'drug_info'                 => $request->drug_info,
+            'dosage'                    => $request->dosage,
+            'initial_remark'            => $request->initial_remark,
+            'initial_remark'            => $request->initial_remark,
+            'current_remark'            => $request->current_remark,
+            'staff_id'                  => Auth::id(),
+        ]);
+
+        return redirect()->back()->with('success', 'Record added successfully');
+        
+    }
+
+
+
+
+    public function medicationMoreRecordEdit($id)
+    {
+        $data['header_title'] = "Edit Record";
+
+        $data['getRecord'] = MedicationTreatmentMoreRecord::findOrFail($id);
+
+        if(Auth::user()->user_type === 2)
+        {
+            // return view('staff.disease_treatment.medication_treatment.more_record_edit', $data);
+        }
+        else{
+            return view('admin.disease_treatment.medication_treatment.more_record_edit', $data);
+        }
+    }
+
+
+
+    public function medicationMoreRecordUpdate(Request $request, $id)
+    {
+
+        $request->validate([
+            'date'              => 'required|date',
+            'drug_info'         => 'nullable|string',
+            'dosage'            => 'nullable|string',
+            'initial_remark'    => 'nullable|string',
+            'current_remark'    => 'nullable|string',
+        ]);
+
+        MedicationTreatmentMoreRecord::findOrFail($id)->update([
+                    'date'                      => $request->date,
+                    'drug_info'                 => $request->drug_info,
+                    'dosage'                    => $request->dosage,
+                    'initial_remark'            => $request->initial_remark,
+                    'initial_remark'            => $request->initial_remark,
+                    'current_remark'            => $request->current_remark,
+                    'updated_by'                => Auth::id(),
+                ]);
+
+        return redirect()->back()->with('success', 'Updated successfully');
+    }
+
+
+
+    public function medicationMoreRecordDelete($id)
+    {
+        MedicationTreatmentMoreRecord::findOrFail($id)->delete();
+
+        return back()->with('warning', 'Record Deleted Successfully!');
+    }
+   
 
     
 

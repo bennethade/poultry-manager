@@ -27,6 +27,7 @@ return new class extends Migration
            
             $table->string('favicon_icon')->nullable();
             $table->string('logo')->nullable();
+            $table->string('qr_code')->nullable();
            
             $table->timestamps();
         });

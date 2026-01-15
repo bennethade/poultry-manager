@@ -40,11 +40,17 @@
 
         <td style="min-width: 150px;">{{ $record->vet_name }}</td>
         
-        <td style="min-width: 150px;">{{ $record->staff->name ?? '-' }}</td>
+        <td style="min-width: 150px;">
+            {{ $record->staff?->name }}
+            {{ $record->staff?->last_name }}
+        </td>
         
         <td style="min-width: 130px;">{{ $record->created_at->format('d-m-Y H:i:s') }}</td>
 
-        <td style="min-width: 150px;">{{ $record->editor->name ?? '-' }}</td>
+        <td style="min-width: 150px;">
+            {{ $record->editor?->name }}
+            {{ $record->editor?->last_name }}
+        </td>
 
         <td style="min-width: 120px;">
             {{-- <a href="{{ route('disease_incidence.view', $record->id) }}" class="btn btn-info btn-sm">

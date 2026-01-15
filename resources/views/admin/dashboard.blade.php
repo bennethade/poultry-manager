@@ -148,15 +148,27 @@
 
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
-      <div class="content-header">
-        <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-12">
-              <h1 class="m-0">Dashboard</h1>
-            </div><!-- /.col -->
-          </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-      </div>
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2 align-items-center">
+                    <div class="col-sm-6">
+                        {{-- <h4 class="m-0">Dashboard</h4> --}}
+                    </div>
+
+                    <div class="col-sm-6 text-right">
+                        <h4 class="m-0">
+                            Tasks:
+                            <span class="badge badge-danger">
+                                <a href="{{ route('tasks.index') }}" style="color: white;">
+                                    {{ $pendingTasksCount }}
+                                </a>
+                            </span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
       
 
         <div class="container">
@@ -189,6 +201,48 @@
                             <div class="card">
                                 <img src="{{ asset('upload/icons/plant.png') }}" alt="">
                                 <p>Growth & Performance</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ url('admin/animal_record/inactive_animal/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/hibernation.png') }}" alt="">
+                                <p>Inactive Animals</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            
+            <!--  GENERAL FARM ACTIVITIES RECORD Section -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span>General Farm Activities</span>
+                    <span class="chevron">&#9662;</span>
+                </div>
+
+                <div class="section-body"> 
+                    <div class="card-grid">
+                        <a href="{{ url('/admin/general_farm_activity/farm_daily_care/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/farmer.png') }}" alt="">
+                                <p>Daily Farm Activity</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ url('admin/general_farm_activity/maintenance_sanitation/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/tea.png') }}" alt="">
+                                <p>Maintenance & Sanitation</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ url('admin/tasks/pending_in_progress') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/calendar.png') }}" alt="">
+                                <p>Event Schedule</p>
                             </div>
                         </a>
                     </div>
@@ -229,6 +283,42 @@
             </div>
 
 
+
+            <!--  EVENT MANAGEMENT RECORD Section -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span>Event Management</span>
+                    <span class="chevron">&#9662;</span>
+                </div>
+
+                <div class="section-body"> 
+                    <div class="card-grid">
+                        <a href="{{ url('admin/tasks/pending_in_progress') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/checklist.png') }}" alt="">
+                                <p>All Pending/In-Progress</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ url('admin/tasks/completed') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/planning.png') }}" alt="">
+                                <p>All Completed Tasks</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ url('admin/tasks/my_todo') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/to-do-list.png') }}" alt="">
+                                <p>My To-Do</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+
             <!-- Expense RECORD Section -->
             <div class="section">
                 <div class="section-header" onclick="toggleSection(this)">
@@ -253,7 +343,7 @@
                             </div>
                         </a>
                         
-                        <a href="{{ url('admin/expense_record/weekly_expense_summary/list') }}" style="color: black; display: block">
+                        <a href="{{ url('admin/expense_record/general_expense_report') }}" style="color: black; display: block">
                             <div class="card">
                                 <img src="{{ asset('upload/icons/budget.png') }}" alt="">
                                 <p>General Expense Report</p>
@@ -288,56 +378,52 @@
                             </div>
                         </a>
                         
-                        <a href="" style="color: black; display: block">
+                        <a href="{{ url('admin/sales_record/general_sales_report') }}" style="color: black; display: block">
                             <div class="card">
                                 <img src="{{ asset('upload/icons/sales.png') }}" alt="">
                                 <p>General Sales Report</p>
                             </div>
                         </a>
 
-                        <a href="{{ url('admin/sales_record/disposal/list') }}" style="color: black; display: block">
+                        {{-- <a href="{{ url('admin/sales_record/disposal/list') }}" style="color: black; display: block">
                             <div class="card">
                                 <img src="{{ asset('upload/icons/garbage.png') }}" alt="">
                                 <p>Disposal Record</p>
                             </div>
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
             </div>
 
 
-            <!--  GENERAL FARM ACTIVITIES RECORD Section -->
+
+            {{-- FARM INVENTORY SECTION --}}
             <div class="section">
                 <div class="section-header" onclick="toggleSection(this)">
-                    <span>General Farm Activities</span>
+                    <span>Inventory Record</span>
                     <span class="chevron">&#9662;</span>
                 </div>
 
                 <div class="section-body"> 
                     <div class="card-grid">
-                        <a href="{{ url('/admin/general_farm_activity/farm_daily_care/list') }}" style="color: black; display: block">
+                        <a href="{{ url('admin/inventory/farm_inventory/list') }}" style="color: black; display: block">
                             <div class="card">
-                                <img src="{{ asset('upload/icons/farmer.png') }}" alt="">
-                                <p>Daily Farm Activity</p>
+                                <img src="{{ asset('upload/icons/inventory.png') }}" alt="">
+                                <p>Farm Inventory</p>
                             </div>
                         </a>
 
-                        <a href="{{ url('admin/general_farm_activity/maintenance_sanitation/list') }}" style="color: black; display: block">
+                        <a href="{{ url('admin/inventory/miscellaneous/list') }}" style="color: black; display: block">
                             <div class="card">
-                                <img src="{{ asset('upload/icons/tea.png') }}" alt="">
-                                <p>Maintenance & Sanitation</p>
-                            </div>
-                        </a>
-
-                        <a href="{{ url('admin/general_farm_activity/maintenance_sanitation/list') }}" style="color: black; display: block">
-                            <div class="card">
-                                <img src="{{ asset('upload/icons/calendar.png') }}" alt="">
-                                <p>Event Schedule</p>
+                                <img src="{{ asset('upload/icons/material-management.png') }}" alt="">
+                                <p>Miscellaneous Record</p>
                             </div>
                         </a>
                     </div>
                 </div>
             </div>
+
+
 
 
             <!--    DISEASE & TREATMENT RECORD Section -->

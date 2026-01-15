@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('feeding_date');
             $table->string('feed_type')->nullable();
-            $table->decimal('quantity_fed')->nullable()->comment('kg');
+            $table->decimal('quantity_fed', 10, 2)->nullable()->comment('kg');
             $table->enum('time_of_day', ['Morning', 'Afternoon', 'Evening']);
             $table->text('remarks')->nullable();
 

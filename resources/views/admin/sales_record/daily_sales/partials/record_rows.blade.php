@@ -15,7 +15,8 @@
             {{-- <td style="min-width: 200px;">{{ $value->item_type }}</td> --}}
             <td style="min-width: 100px;">{{ $value->reason }}</td>
             <td style="min-width: 100px;">{{ $value->quantity }}</td>
-            <td style="min-width: 150px;">{{ $value->price }}</td>
+            <td style="min-width: 150px;">₦{{ number_format($value->price, 2) }}</td>
+
             <td style="min-width: 150px;">
                 @if ($value->sold_on_discount == 1)
                     Yes
@@ -23,7 +24,7 @@
                     No
                 @endif
             </td>
-            <td style="min-width: 150px;">{{ $value->discounted_price }}</td>
+            <td style="min-width: 150px;">₦{{ number_format($value->discounted_price,2) }}</td>
             <td style="min-width: 150px;">{{ $value->buyer_name }}</td>
             <td style="min-width: 150px;">{{ $value->buyer_phone }}</td>
             <td style="min-width: 100px;">{{ date('d-m-Y', strtotime($value->date)) }}</td>

@@ -20,7 +20,7 @@ class FarmDailyCareController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.farm_activities.farm_daily_cares.list', $data);
+            return view('staff.farm_activities.farm_daily_cares.list', $data);
         }
         else{
             return view('admin.farm_activities.farm_daily_cares.list', $data);
@@ -38,7 +38,7 @@ class FarmDailyCareController extends Controller
         if(Auth::user()->user_type == 2)
         {
             return response()->json([
-                // 'html' => view('staff.farm_activities.farm_daily_cares.partials.record_rows', ['getRecord' => $record])->render()
+                'html' => view('staff.farm_activities.farm_daily_cares.partials.record_rows', ['getRecord' => $record])->render()
             ]);
         }
         else{
@@ -55,7 +55,7 @@ class FarmDailyCareController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.farm_activities.farm_daily_cares.add', $data);
+            return view('staff.farm_activities.farm_daily_cares.add', $data);
         }
         else{
             return view('admin.farm_activities.farm_daily_cares.add', $data);
@@ -131,7 +131,7 @@ class FarmDailyCareController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.farm_activities.farm_daily_cares.view', $data);
+            return view('staff.farm_activities.farm_daily_cares.view', $data);
         }
         else{
             return view('admin.farm_activities.farm_daily_cares.view', $data);
@@ -144,7 +144,14 @@ class FarmDailyCareController extends Controller
         $data['header_title'] = "Edit Record";
 
         $data['getRecord'] = FarmDailyCare::findOrFail($id);
-        return view('admin.farm_activities.farm_daily_cares.edit', $data);
+
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.farm_activities.farm_daily_cares.edit', $data);
+        }
+        else{
+            return view('admin.farm_activities.farm_daily_cares.edit', $data);
+        }
     }
 
 
@@ -191,7 +198,14 @@ class FarmDailyCareController extends Controller
        
         $record->save();
 
-        return redirect()->route('farm_daily_care.list')->with('success', 'Record Updated Successfully!');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.farm_daily_care.list')->with('success', 'Record Updated Successfully!');
+        }
+        else{
+            return redirect()->route('farm_daily_care.list')->with('success', 'Record Updated Successfully!');
+        }
+
 
     }
 
@@ -210,7 +224,14 @@ class FarmDailyCareController extends Controller
 
         $record->delete();
 
-        return redirect()->route('farm_daily_care.list')->with('warning', 'Record Deleted Successfully!');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.farm_daily_care.list')->with('warning', 'Record Deleted Successfully!');
+        }
+        else
+        {
+            return redirect()->route('farm_daily_care.list')->with('warning', 'Record Deleted Successfully!');
+        }
     }
 
 
@@ -227,7 +248,7 @@ class FarmDailyCareController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.farm_activities.maintenance_sanitation.list', $data);
+            return view('staff.farm_activities.maintenance_sanitation.list', $data);
         }
         else{
             return view('admin.farm_activities.maintenance_sanitation.list', $data);
@@ -259,7 +280,13 @@ class FarmDailyCareController extends Controller
             'staff_id'              => Auth::user()->id,
         ]);
 
-        return redirect()->route('maintenance_sanitation.list')->with('success', 'Record added successfully.');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.maintenance_sanitation.list')->with('success', 'Record added successfully.');
+        }
+        else{
+            return redirect()->route('maintenance_sanitation.list')->with('success', 'Record added successfully.');
+        }
     }
 
 
@@ -271,7 +298,7 @@ class FarmDailyCareController extends Controller
         
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.farm_activities.maintenance_sanitation.edit', $data);
+            return view('staff.farm_activities.maintenance_sanitation.edit', $data);
         }
         else{
             return view('admin.farm_activities.maintenance_sanitation.edit', $data);
@@ -302,7 +329,13 @@ class FarmDailyCareController extends Controller
 
         $record->save();
 
-        return redirect()->route('maintenance_sanitation.list')->with('success', 'Record Updated Successfully!');
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.maintenance_sanitation.list')->with('success', 'Record Updated Successfully!');
+        }
+        else{
+            return redirect()->route('maintenance_sanitation.list')->with('success', 'Record Updated Successfully!');
+        }
 
     }   
 
@@ -342,7 +375,7 @@ class FarmDailyCareController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return view('staff.feed_records.feed_usage.partials.table_rows',compact('records'))->render();
+            return view('staff.farm_activities.maintenance_sanitation.partials.table_rows',compact('records'))->render();
         }
         else{
             return view('admin.farm_activities.maintenance_sanitation.partials.table_rows',compact('records'))->render();
@@ -360,7 +393,7 @@ class FarmDailyCareController extends Controller
 
         if(Auth::user()->user_type == 2)
         {
-            // return redirect()->route('staff.maintenance_sanitation.list')->with('warning', 'Record Deleted Successfully!');
+            return redirect()->route('staff.maintenance_sanitation.list')->with('warning', 'Record Deleted Successfully!');
         }
         else{
             return redirect()->route('maintenance_sanitation.list')->with('warning', 'Record Deleted Successfully!');

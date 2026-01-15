@@ -12,7 +12,7 @@
             <td>{{ $id++ }}</td>
             
             <td style="min-width: 200px;">{{ $value->category }}</td>
-            <td style="min-width: 100px;">{{ $value->amount }}</td>
+            <td style="min-width: 100px;">₦{{ number_format($value->amount, 2) }}</td>
             <td style="min-width: 150px;">{{ $value->payment_method }}</td>
             <td style="min-width: 100px;">{{ date('d-m-Y', strtotime($value->date)) }}</td>
 
