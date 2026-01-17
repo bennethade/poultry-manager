@@ -87,7 +87,7 @@
                     <th>Recorded By</th>
                     <th>Recorded Date</th>
                     <th>Edited By</th>
-                    {{-- <th>Action</th> --}}
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>

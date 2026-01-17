@@ -159,7 +159,7 @@
 
                     <div class="col-sm-6 text-right">
                         <h4 class="m-0">
-                            Tasks:
+                            My Tasks:
                             <span class="badge badge-danger">
                                 <a href="{{ route('staff.tasks.index') }}" style="color: white;">
                                     {{ $pendingTasksCount }}

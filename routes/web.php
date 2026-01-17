@@ -238,7 +238,7 @@ Route::group(['middleware' => 'admin'], function(){
     Route::get('/admin/feed_record/feed_stock/ajax-search', [FeedRecordController::class, 'stockAjaxSearch'])->name('feed_stock.ajax.search');
 
 
-    //Feed Store More Record
+    //Feed Stock More Record
     Route::get('/admin/feed_record/feed_stock/more_record/{id}', [FeedRecordController::class,'stockMoreDetail'])->name('feed_stock.more_record');
     Route::post('/admin/feed_record/feed_stock/more_record/{id}', [FeedRecordController::class,'stockMoreDetailStore'])->name('feed_stock.more_record.store');
     Route::get('/admin/feed_record/feed_stock/more_record/edit/{id}', [FeedRecordController::class,'stockMoreDetailEdit'])->name('feed_stock.more_record.edit');
@@ -270,10 +270,16 @@ Route::group(['middleware' => 'admin'], function(){
     Route::get('/admin/feed_record/feed_formulation/edit/{id}', [FeedRecordController::class,'formulationEdit'])->name('feed_formulation.edit');
     Route::post('/admin/feed_record/feed_formulation/edit/{id}', [FeedRecordController::class,'formulationUpdate'])->name('feed_formulation.update');
     Route::delete('/admin/feed_record/feed_formulation/delete/{id}', [FeedRecordController::class,'formulationDelete'])->name('feed_formulation.delete');
-
+    
     //AJAX for Record Search
     Route::get('/admin/feed_record/feed_formulation/ajax-search', [FeedRecordController::class, 'formulationAjaxSearch'])->name('feed_formulation.ajax.search');
-
+    
+    //Feed Formulation More Record 
+    Route::get('/admin/feed_record/feed_formulation/more_record/{id}', [FeedRecordController::class,'formulationMoreRecord'])->name('feed_formulation.more_record');
+    Route::post('/admin/feed_record/feed_formulation/more_record/{id}', [FeedRecordController::class,'formulationMoreRecordStore'])->name('feed_formulation.more_record.store');
+    Route::get('/admin/feed_record/feed_formulation/more_record/edit/{id}', [FeedRecordController::class,'formulationMoreRecordEdit'])->name('feed_formulation.more_record.edit');
+    Route::post('/admin/feed_record/feed_formulation/more_record/edit/{id}', [FeedRecordController::class,'formulationMoreRecordUpdate'])->name('feed_formulation.more_record.update');
+    Route::delete('/admin/feed_record/feed_formulation/more_record/delete/{id}', [FeedRecordController::class,'formulationMoreRecordDelete'])->name('feed_formulation.more_record.delete');
 
 
 
@@ -719,6 +725,10 @@ Route::group(['middleware' => 'staff'], function(){
     //AJAX for Record Search
     Route::get('/staff/feed_record/feed_formulation/ajax-search', [FeedRecordController::class, 'formulationAjaxSearch'])->name('staff.feed_formulation.ajax.search');
 
+
+     //Feed Formulation More Record 
+    Route::get('/staff/feed_record/feed_formulation/more_record/{id}', [FeedRecordController::class,'formulationMoreRecord'])->name('staff.feed_formulation.more_record');
+    Route::post('/staff/feed_record/feed_formulation/more_record/{id}', [FeedRecordController::class,'formulationMoreRecordStore'])->name('staff.feed_formulation.more_record.store');
 
 
 

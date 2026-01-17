@@ -172,6 +172,15 @@ class TaskCategorySeeder extends Seeder
                 'staff_id' => $userId,
                 'updated_by' => $userId,
             ],
+            [
+                'name' => 'Farm Inventory',
+                'table_name' => 'farm_inventories',
+                'form_view' => 'tasks.forms.farm_inventories',
+                'upload_path' => 'farm_inventory',
+                'description' => 'Farm Inventory record',
+                'staff_id' => $userId,
+                'updated_by' => $userId,
+            ],
         ];
 
         foreach ($categories as $category) {

@@ -92,24 +92,26 @@
 
                 <div class="card-footer text-right">
 
-                    @if($task->status == 'pending')
-                        <form method="POST" action="{{ route('staff.tasks.start', $task) }}" class="d-inline">
-                            @csrf
-                            {{-- @method('PATCH') --}}
-                            <button class="btn btn-info">
-                                <i class="fas fa-play"></i> Start Task
-                            </button>
-                        </form>
-                    @endif
+                    @if ($task->assigned_to == Auth::user()->id)
+                        @if($task->status == 'pending')
+                            <form method="POST" action="{{ route('staff.tasks.start', $task) }}" class="d-inline">
+                                @csrf
+                                {{-- @method('PATCH') --}}
+                                <button class="btn btn-info">
+                                    <i class="fas fa-play"></i> Start Task
+                                </button>
+                            </form>
+                        @endif
 
-                    @if($task->status == 'in_progress')
-                        <form method="GET" action="{{ route('staff.tasks.complete', $task) }}" class="d-inline">
-                            @csrf
-                            {{-- @method('PATCH') --}}
-                            <button class="btn btn-success">
-                                <i class="fas fa-check"></i> Mark as Completed
-                            </button>
-                        </form>
+                        @if($task->status == 'in_progress')
+                            <form method="GET" action="{{ route('staff.tasks.complete', $task) }}" class="d-inline">
+                                @csrf
+                                {{-- @method('PATCH') --}}
+                                <button class="btn btn-success">
+                                    <i class="fas fa-check"></i> Mark as Completed
+                                </button>
+                            </form>
+                        @endif
                     @endif
 
                     @if($task->status == 'pending' || $task->status == 'in_progress')

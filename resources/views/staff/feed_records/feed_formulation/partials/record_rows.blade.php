@@ -42,16 +42,18 @@
 
             <td style="min-width: 150px;">{{ $value->editor?->name }} {{ $value->editor?->last_name }} {{ $value->editor?->other_name }}</td>
 
-            {{-- <td style="min-width: 150px;">
-                <a href="{{ route('feed_formulation.edit', [$value->id]) }}" class="btn btn-primary btn-sm">Edit</a>
+            <td style="min-width: 150px;">
+                <a href="{{ route('staff.feed_formulation.more_record', [$value->id]) }}" class="btn btn-secondary btn-sm">More Record</a>
 
-                <form action="{{ url('admin/feed_record/feed_formulation/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
+                {{-- <a href="{{ route('staff.feed_formulation.edit', [$value->id]) }}" class="btn btn-primary btn-sm">Edit</a> --}}
+
+                {{-- <form action="{{ url('staff/feed_record/feed_formulation/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-danger delete">Delete</button>
-                </form>
+                </form> --}}
                 
-            </td> --}}
+            </td>
         </tr>
     @endforeach
 

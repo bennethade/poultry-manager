@@ -33,7 +33,7 @@
         <td style="min-width: 150px;">{{ $task->creator->name }} {{ $task->creator->last_name }}</td>
 
         <td style="min-width: 200px; white-space: nowrap;" class="text-nowrap">
-            @if ($task->assigned_to === Auth::id())
+            @if ($task->assigned_to == Auth::user()->id)
                 @if($task->status == 'pending')
                     <form method="POST" action="{{ route('staff.tasks.start',$task) }}" style="display:inline;">
                         @csrf
@@ -41,9 +41,7 @@
                     </form>
                 @elseif($task->status == 'in_progress')
                     <a href="{{ route('staff.tasks.complete',$task) }}" class="btn btn-sm btn-success">Complete</a>
-                @endif
-            @else
-                
+                @endif                
             @endif
 
             <a href="{{ route('staff.tasks.show',$task) }}" class="btn btn-sm btn-warning">View</a>

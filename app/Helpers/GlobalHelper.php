@@ -37,9 +37,8 @@ if (!function_exists('getUserPendingTasks')) {
             return 0; // not logged in
         }
 
-        // Assuming there's a Task model with 'assigned_to' and 'status' fields
-        return \App\Models\Task::where('assigned_to', $user->id)
-                               ->whereIn('status',['pending', 'in_progress'])
+        // return \App\Models\Task::where('assigned_to', $user->id)
+        return \App\Models\Task::whereIn('status',['pending', 'in_progress'])
                                ->count();
     }
 }

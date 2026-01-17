@@ -6,6 +6,7 @@ use App\Models\FeedFormulation;
 use App\Models\FeedStock;
 use App\Models\FeedStockMoreRecord;
 use App\Models\FeedUsage;
+use App\Models\FormulationMoreRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -531,8 +532,6 @@ class FeedRecordController extends Controller
 
     public function formulationStore(Request $request)
     {
-        // dd($request->all());
-        // VALIDATION
         $request->validate([
             'formulation_date'  => 'nullable|date',
         ]);
@@ -620,6 +619,100 @@ class FeedRecordController extends Controller
         else{
             return redirect()->route('feed_formulation.list')->with('warning', 'Record Deleted Successfully!');
         }
+    }
+
+
+
+
+
+    public function formulationMoreRecord($id)
+    {
+        $data['header_title'] = "More Record";
+
+        $data['getFeedFormulation'] = FeedFormulation::findOrFail($id);
+
+        $data['getRecord'] = FormulationMoreRecord::with(['creator', 'editor'])->where('feed_formulation_id', $id)->orderBy('created_at', 'desc')->paginate(100);
+
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.feed_records.feed_formulation.more_record', $data);
+        }
+        else{
+            return view('admin.feed_records.feed_formulation.more_record', $data);
+        }
+    }
+
+
+    public function formulationMoreRecordStore(Request $request, $id)
+    {
+
+        $request->validate([
+            'date'                  => 'required|date',
+            'quantity_used'         => 'nullable',
+            'quantity_remaining'    => 'nullable|string',
+        ]);
+
+
+        FormulationMoreRecord::create([
+            'feed_formulation_id'   => $id,
+            'date'                  => $request->date,
+            'quantity_used'         => $request->quantity_used,
+            'quantity_remaining'    => $request->quantity_remaining,
+            'remarks'               => $request->remarks,
+            'staff_id'              => Auth::id(),
+        ]);
+
+        return redirect()->back()->with('success', 'Record added successfully');
+    }
+
+
+
+
+
+    public function formulationMoreRecordEdit($id)
+    {
+        $data['header_title'] = "Edit Record";
+
+        $data['getRecord'] = FormulationMoreRecord::findOrFail($id);
+
+        if(Auth::user()->user_type == 2)
+        {
+            // return view('staff.feed_records.feed_formulation.more_record_edit', $data);
+        }
+        else{
+            return view('admin.feed_records.feed_formulation.more_record_edit', $data);
+        }
+    }
+
+
+
+    public function formulationMoreRecordUpdate(Request $request, $id)
+    {
+
+        $request->validate([
+            'date'                  => 'required|date',
+            'quantity_used'         => 'nullable',
+            'quantity_remaining'    => 'nullable|string',
+        ]);
+
+        FormulationMoreRecord::findOrFail($id)->update([
+                    'date'                  => $request->date,
+                    'quantity_used'         => $request->quantity_used,
+                    'quantity_remaining'    => $request->quantity_remaining,
+                    'remarks'               => $request->remarks,
+                    'updated_by'            => Auth::id(),
+                ]);
+
+        return redirect()->back()->with('success', 'Updated successfully');
+    }
+
+
+
+    public function formulationMoreRecordDelete($id)
+    {
+        FormulationMoreRecord::findOrFail($id)->delete();
+
+        return redirect()->back()->with('warning', 'Record Deleted Successfully!');
     }
 
 

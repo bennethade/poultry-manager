@@ -81,11 +81,11 @@
                 
                 <a href="{{ route('animal_identification.edit', [$value->id]) }}" class="btn btn-primary btn-sm">Edit</a>
 
-                {{-- <form action="{{ url('admin/animal_record/animal_identification/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
+                <form action="{{ url('admin/animal_record/animal_identification/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-sm btn-danger delete">Delete</button>
-                </form> --}}
+                </form>
 
                 
             </td>

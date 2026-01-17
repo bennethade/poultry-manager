@@ -53,10 +53,6 @@
   @include('layouts.header')
 
 
-  {{-- @include('layouts.sidebar') --}}
-
-  {{-- @include('layouts.basic_sidebar') --}}
-
   @include('layouts.sidebar')
 
 

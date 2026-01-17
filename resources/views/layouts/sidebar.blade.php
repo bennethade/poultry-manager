@@ -339,7 +339,7 @@
                            <a href="{{ url('/admin/disease_treatment/disease_incidence/list') }}"
                               class="nav-link @if(Request::segment(3) == 'disease_incidence') active @endif">
                               <i class="far fa-circle nav-icon"></i>
-                              <p>Disease Incidence Record</p>
+                              <p>Disease Incidence</p>
                            </a>
                         </li>
                         
@@ -721,7 +721,7 @@
                            <a href="{{ url('/admin/disease_treatment/disease_incidence/list') }}"
                               class="nav-link @if(Request::segment(3) == 'disease_incidence') active @endif">
                               <i class="far fa-circle nav-icon"></i>
-                              <p>Disease Incidence Record</p>
+                              <p>Disease Incidence</p>
                            </a>
                         </li>
                         
@@ -1063,7 +1063,7 @@
                            <a href="{{ url('staff/disease_treatment/disease_incidence/list') }}"
                               class="nav-link @if(Request::segment(3) == 'disease_incidence') active @endif">
                               <i class="far fa-circle nav-icon"></i>
-                              <p>Disease Incidence Record</p>
+                              <p>Disease Incidence</p>
                            </a>
                         </li>
                         

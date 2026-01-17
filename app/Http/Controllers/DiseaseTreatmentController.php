@@ -6,6 +6,8 @@ use App\Models\DiseaseIncidence;
 use App\Models\MedicationTreatment;
 use App\Models\MedicationTreatmentMoreRecord;
 use App\Models\Pig;
+use App\Models\Task;
+use App\Models\TaskCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -215,6 +217,7 @@ class DiseaseTreatmentController extends Controller
             ->where(function ($q) use ($query) {
                 $q->where('drug_name', 'like', "%{$query}%")
                 ->orWhere('date', 'like', "%{$query}%")
+                ->orWhere('next_due_date', 'like', "%{$query}%")
                 ->orWhere('dosage', 'like', "%{$query}%")
                 ->orWhere('duration', 'like', "%{$query}%")
                 ->orWhere('administered_by', 'like', "%{$query}%")
@@ -240,6 +243,8 @@ class DiseaseTreatmentController extends Controller
 
     public function medicationAdd()
     {
+        $data['header_title'] = 'Add Medication';
+        
         $data['pigs'] = Pig::orderBy('tag_id')->where('status', true)->get();
         if(Auth::user()->user_type == 2)
         {
@@ -255,24 +260,52 @@ class DiseaseTreatmentController extends Controller
 
     public function medicationStore(Request $request)
     {
+        // dd($request->all());
         $request->validate([
-            'pig_id'   => 'required|exists:pigs,id',
-            'date'     => 'required|date',
-            'drug_name'=> 'required|string',
-            'dosage'   => 'required|string',
-            'duration' => 'required|string',
+            'pig_ids'        => 'required|array|min:1',
+            'pig_ids.*'      => 'exists:pigs,id',
+            'date'           => 'required|date',
+            'drug_name'      => 'required|string',
+            'dosage'         => 'required|string',
+            'duration'       => 'required|string',
+            'next_due_date'  => 'nullable|date',
+            'administered_by'=> 'nullable|string',
+            'remarks'        => 'nullable|string',
         ]);
 
-        MedicationTreatment::create([
-            'pig_id'          => $request->pig_id,
-            'date'            => $request->date,
-            'drug_name'       => $request->drug_name,
-            'dosage'          => $request->dosage,
-            'duration'        => $request->duration,
-            'administered_by' => $request->administered_by,
-            'remarks'         => $request->remarks,
-            'staff_id'        => Auth::id(),
-        ]);
+        // CREATE MEDICATION RECORD FOR EACH PIG
+        foreach ($request->pig_ids as $pigId) {
+            MedicationTreatment::create([
+                'pig_id'          => $pigId,
+                'date'            => $request->date,
+                'drug_name'       => $request->drug_name,
+                'dosage'          => $request->dosage,
+                'duration'        => $request->duration,
+                'next_due_date'   => $request->next_due_date,
+                'administered_by' => $request->administered_by,
+                'remarks'         => $request->remarks,
+                'staff_id'        => Auth::id(),
+            ]);
+        }
+
+
+        // CREATE ONLY ONE TASK (IF NEXT DUE DATE EXISTS)
+        if (!empty($request->next_due_date)) {
+
+            $category_id = TaskCategory::where('table_name', 'medication_treatments')->value('id');
+
+            Task::create([
+                'title'       => $request->drug_name,
+                'description' => $request->remarks,
+                'category_id' => $category_id,
+                'assigned_to' => Auth::id(),
+                'priority'    => 'medium',
+                'due_date'    => $request->next_due_date,
+                'status'      => 'pending',
+                'staff_id'    => Auth::id(),
+            ]);
+        }
+
 
         if(Auth::user()->user_type == 2)
         {
@@ -325,9 +358,9 @@ class DiseaseTreatmentController extends Controller
         $request->validate([
             'pig_id'   => 'required|exists:pigs,id',
             'date'     => 'required|date',
-            'drug_name'=> 'required|string',
-            'dosage'   => 'required|string',
-            'duration' => 'required|string',
+            'drug_name'=> 'nullable|string',
+            'dosage'   => 'nullable|string',
+            'duration' => 'nullable|string',
         ]);
 
         $record->update([
@@ -336,6 +369,7 @@ class DiseaseTreatmentController extends Controller
             'drug_name'       => $request->drug_name,
             'dosage'          => $request->dosage,
             'duration'        => $request->duration,
+            'next_due_date'   => $request->next_due_date,
             'administered_by' => $request->administered_by,
             'remarks'         => $request->remarks,
             'updated_by'      => Auth::id(),

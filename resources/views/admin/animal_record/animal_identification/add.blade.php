@@ -83,13 +83,13 @@
 
                         <div class="form-group col-md-4">
                           <label>Initial Weight</label>
-                            <input type="number" class="form-control" name="initial_weight" placeholder="Enter Initial Weight" value="{{ old('initial_weight') }}">
+                            <input type="number" class="form-control" name="initial_weight" placeholder="Enter Initial Weight" value="{{ old('initial_weight') }}" step="any">
                             <div style="color: red;">{{ $errors->first('initial_weight') }}</div>
                         </div>
 
                         <div class="form-group col-md-4">
                           <label>Current Weight</label>
-                            <input type="number" class="form-control" name="current_weight" placeholder="Enter Current Weight" value="{{ old('current_weight') }}">
+                            <input type="number" class="form-control" name="current_weight" placeholder="Enter Current Weight" value="{{ old('current_weight') }}" step="any">
                             <div style="color: red;">{{ $errors->first('current_weight') }}</div>
                         </div>
 

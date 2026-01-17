@@ -15,6 +15,7 @@ class MedicationTreatment extends Model
         'drug_name',
         'dosage',
         'duration',
+        'next_due_date',
         'administered_by',
         'remarks',
         'staff_id',

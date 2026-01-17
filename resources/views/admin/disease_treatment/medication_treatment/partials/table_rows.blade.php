@@ -5,11 +5,12 @@
 @forelse($records as $record)
 <tr>
     <td>{{ $id++ }}</td>
-    <td style="min-width: 100px;">{{ $record->date }}</td>
+    <td style="min-width: 100px;">{{ date('d-m-Y', strtotime($record->date)) }}</td>
     <td style="min-width: 70px;"><span class="badge bg-info">{{ $record->pig->tag_id }}</span></td>
     <td style="min-width: 200px;" class="fw-bold">{{ $record->drug_name }}</td>
     <td style="min-width: 200px;">{{ $record->dosage }}</td>
     <td style="min-width: 200px;">{{ $record->duration }}</td>
+    <td style="min-width: 100px;">{{ date('d-m-Y', strtotime($record->next_due_date)) }}</td>
     <td style="min-width: 200px;">{{ $record->administered_by ?? '-' }}</td>
     
 
@@ -67,7 +68,7 @@
 
 
 
-@section('script')
+{{-- @section('script')
 
 <script>
     document.addEventListener('click', function (e) {
@@ -85,4 +86,4 @@
         });
 </script>
 
-@endsection
+@endsection --}}

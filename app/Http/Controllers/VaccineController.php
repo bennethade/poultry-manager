@@ -127,59 +127,6 @@ class VaccineController extends Controller
     }
 
 
-    // public function scheduleStore(Request $request)
-    // {
-    //     $request->validate([
-    //         'pig_id'          => 'required|exists:pigs,id',
-    //         'vaccine_name'    => 'required|string|max:255',
-    //         'age_given'       => 'nullable|string|max:255',
-    //         'date_given'      => 'nullable|date',
-    //         'next_due_date'   => 'nullable|date',
-    //         'administered_by' => 'nullable|string|max:255',
-    //         'remarks'         => 'nullable|string|max:255',
-    //     ]);
-
-    //     // Save vaccine schedule
-    //     $schedule = VaccineSchedule::create([
-    //         'pig_id'          => $request->pig_id,
-    //         'vaccine_name'    => $request->vaccine_name,
-    //         'age_given'       => $request->age_given,
-    //         'date_given'      => $request->date_given,
-    //         'next_due_date'   => $request->next_due_date,
-    //         'administered_by' => $request->administered_by,
-    //         'remarks'         => $request->remarks,
-    //         'staff_id'        => Auth::id(),
-    //     ]);
-
-    //     // Create task ONLY if next due date exists
-    //     if (!empty($request->next_due_date)) {
-
-    //         $category_id = TaskCategory::where('name', 'Vaccine Schedules')->value('id');
-
-    //         if ($category_id) {
-    //             Task::create([
-    //                 'title'       => $request->vaccine_name,
-    //                 'description' => $request->remarks,
-    //                 'category_id' => $category_id,
-    //                 'assigned_to' => Auth::id(),
-    //                 'priority'    => 'medium',
-    //                 'due_date'    => $request->next_due_date,
-    //                 'status'      => 'pending',
-    //                 'staff_id'    => Auth::id(),
-    //             ]);
-    //         }
-    //     }
-
-    //     if (Auth::user()->user_type == 2) {
-    //         return redirect()->route('staff.vaccine_schedule.list')->with('success', 'Record added successfully!');
-    //     }
-    //     else{
-    //         return redirect()->route('vaccine_schedule.list')->with('success', 'Record added successfully!');
-    //     }
-
-    // }
-
-    
     
 
     // public function scheduleView($id)

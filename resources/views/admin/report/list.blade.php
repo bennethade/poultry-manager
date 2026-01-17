@@ -10,7 +10,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Report</h1>
+          <h1>General Report</h1>
         </div>
                 
       </div>
@@ -72,16 +72,16 @@
                 <tbody>
                     <tr>
                         <td><strong>Today</strong></td>
-                        <td>{{ number_format($today_expense, 2) }}</td>
-                        <td>{{ number_format($today_sales, 2) }}</td>
+                        <td>₦{{ number_format($today_expense, 2) }}</td>
+                        <td>₦{{ number_format($today_sales, 2) }}</td>
                         <td>
                           @php
                             $todayBalance = $today_sales - $today_expense
                           @endphp
                             @if ($todayBalance >= 0)
-                                <span style="color: blue">{{ number_format($todayBalance, 2) }}</span>
+                                <span style="color: blue">₦{{ number_format($todayBalance, 2) }}</span>
                             @else
-                                <span style="color: red">{{ number_format($todayBalance, 2) }}</span>
+                                <span style="color: red">₦{{ number_format($todayBalance, 2) }}</span>
                               
                             @endif
                         </td>
@@ -90,14 +90,14 @@
 
                     <tr>
                         <td><strong>Yesterday</strong></td>
-                        <td>{{ number_format($yesterday_expense, 2) }}</td>
-                        <td>{{ number_format($yesterday_sales, 2) }}</td>
+                        <td>₦{{ number_format($yesterday_expense, 2) }}</td>
+                        <td>₦{{ number_format($yesterday_sales, 2) }}</td>
                         <td>
                             @php
                                 $yesterdayBalance = $yesterday_sales - $yesterday_expense;
                             @endphp
                             <span style="color: {{ $yesterdayBalance >= 0 ? 'blue' : 'red' }}">
-                                {{ number_format($yesterdayBalance, 2) }}
+                                ₦{{ number_format($yesterdayBalance, 2) }}
                             </span>
                         </td>
                     </tr>
@@ -106,28 +106,28 @@
 
                     <tr>
                         <td><strong>This Week</strong></td>
-                        <td>{{ number_format($week_expense, 2) }}</td>
-                        <td>{{ number_format($week_sales, 2) }}</td>
+                        <td>₦{{ number_format($week_expense, 2) }}</td>
+                        <td>₦{{ number_format($week_sales, 2) }}</td>
                         <td>
                             @php
                                 $weekBalance = $week_sales - $week_expense;
                             @endphp
                             <span style="color: {{ $weekBalance >= 0 ? 'blue' : 'red' }}">
-                                {{ number_format($weekBalance, 2) }}
+                                ₦{{ number_format($weekBalance, 2) }}
                             </span>
                         </td>
                     </tr>
 
                     <tr>
                         <td><strong>Last Week</strong></td>
-                        <td>{{ number_format($last_week_expense, 2) }}</td>
-                        <td>{{ number_format($last_week_sales, 2) }}</td>
+                        <td>₦{{ number_format($last_week_expense, 2) }}</td>
+                        <td>₦{{ number_format($last_week_sales, 2) }}</td>
                         <td>
                             @php
                                 $lastWeekBalance = $last_week_sales - $last_week_expense;
                             @endphp
                             <span style="color: {{ $lastWeekBalance >= 0 ? 'blue' : 'red' }}">
-                                {{ number_format($lastWeekBalance, 2) }}
+                                ₦{{ number_format($lastWeekBalance, 2) }}
                             </span>
                         </td>
                     </tr>
@@ -136,46 +136,46 @@
 
                     <tr>
                         <td><strong>This Month</strong></td>
-                        <td>{{ number_format($month_expense, 2) }}</td>
-                        <td>{{ number_format($month_sales, 2) }}</td>
+                        <td>₦{{ number_format($month_expense, 2) }}</td>
+                        <td>₦{{ number_format($month_sales, 2) }}</td>
                         <td>
                           @php
                             $thisMonthBalance = $month_sales - $month_expense
                           @endphp
                             @if ($thisMonthBalance >= 0)
-                                <span style="color: blue">{{ number_format($thisMonthBalance, 2) }}</span>
+                                <span style="color: blue">₦{{ number_format($thisMonthBalance, 2) }}</span>
                             @else
-                                <span style="color: red">{{ number_format($thisMonthBalance, 2) }}</span>                              
+                                <span style="color: red">₦{{ number_format($thisMonthBalance, 2) }}</span>                              
                             @endif
                         </td>
                     </tr>
 
                     <tr>
                         <td><strong>Last Month</strong></td>
-                        <td>{{ number_format($last_month_expense, 2) }}</td>
-                        <td>{{ number_format($last_month_sales, 2) }}</td>
+                        <td>₦{{ number_format($last_month_expense, 2) }}</td>
+                        <td>₦{{ number_format($last_month_sales, 2) }}</td>
                         <td>
                           @php
                             $lastMmonthBalance = $last_month_sales - $last_month_expense
                           @endphp
                             @if ($lastMmonthBalance >= 0)
-                                <span style="color: blue">{{ number_format($lastMmonthBalance, 2) }}</span>
+                                <span style="color: blue">₦{{ number_format($lastMmonthBalance, 2) }}</span>
                             @else
-                                <span style="color: red">{{ number_format($lastMmonthBalance, 2) }}</span>                              
+                                <span style="color: red">₦{{ number_format($lastMmonthBalance, 2) }}</span>                              
                             @endif
                         </td>
                     </tr>
 
                     <tr class="bg-light">
                         <td><strong>All Time</strong></td>
-                        <td>{{ number_format($total_expense, 2) }}</td>
-                        <td>{{ number_format($total_sales, 2) }}</td>
+                        <td>₦{{ number_format($total_expense, 2) }}</td>
+                        <td>₦{{ number_format($total_sales, 2) }}</td>
                         <td>
                           @php
                             $allTimeBalance = $total_sales - $total_expense;
                           @endphp
                             <span style="color: {{ $allTimeBalance >= 0 ? 'blue' : 'red' }}">
-                                {{ number_format($allTimeBalance, 2) }}
+                                ₦{{ number_format($allTimeBalance, 2) }}
                             </span>
                         </td>
                     </tr>

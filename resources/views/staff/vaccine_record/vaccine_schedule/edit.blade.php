@@ -51,7 +51,7 @@
                      
                      <div class="col-md-4 mb-3">
                         <label>Next Due Date</label>
-                        <input type="date" name="next_due_date" value="{{ old('next_due_date', $record->next_due_date) }}" class="form-control" required>
+                        <input type="date" name="next_due_date" value="{{ old('next_due_date', $record->next_due_date) }}" class="form-control">
                      </div>
                   </div>
 

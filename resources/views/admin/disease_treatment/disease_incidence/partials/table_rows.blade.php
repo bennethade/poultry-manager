@@ -72,7 +72,7 @@
     </tr>
     @empty
     <tr>
-        <td colspan="8" class="text-center text-muted py-4">
+        <td colspan="100%" class="text-muted py-4">
             No records found
         </td>
     </tr>

@@ -26,7 +26,7 @@
     <div class="container-fluid">
       
       <div class="card">
-        <form action="{{ route('feed_stock.more_record.update', $getRecord->id) }}" method="POST" class="breeding-form">
+        <form action="{{ route('feed_formulation.more_record.update', $getRecord->id) }}" method="POST" class="breeding-form">
             @csrf
 
             <div class="card-body">

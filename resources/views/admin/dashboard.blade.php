@@ -157,7 +157,7 @@
 
                     <div class="col-sm-6 text-right">
                         <h4 class="m-0">
-                            Tasks:
+                            My Tasks:
                             <span class="badge badge-danger">
                                 <a href="{{ route('tasks.index') }}" style="color: white;">
                                     {{ $pendingTasksCount }}
@@ -384,13 +384,6 @@
                                 <p>General Sales Report</p>
                             </div>
                         </a>
-
-                        {{-- <a href="{{ url('admin/sales_record/disposal/list') }}" style="color: black; display: block">
-                            <div class="card">
-                                <img src="{{ asset('upload/icons/garbage.png') }}" alt="">
-                                <p>Disposal Record</p>
-                            </div>
-                        </a> --}}
                     </div>
                 </div>
             </div>
@@ -479,6 +472,44 @@
                     </div>
                 </div>
             </div>
+
+
+
+            <!-- Report Section -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span>Reports</span>
+                    <span class="chevron">&#9662;</span>
+                </div>
+
+                <div class="section-body">
+                    <div class="card-grid">
+                        <a href="{{ url('admin/expense_record/general_expense_report') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/expense_report.png') }}" alt="">
+                                <p>Expense Report</p>
+                            </div>
+                        </a>
+
+                        
+                        <a href="{{ url('admin/sales_record/general_sales_report') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/sales_report.png') }}" alt="">
+                                <p>Sales Report</p>
+                            </div>
+                        </a>
+                        
+                        <a href="{{ url('admin/report/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/general_report.png') }}" alt="">
+                                <p>General Report</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
 
         </div>
 

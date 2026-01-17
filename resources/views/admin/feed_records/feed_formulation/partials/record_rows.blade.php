@@ -42,7 +42,9 @@
 
             <td style="min-width: 150px;">{{ $value->editor?->name }} {{ $value->editor?->last_name }} {{ $value->editor?->other_name }}</td>
 
-            <td style="min-width: 150px;">
+            <td style="min-width: 250px;">
+                <a href="{{ route('feed_formulation.more_record', [$value->id]) }}" class="btn btn-secondary btn-sm">More Record</a>
+
                 <a href="{{ route('feed_formulation.edit', [$value->id]) }}" class="btn btn-primary btn-sm">Edit</a>
 
                 <form action="{{ url('admin/feed_record/feed_formulation/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">

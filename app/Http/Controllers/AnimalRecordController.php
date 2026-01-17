@@ -18,6 +18,9 @@ class AnimalRecordController extends Controller
         $data['getRecord'] = Pig::getRecord($request)->paginate(100);
         $data['header_title'] = "Animal Records";
 
+        $data['boarCount'] = Pig::getRecord()->where('sex', 'Male')->count();
+        $data['sowCount'] = Pig::getRecord()->where('sex', 'Female')->count();
+
         if(Auth::user()->user_type == 2)
         {
             return view('staff.animal_record.animal_identification.list', $data);
@@ -594,7 +597,8 @@ class AnimalRecordController extends Controller
      */
     public function loadPigGrowth($pig_id)
     {
-        $records = GrowthRecord::where('pig_id', $pig_id)->orderBy('measurement_date')->get();
+        // $records = GrowthRecord::where('pig_id', $pig_id)->orderBy('measurement_date')->get();
+        $records = GrowthRecord::where('pig_id', $pig_id)->orderBy('created_at', 'desc')->get();
 
         $chartDates = $records->pluck('measurement_date');
         $chartWeights = $records->pluck('weight');

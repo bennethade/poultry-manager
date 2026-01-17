@@ -29,6 +29,7 @@
                     <th>Drug</th>
                     <th>Dosage</th>
                     <th>Duration</th>
+                    <th>Next Due Date</th>
                     <th>Administered By</th>
                     <th>Remarks</th>
                     <th>Recorded By</th>
@@ -82,12 +83,14 @@
 
 
 
-            $(document).on('click', '.delete', function (e) {
+            // DELETE CONFIRMATION
+            $(document).on('click', '.delete', function(e){
                 e.preventDefault();
                 let form = $(this).closest('form');
 
                 Swal.fire({
-                    title: 'Delete record?',
+                    title: 'Delete Record?',
+                    text: 'This action cannot be undone',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d33'
@@ -97,6 +100,22 @@
             });
 
         });
+
+
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('read-more')) {
+                const td = e.target.closest('td');
+                td.querySelector('.short-text').classList.add('d-none');
+                td.querySelector('.full-text').classList.remove('d-none');
+            }
+
+            if (e.target.classList.contains('read-less')) {
+                const td = e.target.closest('td');
+                td.querySelector('.full-text').classList.add('d-none');
+                td.querySelector('.short-text').classList.remove('d-none');
+            }
+        });
+        
     </script>
 @endsection
 

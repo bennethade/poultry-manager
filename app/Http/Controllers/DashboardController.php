@@ -2,20 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AssignClassTeacher;
-use App\Models\ClassModel;
-use App\Models\ClassSubject;
-use App\Models\Exam;
 use App\Models\Expenses;
 use App\Models\FarmDailyCare;
 use App\Models\FarmRecords;
-use App\Models\Homework;
-use App\Models\NoticeBoard;
+
 use App\Models\Sales;
-use App\Models\StudentAttendance;
-use App\Models\StudentFees;
-use App\Models\Subject;
-use App\Models\SubmitHomework;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -49,24 +40,20 @@ class DashboardController extends Controller
         $data['getTotalSales'] = Sales::getTotalSales();
 
 
-        if(Auth::user()->user_type == 1 || Auth::user()->user_type == 'Super Admin' || Auth::user()->user_type == 'Admin')
-        {          
-            $data['pendingTasksCount'] = Task::where('status','pending')->orWhere('status', 'in_progress')->count();
-
-            return view('admin.dashboard', $data);    
-        }       
-
-
-        elseif(Auth::user()->user_type == 2 )
+        if(Auth::user()->user_type == 2 )
         {            
             $data['pendingTasksCount'] = Task::where('assigned_to',Auth::id())->whereIn('status',['pending', 'in_progress'])->count();
 
             return view('staff.dashboard', $data);
         }
+        else{
+            $data['pendingTasksCount'] = Task::whereIn('status',['pending', 'in_progress'])->count();
+
+            return view('admin.dashboard', $data); 
+        }
 
 
     }
-
 
 
 
