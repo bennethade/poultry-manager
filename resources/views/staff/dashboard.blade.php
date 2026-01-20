@@ -212,6 +212,13 @@
                                 <p>Inactive Animals</p>
                             </div>
                         </a>
+
+                        <a href="{{ url('staff/animal_record/heating/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/heatwave.png') }}" alt="">
+                                <p>Heating Record</p>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -456,6 +463,41 @@
                             <div class="card">
                                 <img src="{{ asset('upload/icons/vaccine-log.png') }}" alt="">
                                 <p>Farm-Wide Vaccine Log</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Report Section -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <span>Reports</span>
+                    <span class="chevron">&#9662;</span>
+                </div>
+
+                <div class="section-body">
+                    <div class="card-grid">
+                        <a href="{{ url('staff/expense_record/general_expense_report') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/expense_report.png') }}" alt="">
+                                <p>Expense Report</p>
+                            </div>
+                        </a>
+
+                        
+                        <a href="{{ url('staff/sales_record/general_sales_report') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/sales_report.png') }}" alt="">
+                                <p>Sales Report</p>
+                            </div>
+                        </a>
+                        
+                        <a href="{{ url('staff/report/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/general_report.png') }}" alt="">
+                                <p>General Report</p>
                             </div>
                         </a>
                     </div>

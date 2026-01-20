@@ -32,7 +32,7 @@
 let chart;
 
 function loadChart(year) {
-    fetch(`{{ route('general.sales.report.data') }}?year=${year}`)
+    fetch(`{{ route('staff.general.sales.report.data') }}?year=${year}`)
         .then(res => res.json())
         .then(data => {
 

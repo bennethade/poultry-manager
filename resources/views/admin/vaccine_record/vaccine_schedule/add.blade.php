@@ -14,17 +14,31 @@
                <form method="POST" action="{{ route('vaccine_schedule.store') }}">
                   @csrf
                   <div class="row">
+                     
                      <div class="col-md-4 mb-3">
-                        <label>Pig ID</label>
-                        <select name="pig_id" id="pigSelect" class="form-control" required>
-                           <option value="">Select Pig</option>
+                        <label class="fw-bold">Select Pigs</label>
+                        <select
+                           name="pig_ids[]"
+                           id="pigSelect"
+                           class="form-control"
+                           multiple
+                           required
+                        >
+                           {{-- Select All --}}
+                           <option value="__all__">Select All</option>
+
                            @foreach($pigs as $pig)
-                           <option value="{{ $pig->id }}">
-                              {{ $pig->tag_id }}
-                           </option>
+                                 <option
+                                    value="{{ $pig->id }}"
+                                    @if(isset($selectedPigIds) && in_array($pig->id, $selectedPigIds)) selected @endif
+                                 >
+                                    {{ $pig->tag_id }}
+                                 </option>
                            @endforeach
                         </select>
                      </div>
+
+                     
 
                      <div class="col-md-4 mb-3">
                         <label>Vaccine Name</label>
@@ -73,15 +87,61 @@
    </section>
 </div>
 @endsection
+
+
 @section('script')
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
+   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+   <script>
    $(document).ready(function () {
-       $('#pigSelect').select2({
-           placeholder: 'Search here...',
-           allowClear: true,
-           width: '100%'
-       });
+
+      const SELECT_ALL_VALUE = '__all__';
+
+      $('#pigSelect').select2({
+         placeholder: 'Select pigs',
+         closeOnSelect: false,
+         width: '100%',
+         templateResult: formatOption,
+         templateSelection: formatSelection
+      });
+
+      function formatOption(option) {
+         if (!option.id) return option.text;
+
+         return $(`
+               <span>
+                  <input type="checkbox" style="margin-right:6px;" />
+                  ${option.text}
+               </span>
+         `);
+      }
+
+      function formatSelection(option) {
+         return option.text;
+      }
+
+      // Select All logic
+      $('#pigSelect').on('select2:select', function (e) {
+         if (e.params.data.id === SELECT_ALL_VALUE) {
+               let allValues = [];
+
+               $('#pigSelect option').each(function () {
+                  if (this.value !== SELECT_ALL_VALUE) {
+                     allValues.push(this.value);
+                  }
+               });
+
+               $('#pigSelect').val(allValues).trigger('change');
+         }
+      });
+
+      $('#pigSelect').on('select2:unselect', function (e) {
+         if (e.params.data.id === SELECT_ALL_VALUE) {
+               $('#pigSelect').val(null).trigger('change');
+         }
+      });
+
    });
-</script>
+   </script>
 @endsection

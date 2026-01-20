@@ -129,7 +129,7 @@
                                     @foreach($records as $record)
                                         <tr>
                                             <td>{{ $id++ }}</td>
-                                            <td style="min-width: 100px;">{{ $record->pig->tag_id }}</td>
+                                            <td style="min-width: 100px;">{{ $record->pig?->tag_id }}</td>
                                             <td style="min-width: 120px;">{{ $record->measurement_date }}</td>
                                             <td style="min-width: 100px;">{{ $record->age_in_days }}</td>
                                             <td style="min-width: 100px;">{{ $record->age_in_weeks }}</td>

@@ -151,6 +151,14 @@
                               <p>Inactive Animals</p>
                            </a>
                         </li>
+
+                        <li class="nav-item">
+                           <a href="{{ url('admin/animal_record/heating/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'heating') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Heating Record</p>
+                           </a>
+                        </li>
                      </ul>
                   </li>
 
@@ -891,6 +899,14 @@
                               <p>Inactive Animals</p>
                            </a>
                         </li>
+
+                        <li class="nav-item">
+                           <a href="{{ url('staff/animal_record/heating/list') }}"
+                              class="nav-link @if(Request::segment(3) == 'heating') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Heating Record</p>
+                           </a>
+                        </li>
                      </ul>
                   </li>
 
@@ -954,6 +970,15 @@
                               <p>Monthly Summary</p>
                            </a>
                         </li>
+
+                        <li class="nav-item">
+                           <a href="{{ url('staff/expense_record/general_expense_report') }}"
+                              class="nav-link @if(Request::segment(3) == 'general_expense_report') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Expense Report</p>
+                           </a>
+                        </li>
+
                      </ul>
                   </li>
 
@@ -980,6 +1005,14 @@
                               class="nav-link @if(Request::segment(3) == 'monthly_sales_summary') active @endif">
                               <i class="far fa-circle nav-icon"></i>
                               <p>Monthly Summary</p>
+                           </a>
+                        </li>
+
+                        <li class="nav-item">
+                           <a href="{{ url('staff/sales_record/general_sales_report') }}"
+                              class="nav-link @if(Request::segment(3) == 'general_sales_report') active @endif">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Sales Report</p>
                            </a>
                         </li>
                      </ul>

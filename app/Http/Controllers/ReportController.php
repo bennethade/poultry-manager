@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
@@ -81,7 +82,14 @@ class ReportController extends Controller
 
 
         $data['header_title'] = 'Reports';
-        return view('admin.report.list', $data);
+
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.report.list', $data);
+        }
+        else{
+            return view('admin.report.list', $data);
+        }
     }
 
 

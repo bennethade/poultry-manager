@@ -15,7 +15,7 @@
         <td style="min-width: 150px;">{{ $record->staff?->name }} {{ $record->staff?->last_name }}</td>
         <td style="min-width: 100px;">{{ $record->created_at }}</td>
         <td style="min-width: 150px;">{{ $record->editor?->name }} {{ $record->editor?->last_name }}</td>
-        <td style="min-width: 150px;">
+        <td style="min-width: 250px;">
             <a href="{{ route('growth_performance.more_record', [$record->id]) }}" class="btn btn-secondary btn-sm">More Record</a>                                        
             <a href="{{ route('growth_performance.edit', [$record->id]) }}" class="btn btn-primary btn-sm">Edit</a>
             <form action="{{ url('admin/animal_record/growth_performance/delete/'.$record->id) }}" method="POST" class="d-inline-block delete-form">

@@ -10,9 +10,10 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Breeding Record</h1>
+          <h1>Heating Record</h1>
         </div>
         <div class="col-sm-6" style="text-align: right;">
+          {{-- <a href="{{ route('animal_identification.add') }}" class="btn btn-primary">Add New Animal</a> --}}
           
         </div>
         
@@ -26,7 +27,7 @@
     <div class="container-fluid">
       
       <div class="card">
-        <form action="{{ route('staff.breeding_record.store') }}" method="POST" class="breeding-form">
+        <form action="{{ route('heating.store') }}" method="POST" class="breeding-form">
             @csrf
 
             <div class="card-body">
@@ -45,69 +46,41 @@
                     <div class="row">
                         <!-- 🔽 YOUR EXISTING FORM FIELDS (UNCHANGED) -->
 
-                        <div class="form-group col-md-4">
-                            <label>Sow</label>
-                            <input type="text" class="form-control" list="sowList" placeholder="Select Sow ID" required>
+                        <div class="form-group col-md-2">
+                            <label>Pig</label>
+                            <input type="text" class="form-control" list="pigList" placeholder="Select Pig ID" required>
 
-                            <input type="hidden" name="sow_id" id="sow_id">
+                            <input type="hidden" name="pig_id" id="pig_id">
 
-                            <datalist id="sowList">
-                                @foreach($sows as $sow)
-                                    <option value="{{ $sow->tag_id }}" data-id="{{ $sow->id }}"></option>
+                            <datalist id="pigList">
+                                @foreach($pigs as $pig)
+                                    <option value="{{ $pig->tag_id }}" data-id="{{ $pig->id }}"></option>
                                 @endforeach
                             </datalist>
 
                         </div>
 
-                        <div class="form-group col-md-4">
-                            <label>Boar</label>
-                            <input type="text" class="form-control" list="boarList" placeholder="Select Boar ID" required>
-
-                            <input type="hidden" name="boar_id" id="boar_id">
-
-                            <datalist id="boarList">
-                                @foreach($boars as $boar)
-                                    <option value="{{ $boar->tag_id }}" data-id="{{ $boar->id }}"></option>
-                                @endforeach
-                            </datalist>
-
+                        <div class="form-group col-md-3">
+                            <label>Date</label>
+                            <input class="form-control" type="date" name="date">
                         </div>
-
                         
-                        <div class="form-group col-md-4">
-                            <label>Breeding Type</label>
-                            <select class="form-control" name="type">
-                                <option value="Natural">Natural</option>
-                                <option value="Artificial Insemination">Artificial Insemination</option>
-                            </select>
+                        <div class="form-group col-md-7">
+                            <label>Measurement Detail</label>
+                            <input class="form-control" type="text" name="measurement_detail" placeholder="Measurement info">
                         </div>
 
-                        <div class="form-group col-md-3">
-                            <label>Expected Farrowing Date</label>
-                            <input class="form-control" type="date" name="expected_farrow_date">
+                        <div class="form-group col-md-6">
+                            <label>Observation</label>
+                            <textarea class="form-control" rows="2" name="observation" placeholder="Clear observations"></textarea>
                         </div>
 
-                        <div class="form-group col-md-3">
-                            <label>Actual Farrowing Date</label>
-                            <input class="form-control" type="date" name="actual_farrow_date">
-                        </div>
-
-                        <div class="form-group col-md-3">
-                            <label>No. Born Alive</label>
-                            <input class="form-control" type="number" name="number_of_born_alive">
-                        </div>
-
-                        <div class="form-group col-md-3">
-                            <label>No. of Stillborn</label>
-                            <input class="form-control" type="number" name="number_of_stillborn">
-                        </div>
-
-                        <div class="form-group col-md-8">
+                        <div class="form-group col-md-6">
                             <label>Remarks</label>
-                            <textarea class="form-control" rows="1" name="remarks"></textarea>
+                            <textarea class="form-control" rows="2" name="remarks" placeholder="Any additional info"></textarea>
                         </div>
 
-                        <div class="form-group col-md-4" style="margin-top: 10px;">
+                        <div class="form-group col-md-12" style="margin-top: 1px;">
                             <label></label>
                             <button class="form-control btn-primary" type="submit">
                                 Save Record
@@ -118,7 +91,6 @@
 
             </div>
 
-            {{-- <button class="form-control" type="submit">Save Record</button> --}}
         </form>
         
       </div>    
@@ -142,7 +114,7 @@
 
           <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h3 class="card-title mb-0">Breeding List</h3>
+                <h3 class="card-title mb-0">Heating List</h3>
 
                 <div style="width: 250px;">
                     <input type="text"
@@ -158,14 +130,10 @@
                 <thead>
                     <tr>
                         <th>S/N</th>
-                        <th>Breed ID</th>
-                        <th>Sow ID</th>
-                        <th>Boar ID</th>
-                        <th>Type</th>
-                        <th>Expected Farrow Date</th>
-                        <th>Actual Farrow Date</th>
-                        <th>Number Alive</th>
-                        <th>Stillborn</th>
+                        <th>Pig ID</th>
+                        <th>Date</th>
+                        <th>Measurement Detail</th>
+                        <th>Observation</th>
                         <th>Remark</th>
                         <th>Recorded By</th>
                         <th>Recorded Date</th>
@@ -184,16 +152,11 @@
 
                     @foreach ($getRecord as $value)
                         <tr>
-                            <td>{{ $id++ }}</td>
-                            <td style="min-width: 150px;"><span class="badge badge-info">{{ $value->breed_id }}</span></td>
-                            
-                            <td style="min-width: 80px;"><span class="badge badge-primary">{{ $value->sow?->tag_id }}</span></td>
-                            <td style="min-width: 80px;"><span class="badge badge-secondary">{{ $value->boar?->tag_id }}</span></td>
-                            <td style="min-width: 120px;">{{ $value->type }}</td>
-                            <td style="min-width: 120px;">{{ date('d-m-Y', strtotime($value->expected_farrow_date)) }}</td>
-                            <td style="min-width: 120px;">{{ date('d-m-Y', strtotime($value->actual_farrow_date)) }}</td>
-                            <td style="min-width: 100px;">{{ $value->number_of_born_alive }}</td>
-                            <td style="min-width: 100px;">{{ $value->number_of_stillborn }}</td>
+                            <td>{{ $id++ }}</td>                            
+                            <td style="min-width: 80px;"><span class="badge badge-info">{{ $value->pig?->tag_id }}</span></td>
+                            <td style="min-width: 120px;">{{ date('d-m-Y', strtotime($value->date)) }}</td>
+                            <td style="min-width: 100px;">{{ $value->measurement_detail }}</td>
+                            <td style="min-width: 100px;">{{ $value->observation }}</td>
 
                             <td style="min-width: 300px;">
                                 @php
@@ -234,16 +197,17 @@
                                 @endif
                             </td>
 
-                            <td style="min-width: 150px;">
-                                <a href="{{ route('staff.breeding_record.more_record', [$value->id]) }}" class="btn btn-secondary btn-sm">More Record</a>
+                            <td style="min-width: 250px;">
+                                <a href="{{ route('heating.more_record', [$value->id]) }}" class="btn btn-secondary btn-sm">More Record</a>
                                 
-                                {{-- <a href="{{ route('staff.breeding_record.edit', [$value->id]) }}" class="btn btn-primary btn-sm">Edit</a> --}}
+                                <a href="{{ route('heating.edit', [$value->id]) }}" class="btn btn-primary btn-sm">Edit</a>
 
-                                {{-- <form action="{{ url('staff/animal_record/breeding_record/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
+                                <form action="{{ url('admin/animal_record/heating_record/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger delete">Delete</button>
-                                </form> --}}
+                                </form>
+
                                 
                             </td>
                         </tr>
@@ -260,13 +224,9 @@
           <div class="mt-2 px-3" style="float: right;">
               {{ $getRecord->links() }}
           </div>
-
-          <!-- /.card -->
         </div>
         <!-- /.col -->
       </div>
-      <!-- /.row -->
-      <!-- /.row -->
     </div><!-- /.container-fluid -->
   </section>
   <!-- /.content -->
@@ -321,7 +281,7 @@
               let query = $(this).val();
 
               $.ajax({
-                  url: "{{ route('staff.animal_identification.ajax.search') }}",
+                  url: "{{ route('heating.ajax.search') }}",
                   type: "GET",
                   data: { name: query },
                   success: function (response) {
@@ -353,7 +313,7 @@
                 let query = $(this).val();
 
                 $.ajax({
-                    url: "{{ route('staff.breeding_record.ajax.search') }}",
+                    url: "{{ route('heating.ajax.search') }}",
                     type: "GET",
                     data: { query: query },
                     success: function (html) {
@@ -386,16 +346,10 @@
 
         // SOW AND BOAR SEARCH
         document.addEventListener('input', function (e) {
-            if (e.target.getAttribute('list') === 'sowList') {
+            if (e.target.getAttribute('list') === 'pigList') {
                 let value = e.target.value;
-                let option = document.querySelector(`#sowList option[value="${value}"]`);
-                document.getElementById('sow_id').value = option ? option.dataset.id : '';
-            }
-
-            if (e.target.getAttribute('list') === 'boarList') {
-                let value = e.target.value;
-                let option = document.querySelector(`#boarList option[value="${value}"]`);
-                document.getElementById('boar_id').value = option ? option.dataset.id : '';
+                let option = document.querySelector(`#pigList option[value="${value}"]`);
+                document.getElementById('pig_id').value = option ? option.dataset.id : '';
             }
 
         });

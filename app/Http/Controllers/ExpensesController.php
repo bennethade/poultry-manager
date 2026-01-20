@@ -407,7 +407,13 @@ class ExpensesController extends Controller
             ->orderBy('year', 'desc')
             ->pluck('year');
 
-        return view('admin.report.general_expense', compact('years'), $data);
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.report.general_expense', compact('years'), $data);
+        }
+        else{
+            return view('admin.report.general_expense', compact('years'), $data);
+        }
     }
 
 

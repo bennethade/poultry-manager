@@ -194,6 +194,27 @@ Route::group(['middleware' => 'admin'], function(){
     Route::get('/admin/animal_record/breeding_record/more_record/edit/{id}', [AnimalRecordController::class,'breedMoreRecordEdit'])->name('breeding_record.more_record.edit');
     Route::post('/admin/animal_record/breeding_record/more_record/edit/{id}', [AnimalRecordController::class,'breedMoreRecordUpdate'])->name('breeding_record.more_record.update');
     Route::delete('/admin/animal_record/breeding_record/more_record/delete/{id}', [AnimalRecordController::class,'breedMoreRecordDelete'])->name('breeding_record.more_record.delete');
+    
+    
+    
+    //Heating Routes
+    Route::get('/admin/animal_record/heating/list', [AnimalRecordController::class,'heatingList'])->name('heating.list');
+    Route::get('/admin/animal_record/heating/add', [AnimalRecordController::class,'heatingAdd'])->name('heating.add');
+    Route::post('/admin/animal_record/heating/add', [AnimalRecordController::class,'heatingStore'])->name('heating.store');
+    Route::get('/admin/animal_record/heating/edit/{id}', [AnimalRecordController::class,'heatingEdit'])->name('heating.edit');
+    Route::post('/admin/animal_record/heating/edit/{id}', [AnimalRecordController::class,'heatingUpdate'])->name('heating.update');
+    Route::delete('/admin/animal_record/heating/delete/{id}', [AnimalRecordController::class,'heatingDelete'])->name('heating.delete');
+
+    //AJAX for Record Search
+    Route::get('admin/animal_record/heating/search',[AnimalRecordController::class, 'heatingingAjaxSearch'])->name('heating.ajax.search');
+    
+
+    //Heating More Record
+    Route::get('/admin/animal_record/heating/more_record/{id}', [AnimalRecordController::class,'heatingMoreRecord'])->name('heating.more_record');
+    Route::post('/admin/animal_record/heating/more_record/{id}', [AnimalRecordController::class,'heatingMoreRecordStore'])->name('heating.more_record.store');
+    Route::get('/admin/animal_record/heating/more_record/edit/{id}', [AnimalRecordController::class,'heatingMoreRecordEdit'])->name('heating.more_record.edit');
+    Route::post('/admin/animal_record/heating/more_record/edit/{id}', [AnimalRecordController::class,'heatingMoreRecordUpdate'])->name('heating.more_record.update');
+    Route::delete('/admin/animal_record/heating/more_record/delete/{id}', [AnimalRecordController::class,'heatingMoreRecordDelete'])->name('heating.more_record.delete');
 
 
     
@@ -610,8 +631,8 @@ Route::group(['middleware' => 'staff'], function(){
 
     Route::get('/staff/dashboard', [DashboardController::class,'dashboard'])->name('staff.dashboard');
     
-    Route::get('/staff/change_password', [UserController::class,'changePassword'])->name('change_password');
-    Route::post('/staff/change_password', [UserController::class,'updatePassword'])->name('update_password');
+    Route::get('/staff/change_password', [UserController::class,'changePassword'])->name('staff.change_password');
+    Route::post('/staff/change_password', [UserController::class,'updatePassword'])->name('staff.update_password');
 
 
     Route::get('/staff/account', [UserController::class,'myAccount'])->name('staff.account');
@@ -979,6 +1000,21 @@ Route::group(['middleware' => 'staff'], function(){
     Route::get('/staff/inventory/miscellaneous/ajax-search', [MiscellaneousController::class, 'ajaxSearch'])->name('staff.miscellaneous.ajax.search');
 
 
+
+
+
+
+    //REPORTS
+    Route::get('/staff/expense_record/general_expense_report', [ExpensesController::class, 'generalExpenseReport'])->name('staff.general.expense.report');
+
+    Route::get('/staff/expense_record/general-expense-report/data', [ExpensesController::class, 'generalExpenseReportData'])->name('staff.general.expense.report.data');
+
+
+    Route::get('/staff/sales_record/general_sales_report',[SalesController::class, 'generalSalesReport'])->name('staff.general.sales.report');
+
+    Route::get('/staff/sales_record/general-sales-report/data',[SalesController::class, 'generalSalesReportData'])->name('staff.general.sales.report.data');
+
+    Route::get('/staff/report/list', [ReportController::class,'list'])->name('staff.report.list');
 
 
 

@@ -422,7 +422,13 @@ class SalesController extends Controller
             ->orderBy('year', 'desc')
             ->pluck('year');
 
-        return view('admin.report.general_sales', compact('years'), $data);
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.report.general_sales', compact('years'), $data);
+        }
+        else{
+            return view('admin.report.general_sales', compact('years'), $data);
+        }
     }
 
     public function generalSalesReportData(Request $request)

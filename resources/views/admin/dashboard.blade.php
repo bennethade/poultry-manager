@@ -157,7 +157,7 @@
 
                     <div class="col-sm-6 text-right">
                         <h4 class="m-0">
-                            My Tasks:
+                            Tasks:
                             <span class="badge badge-danger">
                                 <a href="{{ route('tasks.index') }}" style="color: white;">
                                     {{ $pendingTasksCount }}
@@ -208,6 +208,13 @@
                             <div class="card">
                                 <img src="{{ asset('upload/icons/hibernation.png') }}" alt="">
                                 <p>Inactive Animals</p>
+                            </div>
+                        </a>
+
+                        <a href="{{ url('admin/animal_record/heating/list') }}" style="color: black; display: block">
+                            <div class="card">
+                                <img src="{{ asset('upload/icons/heatwave.png') }}" alt="">
+                                <p>Heating Record</p>
                             </div>
                         </a>
                     </div>

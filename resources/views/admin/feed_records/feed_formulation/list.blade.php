@@ -41,7 +41,7 @@
 
               <div class="form-group col-md-3">
                 {{-- <button type="submit" class="btn btn-primary" style="margin-top: 32px;">Search</button> --}}
-                <a href="{{ route('feed_stock.list') }}" class="btn btn-success" style="margin-top: 32px;">Refresh</a>
+                <a href="{{ route('feed_formulation.list') }}" class="btn btn-success" style="margin-top: 32px;">Refresh</a>
               </div>
               
             </div>

@@ -2,27 +2,28 @@
 
 @section('content')
 
-<div class="content-wrapper">
-    <section class="content">
-        <div class="container-fluid">
-            <div class="card shadow-lg border-0">
-                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">📈 Sales Report</h5>
+    <div class="content-wrapper">
 
-                    <select id="yearSelector" class="form-select w-auto">
-                        @foreach($years as $year)
-                            <option value="{{ $year }}">{{ $year }}</option>
-                        @endforeach
-                    </select>
-                </div>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">📊 Expense Report</h5>
 
-                <div class="card-body">
-                    <canvas id="salesChart" height="120"></canvas>
+                        <select id="yearSelector" class="form-select w-auto">
+                            @foreach($years as $year)
+                                <option value="{{ $year }}">{{ $year }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="card-body">
+                        <canvas id="expenseChart" height="120"></canvas>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-</div>
+        </section>
+    </div>
 @endsection
 
 @section('script')
@@ -32,7 +33,7 @@
 let chart;
 
 function loadChart(year) {
-    fetch(`{{ route('general.sales.report.data') }}?year=${year}`)
+    fetch(`{{ route('staff.general.expense.report.data') }}?year=${year}`)
         .then(res => res.json())
         .then(data => {
 
@@ -40,7 +41,7 @@ function loadChart(year) {
                 chart.destroy();
             }
 
-            const ctx = document.getElementById('salesChart').getContext('2d');
+            const ctx = document.getElementById('expenseChart').getContext('2d');
 
             chart = new Chart(ctx, {
                 type: 'bar',
@@ -48,18 +49,18 @@ function loadChart(year) {
                     labels: data.months,
                     datasets: [
                         {
-                            label: 'Total Sales',
-                            data: data.total_sales,
+                            label: 'Opening Balance',
+                            data: data.opening,
                             backgroundColor: '#4CAF50'
                         },
                         {
-                            label: 'Total Expense',
-                            data: data.total_expense,
+                            label: 'Total Spent',
+                            data: data.spent,
                             backgroundColor: '#F44336'
                         },
                         {
-                            label: 'Gross Profit',
-                            data: data.gross_profit,
+                            label: 'Closing Balance',
+                            data: data.closing,
                             backgroundColor: '#2196F3'
                         }
                     ]
@@ -97,7 +98,7 @@ document.getElementById('yearSelector').addEventListener('change', function () {
     loadChart(this.value);
 });
 
-// Load default year
+// Load default year on page load
 loadChart(document.getElementById('yearSelector').value);
 </script>
 @endsection

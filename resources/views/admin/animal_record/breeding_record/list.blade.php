@@ -188,8 +188,8 @@
                             <td>{{ $id++ }}</td>
                             <td style="min-width: 150px;"><span class="badge badge-info">{{ $value->breed_id }}</span></td>
                             
-                            <td style="min-width: 80px;"><span class="badge badge-primary">{{ $value->sow->tag_id }}</span></td>
-                            <td style="min-width: 80px;"><span class="badge badge-secondary">{{ $value->boar->tag_id }}</span></td>
+                            <td style="min-width: 80px;"><span class="badge badge-primary">{{ $value->sow?->tag_id }}</span></td>
+                            <td style="min-width: 80px;"><span class="badge badge-secondary">{{ $value->boar?->tag_id }}</span></td>
                             <td style="min-width: 120px;">{{ $value->type }}</td>
                             <td style="min-width: 120px;">{{ date('d-m-Y', strtotime($value->expected_farrow_date)) }}</td>
                             <td style="min-width: 120px;">{{ date('d-m-Y', strtotime($value->actual_farrow_date)) }}</td>

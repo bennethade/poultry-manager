@@ -16,7 +16,7 @@ class VaccineController extends Controller
     public function scheduleList()
     {
         $data['header_title'] = "Vaccine Schedule";
-        $data['getRecord'] = VaccineSchedule::with(['pig', 'staff', 'editor'])->latest()->paginate(10);
+        $data['getRecord'] = VaccineSchedule::with(['pig', 'staff', 'editor'])->latest()->paginate(100);
 
         if(Auth::user()->user_type == 2)
         {
@@ -79,7 +79,9 @@ class VaccineController extends Controller
         // dd($request->all());
         
         $request->validate([
-            'pig_id'                => 'required|exists:pigs,id',
+            // 'pig_id'                => 'required|exists:pigs,id',
+            'pig_ids'               => 'required|array|min:1',
+            'pig_ids.*'             => 'exists:pigs,id',
             'vaccine_name'          => 'required',
             'age_given'             => 'nullable|string',
             'date_given'            => 'nullable|date',
@@ -88,16 +90,18 @@ class VaccineController extends Controller
             'remarks'               => 'nullable|string|max:255',
         ]);
 
-        VaccineSchedule::create([
-            'pig_id'                => $request->pig_id,
-            'vaccine_name'          => $request->vaccine_name,
-            'age_given'             => $request->age_given,
-            'date_given'            => $request->date_given,
-            'next_due_date'         => $request->next_due_date,
-            'administered_by'       => $request->administered_by,
-            'remarks'               => $request->remarks,
-            'staff_id'              => Auth::id(),
-        ]);
+        foreach ($request->pig_ids as $pigId) {
+            VaccineSchedule::create([
+                'pig_id'          => $pigId,
+                'vaccine_name'          => $request->vaccine_name,
+                'age_given'             => $request->age_given,
+                'date_given'            => $request->date_given,
+                'next_due_date'         => $request->next_due_date,
+                'administered_by'       => $request->administered_by,
+                'remarks'               => $request->remarks,
+                'staff_id'              => Auth::id(),
+            ]);
+        }
 
         
         if(!empty($request->next_due_date)){

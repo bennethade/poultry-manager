@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="card shadow-lg border-0">
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">📊 General Expense Report</h5>
+                        <h5 class="mb-0">📊 Expense Report</h5>
 
                         <select id="yearSelector" class="form-select w-auto">
                             @foreach($years as $year)

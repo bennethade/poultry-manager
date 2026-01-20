@@ -1,25 +1,29 @@
 <div class="row">
-   <div class="mb-3">
+   
+   
+   <div class="col-md-4 mb-3">
       <label class="fw-bold">Select Pigs</label>
-      <div class="row">
+      <select
+         name="pig_ids[]"
+         id="pigSelect"
+         class="form-control"
+         multiple
+         required
+      >
+         {{-- Select All --}}
+         <option value="__all__">Select All</option>
+
          @foreach($pigs as $pig)
-               <div class="col-md-2 col-sm-3 col-6 mb-2">
-                  <div class="form-check border p-2 m-2 rounded badge badge-secondary">
-                     <input
-                           class="form-check-input"
-                           type="checkbox"
-                           name="pig_ids[]"
-                           value="{{ $pig->id }}"
-                           id="pig_{{ $pig->id }}"
-                     >
-                     <label class="form-check-label" for="pig_{{ $pig->id }}">
-                           {{ $pig->tag_id }}
-                     </label>
-                  </div>
-               </div>
+               <option
+                  value="{{ $pig->id }}"
+                  @if(isset($selectedPigIds) && in_array($pig->id, $selectedPigIds)) selected @endif
+               >
+                  {{ $pig->tag_id }}
+               </option>
          @endforeach
-      </div>
+      </select>
    </div>
+   
 
 
    <div class="col-md-4 mb-3">
@@ -62,15 +66,61 @@
    <label>Remarks</label>
    <textarea name="remarks" class="form-control">{{ $record->remarks ?? '' }}</textarea>
 </div>
+
 @section('script')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <script>
-   $(document).ready(function () {
-       $('#pigSelect').select2({
-           placeholder: 'Search here...',
-           allowClear: true,
-           width: '100%'
-       });
-   });
+$(document).ready(function () {
+
+    const SELECT_ALL_VALUE = '__all__';
+
+    $('#pigSelect').select2({
+        placeholder: 'Select pigs',
+        closeOnSelect: false,
+        width: '100%',
+        templateResult: formatOption,
+        templateSelection: formatSelection
+    });
+
+    function formatOption(option) {
+        if (!option.id) return option.text;
+
+        return $(`
+            <span>
+                <input type="checkbox" style="margin-right:6px;" />
+                ${option.text}
+            </span>
+        `);
+    }
+
+    function formatSelection(option) {
+        return option.text;
+    }
+
+    // Select All logic
+    $('#pigSelect').on('select2:select', function (e) {
+        if (e.params.data.id === SELECT_ALL_VALUE) {
+            let allValues = [];
+
+            $('#pigSelect option').each(function () {
+                if (this.value !== SELECT_ALL_VALUE) {
+                    allValues.push(this.value);
+                }
+            });
+
+            $('#pigSelect').val(allValues).trigger('change');
+        }
+    });
+
+    $('#pigSelect').on('select2:unselect', function (e) {
+        if (e.params.data.id === SELECT_ALL_VALUE) {
+            $('#pigSelect').val(null).trigger('change');
+        }
+    });
+
+});
 </script>
 @endsection
+

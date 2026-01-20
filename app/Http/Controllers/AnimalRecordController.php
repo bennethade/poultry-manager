@@ -6,6 +6,7 @@ use App\Models\BreedingMoreRecord;
 use App\Models\BreedingRecord;
 use App\Models\GrowthMoreRecord;
 use App\Models\GrowthRecord;
+use App\Models\HeatingRecord;
 use App\Models\Pig;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -789,6 +790,287 @@ class AnimalRecordController extends Controller
 
         return redirect()->back()->with('warning', 'Record Deleted Successfully!');
     }
+
+
+
+    
+    // FOR HEATING RECORDS
+    public function heatingList(Request $request)
+    {
+        $data['pigs'] = Pig::where('status', true)->get();
+
+        $data['getRecord'] = HeatingRecord::with(['pig', 'staff', 'editor'])->orderBy('created_at', 'desc')->paginate(100);
+
+        $data['header_title'] = "Heating Records";
+
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.animal_record.heating_record.list', $data);
+        }
+        else{
+            return view('admin.animal_record.heating_record.list', $data);
+        }
+
+
+    }
+
+    public function heatingAjaxSearch(Request $request)
+    {
+        $query = $request->get('query');
+
+        $records = HeatingRecord::with(['pig', 'staff', 'editor'])
+
+            ->whereHas('pig', function ($q) use ($query) {
+                $q->where('tag_id', 'like', "%{$query}%");
+            })
+
+            ->orWhere('id', 'like', "%{$query}%")
+
+            ->orWhere('measurement_detail', 'like', "%{$query}%")
+            ->orWhere('observation', 'like', "%{$query}%")
+            ->orWhere('remarks', 'like', "%{$query}%")
+
+            ->orWhereHas('staff', function ($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                ->orWhere('last_name', 'like', "%{$query}%")
+                ->orWhere('other_name', 'like', "%{$query}%");
+            })
+            ->orWhereHas('editor', function ($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                ->orWhere('last_name', 'like', "%{$query}%")
+                ->orWhere('other_name', 'like', "%{$query}%");
+            })
+
+            // ->where('status', true) ///WRONG LINE
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.animal_record.heating_record.partials.table_rows',compact('records'))->render();
+        }
+        else{ 
+            return view('admin.animal_record.heating_record.partials.table_rows',compact('records'))->render();
+        }
+    }
+
+
+
+    public function heatingStore(Request $request)
+    {
+
+        // dd($request->all());
+        $request->validate([
+            'pig_id'                    => 'required|integer',
+            'date'                      => 'nullable|date',
+            'measurement_detail'        => 'nullable|string',
+            'observation'               => 'nullable|string',
+            'remarks'                   => 'nullable|string',
+        ]);
+
+
+        $record = new HeatingRecord();
+
+        $record->pig_id                     = $request->pig_id;
+        $record->date                       = $request->date;
+        $record->measurement_detail         = $request->measurement_detail;
+        $record->observation                = $request->observation;
+        $record->remarks                    = $request->remarks;
+        $record->staff_id                   = Auth::user()->id;
+
+        $record->save();
+
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.heating.list')->with('success', 'Record added successfully.');
+        }
+        else
+        {
+            return redirect()->route('heating.list')->with('success', 'Record added successfully.');
+        }
+
+    }
+
+
+    public function heatingEdit($id)
+    {
+        $data['header_title'] = "Edit Breeding Record";
+
+        $data['boars'] = Pig::where('sex','Male')->where('status', true)->get();
+        $data['sows'] = Pig::where('sex','Female')->where('status', true)->get();
+
+        $data['getRecord'] = BreedingRecord::findOrFail($id);
+        
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.animal_record.heating_record.edit', $data);
+        }
+        else{
+            return view('admin.animal_record.heating_record.edit', $data);
+        }
+        
+    }
+
+
+
+    public function heatingUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'sow_id'                    => 'required|integer',
+            'boar_id'                   => 'required|integer',
+            'type'                      => 'nullable|string',
+            'expected_farrow_date'      => 'nullable|date',
+            'actual_farrow_date'        => 'nullable|date',
+            'number_of_born_alive'      => 'nullable|integer',
+            'number_of_stillborn'       => 'nullable|integer',
+            'remarks'                   => 'nullable|string',
+        ]);
+
+        $boar = Pig::where('sex','Male')->where('status', true)->where('id', $request->boar_id)->first();
+        $sow = Pig::where('sex','Female')->where('status', true)->where('id', $request->sow_id)->first();
+
+        $record = BreedingRecord::findOrFail($id);
+
+        $record->breed_id                 = $sow->tag_id . '-' . $boar->tag_id;
+        $record->sow_id                   = $request->sow_id;
+        $record->boar_id                  = $request->boar_id;
+        $record->type                     = $request->type;
+        $record->expected_farrow_date     = $request->expected_farrow_date;
+        $record->actual_farrow_date       = $request->actual_farrow_date;
+        $record->number_of_born_alive     = $request->number_of_born_alive;
+        $record->number_of_stillborn      = $request->number_of_stillborn;
+        $record->remarks                  = $request->remarks;
+        $record->updated_by               = Auth::user()->id;
+
+        $record->save();
+
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.heating.list')->with('success', 'Record Updated Successfully!');
+        }
+        else
+        {
+            return redirect()->route('heating.list')->with('success', 'Record Updated Successfully!');
+        }
+
+
+    }   
+
+
+
+    public function heatingDelete($id)
+    {
+        $record = BreedingRecord::findOrFail($id);
+
+        $record->delete();
+
+        if(Auth::user()->user_type == 2)
+        {
+            return redirect()->route('staff.heating.list')->with('warning', 'Record Deleted Successfully!');
+        }
+        else{
+            return redirect()->route('heating.list')->with('warning', 'Record Deleted Successfully!');
+        }
+    }
+
+
+
+    public function heatingMoreRecord($id)
+    {
+        $data['header_title'] = "More Record";
+
+        $data['getBreedRecord'] = BreedingRecord::findOrFail($id);
+
+        $data['getRecord'] = BreedingMoreRecord::with(['creator', 'editor'])->where('breed_id', $id)->orderBy('created_at', 'desc')->paginate(100);
+
+        if(Auth::user()->user_type == 2)
+        {
+            return view('staff.animal_record.heating_record.more_record', $data);
+        }
+        else{
+            return view('admin.animal_record.heating_record.more_record', $data);
+        }
+    }
+
+
+    public function heatingMoreRecordStore(Request $request, $id)
+    {
+        
+        $request->validate([
+            'date'      => 'required|date',
+            'remarks'   => 'nullable|string',
+        ]);
+
+
+        BreedingMoreRecord::create([
+            'breed_id'          => $id,
+            'date'              => $request->date,
+            'number_alive'      => $request->number_alive,
+            'still_birth'       => $request->still_birth,
+            'more_detail'       => $request->more_detail,
+            'remarks'           => $request->remarks,
+            'staff_id'          => Auth::id(),
+        ]);
+
+        return redirect()->back()->with('success', 'Record added successfully');
+    }
+
+
+
+
+
+    public function heatingMoreRecordEdit($id)
+    {
+        $data['header_title'] = "Edit Record";
+
+        $data['getRecord'] = BreedingMoreRecord::findOrFail($id);
+
+        if(Auth::user()->user_type == 2)
+        {
+            // return view('staff.animal_record.heating_record.more_record_edit', $data);
+        }
+        else{
+            return view('admin.animal_record.heating_record.more_record_edit', $data);
+        }
+    }
+
+
+
+    public function heatingMoreRecordUpdate(Request $request, $id)
+    {
+        // dd($request->date);
+
+
+        $request->validate([
+            'date'      => 'required|date',
+            'remarks'   => 'nullable|string',
+        ]);
+
+        BreedingMoreRecord::findOrFail($id)->update([
+                    'date'              => $request->date,
+                    'number_alive'      => $request->number_alive,
+                    'still_birth'       => $request->still_birth,
+                    'more_detail'       => $request->more_detail,
+                    'remarks'           => $request->remarks,
+                    'updated_by'        => Auth::id(),
+                ]);
+
+        return redirect()->back()->with('success', 'Updated successfully');
+    }
+
+
+
+    public function heatingMoreRecordDelete($id)
+    {
+        BreedingMoreRecord::findOrFail($id)->delete();
+
+        return redirect()->back()->with('warning', 'Record Deleted Successfully!');
+    }
+
+    
+
+
+
 
 
 
