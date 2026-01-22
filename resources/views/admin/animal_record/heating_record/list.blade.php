@@ -35,7 +35,7 @@
                     style="text-align: center; margin-bottom:10px; cursor:pointer;">
                     <b>
                         <i class="fa fa-plus-circle text-primary"></i>
-                        Add New Breed
+                        Add Heating Record
                     </b>
                 </h4>
 
@@ -120,7 +120,7 @@
                     <input type="text"
                         id="breedingSearch"
                         class="form-control form-control-sm"
-                        placeholder="Search breeding records...">
+                        placeholder="Search records...">
                 </div>
             </div>
 
@@ -202,7 +202,7 @@
                                 
                                 <a href="{{ route('heating.edit', [$value->id]) }}" class="btn btn-primary btn-sm">Edit</a>
 
-                                <form action="{{ url('admin/animal_record/heating_record/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
+                                <form action="{{ url('admin/animal_record/heating/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger delete">Delete</button>
@@ -276,20 +276,20 @@
 
 
       //FOR DYNAMIC SEARCH
-      $(document).ready(function () {
-          $('input[name="name"]').on('keyup', debounce(function () {
-              let query = $(this).val();
+      // $(document).ready(function () {
+      //     $('input[name="name"]').on('keyup', debounce(function () {
+      //         let query = $(this).val();
 
-              $.ajax({
-                  url: "{{ route('heating.ajax.search') }}",
-                  type: "GET",
-                  data: { name: query },
-                  success: function (response) {
-                      $('table tbody').html(response.html);
-                  }
-              });
-          }, 100));
-      });
+      //         $.ajax({
+      //             url: "{{ route('heating.ajax.search') }}",
+      //             type: "GET",
+      //             data: { name: query },
+      //             success: function (response) {
+      //                 $('table tbody').html(response.html);
+      //             }
+      //         });
+      //     }, 100));
+      // });
 
 
 

@@ -27,7 +27,7 @@
     <div class="container-fluid">
       
       <div class="card">
-        <form action="{{ route('heating.update', $getRecord->id) }}" method="POST" class="breeding-form">
+        <form action="{{ route('staff.heating.update', $getRecord->id) }}" method="POST" class="breeding-form">
             @csrf
 
             <div class="card-body">

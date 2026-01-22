@@ -148,6 +148,8 @@ Route::group(['middleware' => 'admin'], function(){
 
     //VIEW RECORDS FOR 7 DAYS
     Route::get('/admin/weekly_records/view', [WeeklyRecordController::class,'view'])->name('weekly_records.view');
+    //VIEW RECORDS FOR 7 DAYS
+    
 
 
 
@@ -196,17 +198,18 @@ Route::group(['middleware' => 'admin'], function(){
     Route::delete('/admin/animal_record/breeding_record/more_record/delete/{id}', [AnimalRecordController::class,'breedMoreRecordDelete'])->name('breeding_record.more_record.delete');
     
     
+
+
     
     //Heating Routes
     Route::get('/admin/animal_record/heating/list', [AnimalRecordController::class,'heatingList'])->name('heating.list');
-    Route::get('/admin/animal_record/heating/add', [AnimalRecordController::class,'heatingAdd'])->name('heating.add');
     Route::post('/admin/animal_record/heating/add', [AnimalRecordController::class,'heatingStore'])->name('heating.store');
     Route::get('/admin/animal_record/heating/edit/{id}', [AnimalRecordController::class,'heatingEdit'])->name('heating.edit');
     Route::post('/admin/animal_record/heating/edit/{id}', [AnimalRecordController::class,'heatingUpdate'])->name('heating.update');
     Route::delete('/admin/animal_record/heating/delete/{id}', [AnimalRecordController::class,'heatingDelete'])->name('heating.delete');
 
     //AJAX for Record Search
-    Route::get('admin/animal_record/heating/search',[AnimalRecordController::class, 'heatingingAjaxSearch'])->name('heating.ajax.search');
+    Route::get('admin/animal_record/heating/search',[AnimalRecordController::class, 'heatingAjaxSearch'])->name('heating.ajax.search');
     
 
     //Heating More Record
@@ -677,6 +680,23 @@ Route::group(['middleware' => 'staff'], function(){
     Route::post('/staff/animal_record/breeding_record/more_record/{id}', [AnimalRecordController::class,'breedMoreRecordStore'])->name('staff.breeding_record.more_record.store');
     
     
+
+    //Heating Routes
+    Route::get('/staff/animal_record/heating/list', [AnimalRecordController::class,'heatingList'])->name('staff.heating.list');
+    Route::post('/staff/animal_record/heating/add', [AnimalRecordController::class,'heatingStore'])->name('staff.heating.store');
+    Route::get('/staff/animal_record/heating/edit/{id}', [AnimalRecordController::class,'heatingEdit'])->name('staff.heating.edit');
+    Route::post('/staff/animal_record/heating/edit/{id}', [AnimalRecordController::class,'heatingUpdate'])->name('staff.heating.update');
+    Route::delete('/staff/animal_record/heating/delete/{id}', [AnimalRecordController::class,'heatingDelete'])->name('staff.heating.delete');
+
+    //AJAX for Record Search
+    Route::get('staff/animal_record/heating/search',[AnimalRecordController::class, 'heatingAjaxSearch'])->name('staff.heating.ajax.search');
+    
+
+    //Heating More Record
+    Route::get('/staff/animal_record/heating/more_record/{id}', [AnimalRecordController::class,'heatingMoreRecord'])->name('staff.heating.more_record');
+    Route::post('/staff/animal_record/heating/more_record/{id}', [AnimalRecordController::class,'heatingMoreRecordStore'])->name('staff.heating.more_record.store');
+    
+
     
     
     //Growth Performance Routes
@@ -1017,6 +1037,9 @@ Route::group(['middleware' => 'staff'], function(){
     Route::get('/staff/report/list', [ReportController::class,'list'])->name('staff.report.list');
 
 
+
+    //QUICK RECORD VIEW
+    Route::get('/staff/weekly_records/view', [WeeklyRecordController::class,'view'])->name('staff.weekly_records.view');
 
 
 

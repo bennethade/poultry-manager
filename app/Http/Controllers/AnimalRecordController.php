@@ -7,6 +7,7 @@ use App\Models\BreedingRecord;
 use App\Models\GrowthMoreRecord;
 use App\Models\GrowthRecord;
 use App\Models\HeatingRecord;
+use App\Models\HeatingMoreRecord;
 use App\Models\Pig;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -811,48 +812,49 @@ class AnimalRecordController extends Controller
             return view('admin.animal_record.heating_record.list', $data);
         }
 
-
     }
+
+
 
     public function heatingAjaxSearch(Request $request)
     {
-        $query = $request->get('query');
+        $query = $request->query('query');
 
         $records = HeatingRecord::with(['pig', 'staff', 'editor'])
+            ->where(function ($q) use ($query) {
 
-            ->whereHas('pig', function ($q) use ($query) {
-                $q->where('tag_id', 'like', "%{$query}%");
+                $q->where('id', 'like', "%{$query}%")
+                    ->orWhere('measurement_detail', 'like', "%{$query}%")
+                    ->orWhere('observation', 'like', "%{$query}%")
+                    ->orWhere('remarks', 'like', "%{$query}%")
+
+                ->orWhereHas('pig', function ($q) use ($query) {
+                    $q->where('tag_id', 'like', "%{$query}%");
+                })
+
+                ->orWhereHas('staff', function ($q) use ($query) {
+                    $q->where('name', 'like', "%{$query}%")
+                        ->orWhere('last_name', 'like', "%{$query}%")
+                        ->orWhere('other_name', 'like', "%{$query}%");
+                })
+
+                ->orWhereHas('editor', function ($q) use ($query) {
+                    $q->where('name', 'like', "%{$query}%")
+                        ->orWhere('last_name', 'like', "%{$query}%")
+                        ->orWhere('other_name', 'like', "%{$query}%");
+                });
             })
-
-            ->orWhere('id', 'like', "%{$query}%")
-
-            ->orWhere('measurement_detail', 'like', "%{$query}%")
-            ->orWhere('observation', 'like', "%{$query}%")
-            ->orWhere('remarks', 'like', "%{$query}%")
-
-            ->orWhereHas('staff', function ($q) use ($query) {
-                $q->where('name', 'like', "%{$query}%")
-                ->orWhere('last_name', 'like', "%{$query}%")
-                ->orWhere('other_name', 'like', "%{$query}%");
-            })
-            ->orWhereHas('editor', function ($q) use ($query) {
-                $q->where('name', 'like', "%{$query}%")
-                ->orWhere('last_name', 'like', "%{$query}%")
-                ->orWhere('other_name', 'like', "%{$query}%");
-            })
-
-            // ->where('status', true) ///WRONG LINE
             ->orderBy('created_at', 'desc')
             ->get();
 
-        if(Auth::user()->user_type == 2)
-        {
+        if (Auth::user()->user_type == 2) {
             return view('staff.animal_record.heating_record.partials.table_rows',compact('records'))->render();
         }
-        else{ 
+        else{
             return view('admin.animal_record.heating_record.partials.table_rows',compact('records'))->render();
         }
     }
+
 
 
 
@@ -894,12 +896,11 @@ class AnimalRecordController extends Controller
 
     public function heatingEdit($id)
     {
-        $data['header_title'] = "Edit Breeding Record";
+        $data['header_title'] = "Edit Heating Record";
 
-        $data['boars'] = Pig::where('sex','Male')->where('status', true)->get();
-        $data['sows'] = Pig::where('sex','Female')->where('status', true)->get();
+        $data['pigs'] = Pig::where('status', true)->get();
 
-        $data['getRecord'] = BreedingRecord::findOrFail($id);
+        $data['getRecord'] = HeatingRecord::findOrFail($id);
         
         if(Auth::user()->user_type == 2)
         {
@@ -916,30 +917,20 @@ class AnimalRecordController extends Controller
     public function heatingUpdate(Request $request, $id)
     {
         $request->validate([
-            'sow_id'                    => 'required|integer',
-            'boar_id'                   => 'required|integer',
-            'type'                      => 'nullable|string',
-            'expected_farrow_date'      => 'nullable|date',
-            'actual_farrow_date'        => 'nullable|date',
-            'number_of_born_alive'      => 'nullable|integer',
-            'number_of_stillborn'       => 'nullable|integer',
+            'pig_id'                    => 'required|integer',
+            'date'                      => 'nullable|date',
+            'measurement_detail'        => 'nullable|string',
+            'observation'               => 'nullable|string',
             'remarks'                   => 'nullable|string',
         ]);
 
-        $boar = Pig::where('sex','Male')->where('status', true)->where('id', $request->boar_id)->first();
-        $sow = Pig::where('sex','Female')->where('status', true)->where('id', $request->sow_id)->first();
+        $record = HeatingRecord::findOrFail($id);
 
-        $record = BreedingRecord::findOrFail($id);
-
-        $record->breed_id                 = $sow->tag_id . '-' . $boar->tag_id;
-        $record->sow_id                   = $request->sow_id;
-        $record->boar_id                  = $request->boar_id;
-        $record->type                     = $request->type;
-        $record->expected_farrow_date     = $request->expected_farrow_date;
-        $record->actual_farrow_date       = $request->actual_farrow_date;
-        $record->number_of_born_alive     = $request->number_of_born_alive;
-        $record->number_of_stillborn      = $request->number_of_stillborn;
-        $record->remarks                  = $request->remarks;
+        $record->pig_id                     = $request->pig_id;
+        $record->date                       = $request->date;
+        $record->measurement_detail         = $request->measurement_detail;
+        $record->observation                = $request->observation;
+        $record->remarks                    = $request->remarks;
         $record->updated_by               = Auth::user()->id;
 
         $record->save();
@@ -960,7 +951,7 @@ class AnimalRecordController extends Controller
 
     public function heatingDelete($id)
     {
-        $record = BreedingRecord::findOrFail($id);
+        $record = HeatingRecord::findOrFail($id);
 
         $record->delete();
 
@@ -979,9 +970,9 @@ class AnimalRecordController extends Controller
     {
         $data['header_title'] = "More Record";
 
-        $data['getBreedRecord'] = BreedingRecord::findOrFail($id);
+        $data['getHeatRecord'] = HeatingRecord::findOrFail($id);
 
-        $data['getRecord'] = BreedingMoreRecord::with(['creator', 'editor'])->where('breed_id', $id)->orderBy('created_at', 'desc')->paginate(100);
+        $data['getRecord'] = HeatingMoreRecord::with(['creator', 'editor'])->where('heat_id', $id)->orderBy('created_at', 'desc')->paginate(100);
 
         if(Auth::user()->user_type == 2)
         {
@@ -1002,12 +993,10 @@ class AnimalRecordController extends Controller
         ]);
 
 
-        BreedingMoreRecord::create([
-            'breed_id'          => $id,
+        HeatingMoreRecord::create([
+            'heat_id'           => $id,
             'date'              => $request->date,
-            'number_alive'      => $request->number_alive,
-            'still_birth'       => $request->still_birth,
-            'more_detail'       => $request->more_detail,
+            'observation'       => $request->observation,
             'remarks'           => $request->remarks,
             'staff_id'          => Auth::id(),
         ]);
@@ -1023,7 +1012,7 @@ class AnimalRecordController extends Controller
     {
         $data['header_title'] = "Edit Record";
 
-        $data['getRecord'] = BreedingMoreRecord::findOrFail($id);
+        $data['getRecord'] = HeatingMoreRecord::findOrFail($id);
 
         if(Auth::user()->user_type == 2)
         {
@@ -1046,11 +1035,9 @@ class AnimalRecordController extends Controller
             'remarks'   => 'nullable|string',
         ]);
 
-        BreedingMoreRecord::findOrFail($id)->update([
+        HeatingMoreRecord::findOrFail($id)->update([
                     'date'              => $request->date,
-                    'number_alive'      => $request->number_alive,
-                    'still_birth'       => $request->still_birth,
-                    'more_detail'       => $request->more_detail,
+                    'observation'       => $request->observation,
                     'remarks'           => $request->remarks,
                     'updated_by'        => Auth::id(),
                 ]);
@@ -1062,7 +1049,7 @@ class AnimalRecordController extends Controller
 
     public function heatingMoreRecordDelete($id)
     {
-        BreedingMoreRecord::findOrFail($id)->delete();
+        HeatingMoreRecord::findOrFail($id)->delete();
 
         return redirect()->back()->with('warning', 'Record Deleted Successfully!');
     }

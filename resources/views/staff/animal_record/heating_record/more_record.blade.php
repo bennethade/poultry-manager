@@ -26,7 +26,7 @@
     <div class="container-fluid">
       
       <div class="card">
-        <form action="{{ route('heating.more_record.store', $getHeatRecord->id) }}" method="POST" class="breeding-form">
+        <form action="{{ route('staff.heating.more_record.store', $getHeatRecord->id) }}" method="POST" class="breeding-form">
             @csrf
 
             <div class="card-body">
@@ -99,7 +99,6 @@
                         <th>Recorded By</th>
                         <th>Recorded Date</th>
                         <th>Edited By</th>
-                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -154,18 +153,6 @@
                                     {{ $value->editor->last_name }} 
                                     {{ $value->editor->other_name }}
                                 @endif
-                            </td>
-
-                            <td style="min-width: 150px;">
-                                
-                                <a href="{{ route('heating.more_record.edit', [$value->id]) }}" class="btn btn-primary btn-sm">Edit</a>
-
-                                <form action="{{ url('admin/animal_record/heating/more_record/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger delete">Delete</button>
-                                </form> 
-                                
                             </td>
                         </tr>
 

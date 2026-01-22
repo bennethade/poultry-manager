@@ -52,15 +52,15 @@
     </td>
 
     <td style="min-width: 150px;">
-        <a href="{{ route('heating.more_record', [$value->id]) }}" class="btn btn-secondary btn-sm">More Record</a>
+        <a href="{{ route('staff.heating.more_record', [$value->id]) }}" class="btn btn-secondary btn-sm">More Record</a>
 
-        <a href="{{ route('heating.edit', $value->id) }}" class="btn btn-primary btn-sm">Edit</a>
+        {{-- <a href="{{ route('staff.heating.edit', $value->id) }}" class="btn btn-primary btn-sm">Edit</a>
 
-        <form action="{{ url('admin/animal_record/heating/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
+        <form action="{{ url('staff/animal_record/heating/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger btn-sm delete"> Delete</button>
-        </form>
+        </form> --}}
     </td>
 </tr>
 

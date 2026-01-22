@@ -832,6 +832,16 @@
                      </a>
                   </li>
 
+                  <li class="nav-item">
+                     <a href="{{ url('staff/weekly_records/view') }}"
+                        class="nav-link @if(Request::segment(2) == 'weekly_records') active @endif">
+                        <i class="nav-icon fa fa-deaf"></i>
+                        <p>
+                           Quick Record View
+                        </p>
+                     </a>
+                  </li>
+
                   <li class="nav-item @if(Request::segment(2) == 'tasks') menu-is-opening menu-open @endif">
                      <a href="#" class="nav-link @if(Request::segment(2) == 'tasks') active @endif">
                         <i class="nav-icon fa fa-tasks"></i>

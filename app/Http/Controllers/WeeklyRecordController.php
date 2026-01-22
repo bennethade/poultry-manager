@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class WeeklyRecordController extends Controller
 {
     public function view(Request $request)
     {
-// DATE RANGE
+        // DATE RANGE
         $startDateInput = $request->input('start_date');
         $endDateInput = $request->input('end_date');
 
@@ -350,12 +351,48 @@ class WeeklyRecordController extends Controller
             )
             ->whereBetween('created_at', [$startDate, $endDate]);
 
+        $heatingRecords = DB::table('heating_records')
+    ->join('pigs', 'pigs.id', '=', 'heating_records.pig_id')
+    ->join('users as staff', 'staff.id', '=', 'heating_records.staff_id')
+    ->select(
+        'heating_records.id', // ✅ COLUMN 1
+        DB::raw("'heating_record' as record_type"), // ✅ COLUMN 2
+        DB::raw("CONCAT('Heating - Pig ', pigs.tag_id) as title"), // 3
+        DB::raw("NULL as quantity"), // 4
+        DB::raw("0 as amount"), // 5
+        DB::raw("staff.name as party"), // 6
+        DB::raw("
+            CONCAT(
+                IFNULL(heating_records.measurement_detail, ''),
+                CASE 
+                    WHEN heating_records.observation IS NOT NULL 
+                    THEN CONCAT(' || Observation: ', heating_records.observation)
+                    ELSE ''
+                END,
+                CASE 
+                    WHEN heating_records.remarks IS NOT NULL 
+                    THEN CONCAT(' || Remarks: ', heating_records.remarks)
+                    ELSE ''
+                END
+            )
+        as notes"), // 7
+        'heating_records.date as date', // 8
+        'heating_records.created_at', // ✅ COLUMN 9
+        'pigs.tag_id as extra_1', // 10
+        DB::raw("NULL as extra_2"), // 11
+        DB::raw("NULL as extra_3"), // 12
+        DB::raw("NULL as extra_4")  // 13
+    )
+    ->whereBetween('heating_records.created_at', [$startDate, $endDate]);
+
+
+
         // ---------- UNION ALL ----------
         $records = $sales
             ->unionAll($expenses)
             ->unionAll($farmRecords)
             ->unionAll($farmDailyCares)
-            ->unionAll($farmInventories)   // ✅ NEW
+            ->unionAll($farmInventories)
             ->unionAll($pigs)
             ->unionAll($breeding)
             ->unionAll($growth)
@@ -369,19 +406,21 @@ class WeeklyRecordController extends Controller
             ->unionAll($medication)
             ->unionAll($vaccineSchedules)
             ->unionAll($vaccineLogs)
+            ->unionAll($heatingRecords) // ✅ NEW
             ->orderBy('created_at', 'desc')
             ->get();
 
 
+
         $data['header_title'] = "Quick Records";
 
-        return view('admin.records.index', compact(
-            'records',
-            'startDate',
-            'endDate',
-            'startDateInput',
-            'endDateInput'
-        ), $data);
+        if(Auth::user()->user_type === 2)
+        {
+            return view('staff.records.index', compact('records','startDate','endDate','startDateInput','endDateInput'), $data);
+        }
+        else{
+            return view('admin.records.index', compact('records','startDate','endDate','startDateInput','endDateInput'), $data);
+        }
     
     }
 

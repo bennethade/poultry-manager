@@ -10,10 +10,11 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h5>More Record for: <span class="badge badge-info">{{ $getHeatRecord->pig->tag_id }}</span> Heating</h5>
+          <h1>Heating Record</h1>
         </div>
         <div class="col-sm-6" style="text-align: right;">
-            {{-- <h5>Pig: <span class="badge badge-info">{{ $getHeatRecord->pig->tag_id }}</span></h5> --}}
+          {{-- <a href="{{ route('animal_identification.add') }}" class="btn btn-primary">Add New Animal</a> --}}
+          
         </div>
         
       </div>
@@ -26,7 +27,7 @@
     <div class="container-fluid">
       
       <div class="card">
-        <form action="{{ route('heating.more_record.store', $getHeatRecord->id) }}" method="POST" class="breeding-form">
+        <form action="{{ route('staff.heating.store') }}" method="POST" class="breeding-form">
             @csrf
 
             <div class="card-body">
@@ -34,7 +35,7 @@
                     style="text-align: center; margin-bottom:10px; cursor:pointer;">
                     <b>
                         <i class="fa fa-plus-circle text-primary"></i>
-                        Add Record
+                        Add Heating Record
                     </b>
                 </h4>
 
@@ -43,23 +44,47 @@
                 
                 <div id="breedFormBody" style="display:none;">
                     <div class="row">
-                        <div class="form-group col-md-4">
+                        <!-- 🔽 YOUR EXISTING FORM FIELDS (UNCHANGED) -->
+
+                        <div class="form-group col-md-2">
+                            <label>Pig</label>
+                            <input type="text" class="form-control" list="pigList" placeholder="Select Pig ID" required>
+
+                            <input type="hidden" name="pig_id" id="pig_id">
+
+                            <datalist id="pigList">
+                                @foreach($pigs as $pig)
+                                    <option value="{{ $pig->tag_id }}" data-id="{{ $pig->id }}"></option>
+                                @endforeach
+                            </datalist>
+
+                        </div>
+
+                        <div class="form-group col-md-3">
                             <label>Date</label>
                             <input class="form-control" type="date" name="date">
                         </div>
                         
-                        <div class="form-group col-md-8">
+                        <div class="form-group col-md-7">
+                            <label>Measurement Detail</label>
+                            <input class="form-control" type="text" name="measurement_detail" placeholder="Measurement info">
+                        </div>
+
+                        <div class="form-group col-md-6">
                             <label>Observation</label>
-                            <textarea class="form-control" rows="1" name="observation" placeholder="Today's observations"></textarea>
+                            <textarea class="form-control" rows="2" name="observation" placeholder="Clear observations"></textarea>
                         </div>
 
-                        <div class="form-group col-md-12">
+                        <div class="form-group col-md-6">
                             <label>Remarks</label>
-                            <textarea class="form-control" rows="2" name="remarks" placeholder="More details here"></textarea>
+                            <textarea class="form-control" rows="2" name="remarks" placeholder="Any additional info"></textarea>
                         </div>
 
-                        <div class="col-md-12 mt-3">
-                            <button class="btn btn-primary">Save Record</button>
+                        <div class="form-group col-md-12" style="margin-top: 1px;">
+                            <label></label>
+                            <button class="form-control btn-primary" type="submit">
+                                Save Record
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -83,19 +108,33 @@
         <!-- /.col -->
         <div class="col-md-12">
 
+          {{-- @include('_message') --}}
+
+          <!-- /.card -->
+
           <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h3 class="card-title mb-0">Record List</h3>
+                <h3 class="card-title mb-0">Heating List</h3>
+
+                <div style="width: 250px;">
+                    <input type="text"
+                        id="breedingSearch"
+                        class="form-control form-control-sm"
+                        placeholder="Search records...">
+                </div>
             </div>
 
+            <!-- /.card-header -->
             <div class="card-body p-0" style="overflow: auto;">
               <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>S/N</th>
+                        <th>Pig ID</th>
                         <th>Date</th>
+                        <th>Measurement Detail</th>
                         <th>Observation</th>
-                        <th>Remarks</th>
+                        <th>Remark</th>
                         <th>Recorded By</th>
                         <th>Recorded Date</th>
                         <th>Edited By</th>
@@ -108,14 +147,16 @@
                     @php
                         use Illuminate\Support\Str;
 
-                        $id = 1;
+                        $id = ($getRecord->currentPage() - 1) * $getRecord->perPage() + 1;
                     @endphp
 
                     @foreach ($getRecord as $value)
                         <tr>
-                            <td>{{ $id++ }}</td>
+                            <td>{{ $id++ }}</td>                            
+                            <td style="min-width: 80px;"><span class="badge badge-info">{{ $value->pig?->tag_id }}</span></td>
                             <td style="min-width: 120px;">{{ date('d-m-Y', strtotime($value->date)) }}</td>
-                            <td style="min-width: 200px;">{{ $value->observation }}</td>
+                            <td style="min-width: 100px;">{{ $value->measurement_detail }}</td>
+                            <td style="min-width: 100px;">{{ $value->observation }}</td>
 
                             <td style="min-width: 300px;">
                                 @php
@@ -139,10 +180,10 @@
 
 
                             <td style="min-width: 150px;">
-                                @if($value->creator)
-                                    {{ $value->creator->name }}
-                                    {{ $value->creator->last_name }}
-                                    {{ $value->creator->other_name }}
+                                @if($value->staff)
+                                    {{ $value->staff->name }}
+                                    {{ $value->staff->last_name }}
+                                    {{ $value->staff->other_name }}
                                 @endif
                             </td>
 
@@ -157,14 +198,15 @@
                             </td>
 
                             <td style="min-width: 150px;">
+                                <a href="{{ route('staff.heating.more_record', [$value->id]) }}" class="btn btn-secondary btn-sm">More Record</a>
                                 
-                                <a href="{{ route('heating.more_record.edit', [$value->id]) }}" class="btn btn-primary btn-sm">Edit</a>
+                                {{-- <a href="{{ route('staff.heating.edit', [$value->id]) }}" class="btn btn-primary btn-sm">Edit</a>
 
-                                <form action="{{ url('admin/animal_record/heating/more_record/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
+                                <form action="{{ url('staff/animal_record/heating/delete/'.$value->id) }}" method="POST" class="d-inline-block delete-form">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger delete">Delete</button>
-                                </form> 
+                                </form> --}}
                                 
                             </td>
                         </tr>
@@ -181,13 +223,9 @@
           <div class="mt-2 px-3" style="float: right;">
               {{ $getRecord->links() }}
           </div>
-
-          <!-- /.card -->
         </div>
         <!-- /.col -->
       </div>
-      <!-- /.row -->
-      <!-- /.row -->
     </div><!-- /.container-fluid -->
   </section>
   <!-- /.content -->
@@ -226,6 +264,68 @@
        });
 
 
+       // DEBOUNCE FUNCTION
+      function debounce(callback, delay) {
+          let timer;
+          return function (...args) {
+              clearTimeout(timer);
+              timer = setTimeout(() => callback.apply(this, args), delay);
+          };
+      }
+
+
+      //FOR DYNAMIC SEARCH
+      // $(document).ready(function () {
+      //     $('input[name="name"]').on('keyup', debounce(function () {
+      //         let query = $(this).val();
+
+      //         $.ajax({
+      //             url: "{{ route('heating.ajax.search') }}",
+      //             type: "GET",
+      //             data: { name: query },
+      //             success: function (response) {
+      //                 $('table tbody').html(response.html);
+      //             }
+      //         });
+      //     }, 100));
+      // });
+
+
+
+       // TO TOGGLE BREED FORM (SHOW/HIDE)
+        $(document).ready(function () {
+            $('#toggleBreedForm').on('click', function () {
+                $('#breedFormBody').slideToggle(300);
+
+                // Toggle icon
+                $(this).find('i').toggleClass('fa-plus-circle fa-minus-circle');
+            });
+        });
+
+
+
+        //FOR BREAD TABLE SEARCH
+        $(document).ready(function () {
+
+            $('#breedingSearch').on('keyup', debounce(function () {
+
+                let query = $(this).val();
+
+                $.ajax({
+                    url: "{{ route('staff.heating.ajax.search') }}",
+                    type: "GET",
+                    data: { query: query },
+                    success: function (html) {
+                        $('table tbody').html(html);
+                    }
+                });
+
+            }, 300));
+
+        });
+
+
+
         // FOR READ MORE AND READ LESS
         document.addEventListener('click', function (e) {
             if (e.target.classList.contains('read-more')) {
@@ -242,15 +342,17 @@
         });
 
 
-        // TO TOGGLE BUTTON FORM (SHOW/HIDE)
-        $(document).ready(function () {
-            $('#toggleBreedForm').on('click', function () {
-                $('#breedFormBody').slideToggle(300);
 
-                // Toggle icon
-                $(this).find('i').toggleClass('fa-plus-circle fa-minus-circle');
-            });
+        // SOW AND BOAR SEARCH
+        document.addEventListener('input', function (e) {
+            if (e.target.getAttribute('list') === 'pigList') {
+                let value = e.target.value;
+                let option = document.querySelector(`#pigList option[value="${value}"]`);
+                document.getElementById('pig_id').value = option ? option.dataset.id : '';
+            }
+
         });
+
 
 
     </script>
